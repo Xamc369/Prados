@@ -1,0 +1,31 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Prados.Web.Data.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Prados.Web.Data
+{
+    public class DataContext : IdentityDbContext<Userstbl>
+    {
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+        }
+        public DbSet<Aniostbl> Aniostbls { get; set; }
+        public DbSet<Managerstbl> Managerstbls { get; set; }
+        public DbSet<MarcasAutostbl> MarcasAutostbls { get; set; }
+        public DbSet<Mesestbl> Mesestbls { get; set; }
+        public DbSet<Negociostbl> Negociostbls{ get; set; }
+        public DbSet<Pagostbl>  Pagostbls{ get; set; }
+        public DbSet<Productostbl>  Productostbls{ get; set; }
+        public DbSet<Propietariostbl> Propietariostbls { get; set; }
+        public DbSet<PuntosPagotbl> PuntosPagotbls { get; set; }
+        public DbSet<TiposViviendatbl> TiposViviendatbls { get; set; }
+        public DbSet<Valorestbl> Valorestbls { get; set; }
+        public DbSet<Vehiculostbl> Vehiculostbls { get; set; }
+    }
+
+}
+
