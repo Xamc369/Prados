@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Prados.Web.Data.Entities.Propietariostbl>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Owners</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().User.Pro_Nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().User.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().User.PhoneNumber)
+            </th>
+            <th>
+                Pagos
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Pro_Nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pagos.Count)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

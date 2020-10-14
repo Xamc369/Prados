@@ -10,6 +10,7 @@ namespace Prados.Web.Helpers
     public interface IConverterHelper
     {
         Task<Vehiculostbl> ToVehiculoAsync(VehiculoViewModel model, string path);
-        Task<Pagostbl> ToPagoAsync(PagoViewModel model);
+        Task<Pagostbl> ToPagoAsync(PagoViewModel model, bool isNew);
+        PagoViewModel ToPagoViewModel(Pagostbl pago);
     }
 }

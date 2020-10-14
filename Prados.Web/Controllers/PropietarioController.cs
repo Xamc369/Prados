@@ -289,6 +289,8 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
+          
+
             var model = new PagoViewModel
             {
                 PropietarioId = propietario.Id,
@@ -299,17 +301,57 @@ namespace Prados.Web.Controllers
                 Valores = _combosHelper.GetComboValores(),
                 Puntos = _combosHelper.GetComboPuntos()
             };
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddPago(PagoViewModel model)
         {
+           
 
             if (ModelState.IsValid)
             {
-                var pago = await _converterHelper.ToPagoAsync(model);
-                _context.Pagostbls.Add(pago);
+                    var pago = await _converterHelper.ToPagoAsync(model, true);                  
+                    _context.Pagostbls.Add(pago);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction($"Details/{model.PropietarioId}");
+
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditPago(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pago = await _context.Pagostbls
+               .Include(o => o.Propietario)
+               .Include(p => p.Anio)
+               .Include(p => p.Mes)
+               .Include(p => p.Val)
+               .Include(p => p.PuntodePago)
+               .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pago == null)
+            {
+                return NotFound();
+            }
+
+            return View(_converterHelper.ToPagoViewModel(pago));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPago(PagoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var pago = await _converterHelper.ToPagoAsync(model, false);
+                _context.Pagostbls.Update(pago);
                 await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
 
@@ -317,5 +359,6 @@ namespace Prados.Web.Controllers
 
             return View(model);
         }
+
     }
 }

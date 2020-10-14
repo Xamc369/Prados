@@ -75,6 +75,25 @@ namespace Prados.Web.Helpers
             return list;
         }
 
+        public IEnumerable<SelectListItem> GetComboValoresDescripcion()
+        {
+            var list = _datacontext.Valorestbls.Select(va => new SelectListItem
+            {
+                Text = va.Val_Valor,
+                Value = $"{va.Val_Valor}"
+            })
+              .OrderBy(va => va.Text)
+              .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Selecione un valor pagado...]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
         public IEnumerable<SelectListItem> GetComboMeses()
         {
             var list = _datacontext.Mesestbls.Select(me => new SelectListItem

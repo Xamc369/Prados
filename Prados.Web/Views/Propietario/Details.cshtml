@@ -109,8 +109,8 @@ else
                                         @Html.DisplayFor(modelItem => item.PuntodePago.Pun_Descripcion)
                                     </td>
                                     <td>
-                                        <a asp-action="Edit vehiculo" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> ]
-                                        <a asp-action="details vehiculo" asp-route-id="@item.Id" class="btn btn-success">Edit</a> ]
+                                        <a asp-action="EditPago" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
+                                        <a asp-action="DetailsPago" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]
                                         <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
                                     </td>
                                 </tr>

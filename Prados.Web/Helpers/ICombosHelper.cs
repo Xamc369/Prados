@@ -11,6 +11,7 @@ namespace Prados.Web.Helpers
         IEnumerable<SelectListItem> GetComboMarcaAutoes();
         IEnumerable<SelectListItem> GetComboPuntos();
         IEnumerable<SelectListItem> GetComboValores();
+        IEnumerable<SelectListItem> GetComboValoresDescripcion();
         IEnumerable<SelectListItem> GetComboMeses();
         IEnumerable<SelectListItem> GetComboAnios();
     }
