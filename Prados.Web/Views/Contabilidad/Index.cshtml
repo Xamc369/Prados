@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Prados.Web.Data.Entities.Propietariostbl>
+﻿@model IEnumerable<Prados.Web.Data.Entities.Ingresostbl>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,42 +13,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().User.Pro_Nombres)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().User.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().User.PhoneNumber)
-            </th>
-            <th>
                 Pagos
             </th>
             <th></th>
         </tr>
+        @{
+            var TotalCuotas = 0;
+        }
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Pro_Nombres)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pagos.Count)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
+            TotalCuotas += Convert.ToInt32(item.Val.Val_Valor);
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Val.Val_Valor)
+                </td>
+                <td align="center">
+                </td>
+            </tr>
+
         }
     </tbody>
+    
 </table>
+<strong>Total Cuotas :@TotalCuotas</strong>

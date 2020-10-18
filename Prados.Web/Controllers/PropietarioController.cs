@@ -289,8 +289,6 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
-          
-
             var model = new PagoViewModel
             {
                 PropietarioId = propietario.Id,
@@ -302,24 +300,39 @@ namespace Prados.Web.Controllers
                 Puntos = _combosHelper.GetComboPuntos()
             };
 
+            var model1 = new ContabilidadViewModel
+            {
+                PagosValores = _combosHelper.GetComboValoresDescripcion(),
+            };
+
+
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPago(PagoViewModel model)
+        public async Task<IActionResult> AddPago(PagoViewModel model, ContabilidadViewModel model1)
         {
-           
+
 
             if (ModelState.IsValid)
             {
-                    var pago = await _converterHelper.ToPagoAsync(model, true);                  
-                    _context.Pagostbls.Add(pago);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction($"Details/{model.PropietarioId}");
+                var pago = await _converterHelper.ToPagoAsync(model, true);
+                var ingreso = await _converterHelper.ToIngresosAsync(model1, true);
+                var anio_nuevo = pago.Anio.Id;
+                var anio = _context.Pagostbls.Find(model.AnioId);
+                var mes_nuevo = pago.Mes.Id;
+                var mes = _context.Pagostbls.Find(model.MesId);
+                var anio_nuevo2 = anio_nuevo.ToString();
+                var mes_nuevo2 = mes_nuevo.ToString();
 
+                _context.Pagostbls.Add(pago);
+                _context.Ingresostbls.Add(ingreso);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.PropietarioId}");
             }
 
-            return View(model);
+                return View(model);
+            
         }
 
         public async Task<IActionResult> EditPago(int? id)

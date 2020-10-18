@@ -51,11 +51,10 @@ namespace Prados.Web.Helpers
                 Mes = await _dataContext1.Mesestbls.FindAsync(model.MesId),
                 Val = await _dataContext1.Valorestbls.FindAsync(model.ValorId),
                 PuntodePago = await _dataContext1.PuntosPagotbls.FindAsync(model.PuntoPagoId),
+
            };
             
-            return pagos;
-
-            
+            return pagos;           
         }
 
         public PagoViewModel ToPagoViewModel(Pagostbl pago)
@@ -82,5 +81,18 @@ namespace Prados.Web.Helpers
                 Puntos = _combosHelper.GetComboPuntos(),
             };
         }
+
+        public async Task<Ingresostbl> ToIngresosAsync(ContabilidadViewModel model1, bool isNew)
+        {
+
+            var ingresos = new Ingresostbl
+            {
+                Id = isNew ? 0 : model1.Id,
+                Val = await _dataContext1.Valorestbls.FindAsync(model1.ValorId),
+            };
+
+            return ingresos;
+        }
+
     }
 }

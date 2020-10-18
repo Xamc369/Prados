@@ -25,6 +25,9 @@ namespace Prados.Web.Data
         public DbSet<TiposViviendatbl> TiposViviendatbls { get; set; }
         public DbSet<Valorestbl> Valorestbls { get; set; }
         public DbSet<Vehiculostbl> Vehiculostbls { get; set; }
+        public DbSet<Ingresostbl> Ingresostbls { get; set; }
+        public DbSet<Egresostbl> Egresostbls { get; set; }
+        public DbSet<Saldostbl> Saldostbls { get; set; }
     }
 
 }

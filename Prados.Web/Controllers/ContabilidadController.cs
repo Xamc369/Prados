@@ -30,10 +30,8 @@ namespace Prados.Web.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Propietariostbls
-              .Include(o => o.User)
-              .Include(o => o.Vehiculos)
-              .Include(o => o.Pagos));
+            return View(_context.Ingresostbls
+                .Include(o => o.Val));
         }
 
         
