@@ -13,7 +13,7 @@ namespace Prados.Web.Data.Entities
 
         [Display(Name = "VALOR ALICUOTA")]
         public string Val_Valor { get; set; }
-
+        
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         [Display(Name = "FECHA DE CREACION")]

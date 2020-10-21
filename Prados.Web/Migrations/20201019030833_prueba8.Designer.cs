@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prados.Web.Data;
 
 namespace Prados.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201019030833_prueba8")]
+    partial class prueba8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,21 +161,21 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("Ing_Cuotas");
+
                     b.Property<DateTime>("Ing_FechadePago");
 
                     b.Property<double>("Ing_Sede");
 
-                    b.Property<int?>("PagosContId");
+                    b.Property<double>("Ing_Tag");
 
-                    b.Property<int?>("TipId");
+                    b.Property<int?>("PagosContId");
 
                     b.Property<int?>("ValId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PagosContId");
-
-                    b.HasIndex("TipId");
 
                     b.HasIndex("ValId");
 
@@ -278,8 +280,6 @@ namespace Prados.Web.Migrations
 
                     b.Property<int?>("PuntodePagoId");
 
-                    b.Property<int?>("TiposId");
-
                     b.Property<int?>("ValId");
 
                     b.HasKey("Id");
@@ -291,8 +291,6 @@ namespace Prados.Web.Migrations
                     b.HasIndex("PropietarioId");
 
                     b.HasIndex("PuntodePagoId");
-
-                    b.HasIndex("TiposId");
 
                     b.HasIndex("ValId");
 
@@ -365,23 +363,6 @@ namespace Prados.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Saldostbls");
-                });
-
-            modelBuilder.Entity("Prados.Web.Data.Entities.TiposPagotbl", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("IngresostblId");
-
-                    b.Property<string>("Tip_Descripcion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IngresostblId");
-
-                    b.ToTable("TiposPagotbl");
                 });
 
             modelBuilder.Entity("Prados.Web.Data.Entities.TiposViviendatbl", b =>
@@ -591,10 +572,6 @@ namespace Prados.Web.Migrations
                         .WithMany()
                         .HasForeignKey("PagosContId");
 
-                    b.HasOne("Prados.Web.Data.Entities.TiposPagotbl", "Tip")
-                        .WithMany()
-                        .HasForeignKey("TipId");
-
                     b.HasOne("Prados.Web.Data.Entities.Valorestbl", "Val")
                         .WithMany()
                         .HasForeignKey("ValId");
@@ -632,10 +609,6 @@ namespace Prados.Web.Migrations
                         .WithMany("Pagos")
                         .HasForeignKey("PuntodePagoId");
 
-                    b.HasOne("Prados.Web.Data.Entities.TiposPagotbl", "Tipos")
-                        .WithMany("Pagos")
-                        .HasForeignKey("TiposId");
-
                     b.HasOne("Prados.Web.Data.Entities.Valorestbl", "Val")
                         .WithMany("Pagos")
                         .HasForeignKey("ValId");
@@ -657,13 +630,6 @@ namespace Prados.Web.Migrations
                     b.HasOne("Prados.Web.Data.Entities.Userstbl", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Prados.Web.Data.Entities.TiposPagotbl", b =>
-                {
-                    b.HasOne("Prados.Web.Data.Entities.Ingresostbl")
-                        .WithMany("Ing_Tipos")
-                        .HasForeignKey("IngresostblId");
                 });
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Userstbl", b =>

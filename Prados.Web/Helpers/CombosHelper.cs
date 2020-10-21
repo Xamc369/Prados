@@ -77,17 +77,17 @@ namespace Prados.Web.Helpers
 
         public IEnumerable<SelectListItem> GetComboValoresDescripcion()
         {
-            var list = _datacontext.Valorestbls.Select(va => new SelectListItem
+            var list = _datacontext.TiposPagotbls.Select(va => new SelectListItem
             {
-                Text = va.Val_Valor,
-                Value = $"{va.Val_Valor}"
+                Text = va.Tip_Descripcion,
+                Value = $"{va.Id}"
             })
               .OrderBy(va => va.Text)
               .ToList();
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Selecione un valor pagado...]",
+                Text = "[Selecione un tipo de pago...]",
                 Value = "0"
             });
 

@@ -28,6 +28,8 @@ namespace Prados.Web.Data
         public DbSet<Ingresostbl> Ingresostbls { get; set; }
         public DbSet<Egresostbl> Egresostbls { get; set; }
         public DbSet<Saldostbl> Saldostbls { get; set; }
+        public DbSet<Prados.Web.Data.Entities.TiposPagotbl> TiposPagotbl { get; set; }
+        public DbSet<TiposPagotbl> TiposPagotbls { get; set; }
     }
 
 }

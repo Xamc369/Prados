@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prados.Web.Data;
 
 namespace Prados.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201021013334_nuevocombo")]
+    partial class nuevocombo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,15 +167,11 @@ namespace Prados.Web.Migrations
 
                     b.Property<int?>("PagosContId");
 
-                    b.Property<int?>("TipId");
-
                     b.Property<int?>("ValId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PagosContId");
-
-                    b.HasIndex("TipId");
 
                     b.HasIndex("ValId");
 
@@ -373,13 +371,9 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("IngresostblId");
-
                     b.Property<string>("Tip_Descripcion");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IngresostblId");
 
                     b.ToTable("TiposPagotbl");
                 });
@@ -591,10 +585,6 @@ namespace Prados.Web.Migrations
                         .WithMany()
                         .HasForeignKey("PagosContId");
 
-                    b.HasOne("Prados.Web.Data.Entities.TiposPagotbl", "Tip")
-                        .WithMany()
-                        .HasForeignKey("TipId");
-
                     b.HasOne("Prados.Web.Data.Entities.Valorestbl", "Val")
                         .WithMany()
                         .HasForeignKey("ValId");
@@ -657,13 +647,6 @@ namespace Prados.Web.Migrations
                     b.HasOne("Prados.Web.Data.Entities.Userstbl", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Prados.Web.Data.Entities.TiposPagotbl", b =>
-                {
-                    b.HasOne("Prados.Web.Data.Entities.Ingresostbl")
-                        .WithMany("Ing_Tipos")
-                        .HasForeignKey("IngresostblId");
                 });
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Userstbl", b =>

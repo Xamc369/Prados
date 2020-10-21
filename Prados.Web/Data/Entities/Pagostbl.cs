@@ -23,6 +23,8 @@ namespace Prados.Web.Data.Entities
         public Mesestbl Mes { get; set; }
         [Display(Name = "Valor")]
         public Valorestbl Val { get; set; }
+        [Display(Name = "Tipo de Pago")]
+        public TiposPagotbl Tipos { get; set; }
         [Display(Name = "Punto de Pago")]
         public PuntosPagotbl PuntodePago { get; set; }
     }

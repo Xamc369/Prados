@@ -50,8 +50,8 @@ namespace Prados.Web.Helpers
                 Anio = await _dataContext1.Aniostbls.FindAsync(model.AnioId),
                 Mes = await _dataContext1.Mesestbls.FindAsync(model.MesId),
                 Val = await _dataContext1.Valorestbls.FindAsync(model.ValorId),
+                Tipos = await _dataContext1.TiposPagotbls.FindAsync(model.TipoPagoId),
                 PuntodePago = await _dataContext1.PuntosPagotbls.FindAsync(model.PuntoPagoId),
-
            };
             
             return pagos;           
@@ -78,6 +78,7 @@ namespace Prados.Web.Helpers
                 Anios1 = _combosHelper.GetComboAnios(),
                 Meses1 = _combosHelper.GetComboMeses(),
                 Valores = _combosHelper.GetComboValores(),
+                TiposPago =_combosHelper.GetComboValoresDescripcion(),
                 Puntos = _combosHelper.GetComboPuntos(),
             };
         }
@@ -89,6 +90,7 @@ namespace Prados.Web.Helpers
             {
                 Id = isNew ? 0 : model1.Id,
                 Val = await _dataContext1.Valorestbls.FindAsync(model1.ValorId),
+                Tip = await _dataContext1.TiposPagotbls.FindAsync(model1.TipoPagoId)
             };
 
             return ingresos;

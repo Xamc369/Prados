@@ -33,9 +33,15 @@ namespace Prados.Web.Models
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un punto de pago.")]
         public int PuntoPagoId { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Tipo de Pago")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un punto de pago.")]
+        public int TipoPagoId { get; set; }
+
         public IEnumerable<SelectListItem> Anios1 { get; set; }
         public IEnumerable<SelectListItem> Meses1 { get; set; }
         public IEnumerable<SelectListItem> Valores { get; set; }
+        public IEnumerable<SelectListItem> TiposPago { get; set; }
         public IEnumerable<SelectListItem> Puntos { get; set; }
     }
 }

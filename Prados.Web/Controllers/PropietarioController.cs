@@ -62,6 +62,8 @@ namespace Prados.Web.Controllers
                  .ThenInclude(p => p.Val)
                  .Include(o => o.Pagos)
                  .ThenInclude(p => p.PuntodePago)
+                 .Include(o => o.Pagos)
+                 .ThenInclude(p => p.Tipos)
                  .FirstOrDefaultAsync(m => m.Id == id);
 
             if (propietario == null)
@@ -297,14 +299,9 @@ namespace Prados.Web.Controllers
                 Anios1 = _combosHelper.GetComboAnios(),
                 Meses1 = _combosHelper.GetComboMeses(),
                 Valores = _combosHelper.GetComboValores(),
+                TiposPago =_combosHelper.GetComboValoresDescripcion(),
                 Puntos = _combosHelper.GetComboPuntos()
             };
-
-            var model1 = new ContabilidadViewModel
-            {
-                PagosValores = _combosHelper.GetComboValoresDescripcion(),
-            };
-
 
             return View(model);
         }

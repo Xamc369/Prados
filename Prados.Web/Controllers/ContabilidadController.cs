@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Prados.Web.Data;
 using Prados.Web.Data.Entities;
 using Prados.Web.Helpers;
+using Prados.Web.Models;
 
 namespace Prados.Web.Controllers
 {
@@ -31,10 +32,10 @@ namespace Prados.Web.Controllers
         public IActionResult Index()
         {
             return View(_context.Ingresostbls
-                .Include(o => o.Val));
+                .Include(o => o.Val)
+                .Include(o => o.Tip));
         }
 
-        
 
     }
 }

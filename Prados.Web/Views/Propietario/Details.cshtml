@@ -85,6 +85,9 @@ else
                                     @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().Val)
                                 </th>
                                 <th>
+                                    @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().Tipos)
+                                </th>
+                                <th>
                                     @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().PuntodePago)
                                 </th>
                                 <th></th>
@@ -93,27 +96,30 @@ else
                         <tbody>
                             @foreach (var item in Model.Pagos)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.PAG_FECHAPAGADO)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Anio.Ani_Descripcion)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Mes.Mes_Descripcion)
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Val.Val_Valor)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.PuntodePago.Pun_Descripcion)
-                                    </td>
-                                    <td>
-                                        <a asp-action="EditPago" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
-                                        <a asp-action="DetailsPago" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PAG_FECHAPAGADO)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Anio.Ani_Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Mes.Mes_Descripcion)
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Val.Val_Valor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Tipos.Tip_Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PuntodePago.Pun_Descripcion)
+                                </td>
+                                <td>
+                                    <a asp-action="EditPago" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
+                                    <a asp-action="DetailsPago" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]
+                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

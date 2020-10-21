@@ -17,10 +17,16 @@ namespace Prados.Web.Models
         public double TotalQuantity { get { return Details == null ? 0 : Details.Sum(d => d.Val.Id); } }
 
         public IEnumerable<SelectListItem> PagosValores { get; set; }
+        public IEnumerable<SelectListItem> TiposPagos { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [Display(Name = "Valor Pagado")]
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un valor a pagar.")]
         public int ValorId { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Valor Pagado")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de pago.")]
+        public int TipoPagoId { get; set; }
     }
 }
