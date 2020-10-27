@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<Prados.Web.Data.Entities.Noticiastbl>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Noticias";
 }
 
-<h2>Index</h2>
+<h2>Noticiero Prados del Condado</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Crear nueva noticia</a>
 </p>
 <table class="table">
-    <thead>
+    <thead class="thead-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Not_Titulo)
@@ -27,33 +27,34 @@
             <th>
                 @Html.DisplayNameFor(model => model.Not_Estado)
             </th>
-            <th></th>
+            <th> Acción</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Not_Titulo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Not_Autor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Not_Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Not_Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Not_Estado)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Not_Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Not_Autor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Not_Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Not_Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Not_Estado)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

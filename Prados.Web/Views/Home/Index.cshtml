@@ -1,6 +1,4 @@
-﻿@model Prados.Web.Data.Entities.Noticiastbl
-
-
+﻿@model IEnumerable<Prados.Web.Data.Entities.Noticiastbl>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -13,7 +11,7 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
+            <img src="~/images/imag1.jpg" alt="ASP.NET" class="img-responsive" />
             <div class="carousel-caption" role="option">
                 <p>
                     Learn how to build ASP.NET apps that can run anywhere.
@@ -75,58 +73,51 @@
 
 
 <div class="main">
-
     <div id="section" class="box">
         <div id="content">
-            <ul class="articles box">
+            @{var i = 0; }
+            @foreach (var item in Model)
+            {
+                @if (i % 2 == 0)
+                {
+                    <ul class="articles box">
+                        <li>
+                            <h2><a href="#">  @Html.DisplayFor(modelItem => item.Not_Titulo)</a></h2>
+                            <div class="article-info box">
+                                <p class="f-left">@Html.DisplayFor(modelItem => item.Not_Fecha) | Autor <a>@Html.DisplayFor(modelItem => item.Not_Autor)</a> | </p>
+                            </div>
+                            <p><img src="tmp/article-02.jpg" alt="" class="f-right" /> @Html.DisplayFor(modelItem => item.Not_Descripcion) </p>
+                        </li>
+                    </ul>
+                    i++;
+                }
+                else
+                {
+                    <ul class="articles box">
+                        <li>
+                            <h2><a href="#"> @Html.DisplayFor(modelItem => item.Not_Titulo)</a></h2>
+                            <div class="article-info box">
+                                <p class="f-left">@Html.DisplayFor(modelItem => item.Not_Fecha) | Posted by <a href="#"> <a>@Html.DisplayFor(modelItem => item.Not_Autor)e</a> | </p>
+                            </div>
+                            <p><img src="tmp/article-03.jpg" alt="" class="f-left" />@Html.DisplayFor(modelItem => item.Not_Descripcion)</p>
+                        </li>
 
-                <li>
-                    <h2><a href="#">Template License</a></h2>
-                    <div class="article-info box">
-
-                        <p class="f-left">October 27, 2011 | Posted by <a href="#">@Html.DisplayNameFor(model => model.Not_Descripcion)</a> | Filed under <a href="#">templates</a>, <a href="#">webdesign</a>, <a href="#">internet</a></p>
-                    </div>
-                    <p>This is a free web template by TemplatesDock. This work is distributed under the Creative Commons Attribution 3.0 License, which means that you are free to adapt, copy, distribute and transmit the work. You must attribute the work in the manner specified by the author or licensor (don´t remove our backlink from footer).</p>
-                    <p><img src="tmp/article-02.jpg" alt="" class="f-right" />hola mundo </p>
-
-                </li>
-
-            </ul>
-
-            <ul class="articles box">
-                <li>
-                    <h2><a href="#">Template License</a></h2>
-                    <div class="article-info box">
-
-                        <p class="f-left">October 27, 2011 | Posted by <a href="#">John Doe</a> | Filed under <a href="#">templates</a>, <a href="#">webdesign</a>, <a href="#">internet</a></p>
-                    </div>
-                    <p>This is a free web template by TemplatesDock. This work is distributed under the Creative Commons Attribution 3.0 License, which means that you are free to adapt, copy, distribute and transmit the work. You must attribute the work in the manner specified by the author or licensor (don´t remove our backlink from footer).</p>
-                    <p><img src="tmp/article-03.jpg" alt="" class="f-left" />Suspendisse posuere, metus eget pharetra adipiscing, arcu velit lobortis augue, quis pharetra mauris ante a velit. Duis feugiat, odio a mattis gravida, velit est euismod urna, vitae gravida elit turpis sit amet elit. Phasellus ac hendrerit tortor. Aliquam erat volutpat. Donec laoreet viverra sapien et luctus. Cras fringilla commodo nulla sit amet congue. Donec aliquam gravida elit, in fringilla urna adipiscing in. Sed vel risus id urna luctus eleifend. Morbi ut fringilla magna. Curabitur lobortis molestie tellus ac ultricies. Maecenas tempus rutrum mauris in auctor. Ut interdum diam a justo malesuada dignissim. Morbi blandit odio sed magna rhoncus tincidunt. Etiam diam neque, ornare in molestie posuere, vulputate a nisl. Donec dictum, erat vel varius ullamcorper, lorem ipsum vulputate eros, sit amet lacinia orci arcu ac mi. Cras pellentesque, lacus vel laoreet tristique, justo magna convallis ante, at pellentesque ligula sapien sit amet elit. Nulla ut nunc libero.</p>
-
-                </li>
-
-            </ul>
-
-
-
-
-            <div class="pagination box">
-                <p class="f-right"> <a href="#" class="current">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">Next &raquo;</a> </p>
-                <p class="f-left">Page 1 of 13</p>
-            </div>
+                    </ul>
+                    i++;
+                }
+            }
+           
         </div>
         <div id="aside">
 
-            <h3>Sidebar Menu</h3>
+            <h3>Sub Menú</h3>
             <ul class="menu">
-                <li><a href="#">Discussion</a></li>
-                <li><a href="#">Authors</a></li>
-                <li><a href="#">Blogs</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="#">Início</a></li>
+                
             </ul>
-            <h3>About</h3>
+            <h3>Urbanización prados del condado</h3>
             <p class="box">
-                <img src="tmp/about-01.jpg" alt="" class="f-left" /> My name is Jessie Doe. I´m 26 years old and I´m living in the New York City.<br />
+                <img src="tmp/logo80.jpg" alt="" class="f-left" /> My name is Jessie Doe. I´m 26 years old and I´m living in the New York City.<br />
                 <a href="#">More about me</a>
             </p>
             <h3 class="nomb">Sponsors</h3>
@@ -151,4 +142,7 @@
         </div>
     </div>
 </div>
+
+
+
 
