@@ -25,5 +25,8 @@ namespace Prados.Web.Data.Entities
         public Valorestbl Val { get; set; }
         [Display(Name = "Tipo")]
         public TiposPagotbl Tip { get; set; }
+
+        [Display(Name = "ID INGRESO")]
+        public int Ing_IngId { get; set; }
     }
 }

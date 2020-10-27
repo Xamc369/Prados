@@ -309,27 +309,23 @@ namespace Prados.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPago(PagoViewModel model, ContabilidadViewModel model1)
         {
-
-
             if (ModelState.IsValid)
             {
-                var pago = await _converterHelper.ToPagoAsync(model, true);
-                var ingreso = await _converterHelper.ToIngresosAsync(model1, true);
-                var anio_nuevo = pago.Anio.Id;
-                var anio = _context.Pagostbls.Find(model.AnioId);
-                var mes_nuevo = pago.Mes.Id;
-                var mes = _context.Pagostbls.Find(model.MesId);
-                var anio_nuevo2 = anio_nuevo.ToString();
-                var mes_nuevo2 = mes_nuevo.ToString();
 
+                var pago = await _converterHelper.ToPagoAsync(model, true);
+
+                //var anio_nuevo = pago.Anio.Id;
+                //var anio = _context.Pagostbls.Find(model.AnioId);
+                //var mes_nuevo = pago.Mes.Id;
+                //var mes = _context.Pagostbls.Find(model.MesId);
+                //var anio_nuevo2 = anio_nuevo.ToString();
+                //var mes_nuevo2 = mes_nuevo.ToString();            
+                //guardamos el pago
                 _context.Pagostbls.Add(pago);
-                _context.Ingresostbls.Add(ingreso);
                 await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
             }
-
-                return View(model);
-            
+           return View(model);
         }
 
         public async Task<IActionResult> EditPago(int? id)
@@ -344,6 +340,7 @@ namespace Prados.Web.Controllers
                .Include(p => p.Anio)
                .Include(p => p.Mes)
                .Include(p => p.Val)
+               .Include(p => p.Tipos)
                .Include(p => p.PuntodePago)
                .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -356,12 +353,14 @@ namespace Prados.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPago(PagoViewModel model)
+        public async Task<IActionResult> EditPago(PagoViewModel model, ContabilidadViewModel model1)
         {
             if (ModelState.IsValid)
             {
                 var pago = await _converterHelper.ToPagoAsync(model, false);
+               // var ingreso = await _converterHelper.ToIngresosAsync(model1, true);
                 _context.Pagostbls.Update(pago);
+               // _context.Ingresostbls.Update(ingreso);
                 await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
 
