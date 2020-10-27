@@ -68,12 +68,14 @@ namespace Prados.Web.Helpers
                 Anio = pago.Anio,
                 Mes = pago.Mes,
                 Val = pago.Val,
+                Tipos = pago.Tipos,
                 PuntodePago = pago.PuntodePago,
                 Id = pago.Id,
                 PropietarioId = pago.Propietario.Id,
                 AnioId = pago.Anio.Id,
                 MesId = pago.Mes.Id,
                 ValorId = pago.Val.Id,
+                TipoPagoId = pago.Tipos.Id,
                 PuntoPagoId = pago.PuntodePago.Id,
                 Anios1 = _combosHelper.GetComboAnios(),
                 Meses1 = _combosHelper.GetComboMeses(),
@@ -90,11 +92,20 @@ namespace Prados.Web.Helpers
             {
                 Id = isNew ? 0 : model1.Id,
                 Val = await _dataContext1.Valorestbls.FindAsync(model1.ValorId),
-                Tip = await _dataContext1.TiposPagotbls.FindAsync(model1.TipoPagoId)
-            };
-
+                Tip = await _dataContext1.TiposPagotbls.FindAsync(model1.TipoPagoId),
+        };
             return ingresos;
         }
 
+        //public async Task<Contabilidadtbl> ToContabilidadAsync(ContabViewModel model1, bool isNew)
+        //{
+        //    var entrada = new Contabilidadtbl
+        //    {
+        //        Id = isNew ? 0 : model1.Id,
+        //       // Ing = await _dataContext1.Pagostbls.FindAsync(model1.PagoId),
+        //    };
+
+        //    return entrada;
+        //}
     }
 }
