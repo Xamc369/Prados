@@ -54,7 +54,7 @@ namespace Prados.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Not_Descripcion,Not_Fecha,Not_FechaCreacion,Not_Estado")] Noticiastbl noticiastbl)
+        public async Task<IActionResult> Create([Bind("Id,Not_Titulo,Not_Autor,Not_Descripcion,Not_Fecha,Not_Estado")] Noticiastbl noticiastbl)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Prados.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Not_Descripcion,Not_Fecha,Not_FechaCreacion,Not_Estado")] Noticiastbl noticiastbl)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Not_Titulo,Not_Autor,Not_Descripcion,Not_Fecha,Not_Estado")] Noticiastbl noticiastbl)
         {
             if (id != noticiastbl.Id)
             {
