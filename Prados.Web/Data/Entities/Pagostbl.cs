@@ -14,7 +14,6 @@ namespace Prados.Web.Data.Entities
         [DataType(DataType.Date)]
         public DateTime PAG_FECHAPAGADO { get; set; }
         public DateTime PAG_FECHACREACION { get; set; }
-        public string PAG_TOTAL { get; set; }
         public char PAG_ESTADO { get; set; }
         public Propietariostbl Propietario { get; set; }
         [Display(Name = "Año")]

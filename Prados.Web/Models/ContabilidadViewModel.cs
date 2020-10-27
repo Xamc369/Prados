@@ -18,6 +18,11 @@ namespace Prados.Web.Models
 
         public IEnumerable<SelectListItem> PagosValores { get; set; }
         public IEnumerable<SelectListItem> TiposPagos { get; set; }
+        public IEnumerable<SelectListItem> PuntosPagos { get; set; }
+        public IEnumerable<SelectListItem> AniosPagos { get; set; }
+        public IEnumerable<SelectListItem> ValoresPagos { get; set; }
+        public IEnumerable<SelectListItem> MesesPagos { get; set; }
+
 
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [Display(Name = "Valor Pagado")]
@@ -39,10 +44,10 @@ namespace Prados.Web.Models
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de pago.")]
         public int PuntoPagoId { get; set; }
 
-        //[Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        //[Display(Name = "Punto de Pago")]
-        //[Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de pago.")]
-        //public int PagoId { get; set; }
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Mes")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de pago.")]
+        public int MesId { get; set; }
 
     }
 }

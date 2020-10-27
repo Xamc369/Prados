@@ -1,4 +1,7 @@
-﻿@{
+﻿@model Prados.Web.Data.Entities.Noticiastbl
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -72,7 +75,7 @@
 
 
 <div class="main">
-   
+
     <div id="section" class="box">
         <div id="content">
             <ul class="articles box">
@@ -81,7 +84,7 @@
                     <h2><a href="#">Template License</a></h2>
                     <div class="article-info box">
 
-                        <p class="f-left">October 27, 2011 | Posted by <a href="#">John Doe</a> | Filed under <a href="#">templates</a>, <a href="#">webdesign</a>, <a href="#">internet</a></p>
+                        <p class="f-left">October 27, 2011 | Posted by <a href="#">@Html.DisplayNameFor(model => model.Not_Descripcion)</a> | Filed under <a href="#">templates</a>, <a href="#">webdesign</a>, <a href="#">internet</a></p>
                     </div>
                     <p>This is a free web template by TemplatesDock. This work is distributed under the Creative Commons Attribution 3.0 License, which means that you are free to adapt, copy, distribute and transmit the work. You must attribute the work in the manner specified by the author or licensor (don´t remove our backlink from footer).</p>
                     <p><img src="tmp/article-02.jpg" alt="" class="f-right" />hola mundo </p>
@@ -107,13 +110,13 @@
 
 
 
-                <div class="pagination box">
-                    <p class="f-right"> <a href="#" class="current">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">Next &raquo;</a> </p>
-                    <p class="f-left">Page 1 of 13</p>
-                </div>
+            <div class="pagination box">
+                <p class="f-right"> <a href="#" class="current">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">Next &raquo;</a> </p>
+                <p class="f-left">Page 1 of 13</p>
+            </div>
         </div>
         <div id="aside">
-            
+
             <h3>Sidebar Menu</h3>
             <ul class="menu">
                 <li><a href="#">Discussion</a></li>

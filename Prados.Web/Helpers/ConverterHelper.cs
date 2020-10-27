@@ -85,27 +85,29 @@ namespace Prados.Web.Helpers
             };
         }
 
-        public async Task<Ingresostbl> ToIngresosAsync(ContabilidadViewModel model1, bool isNew)
+        public async Task<Contabilidadtbl> ToIngresosAsync(ContabilidadViewModel model1, bool isNew)
         {
 
-            var ingresos = new Ingresostbl
+            var ingresos = new Contabilidadtbl
             {
                 Id = isNew ? 0 : model1.Id,
-                Val = await _dataContext1.Valorestbls.FindAsync(model1.ValorId),
                 Tip = await _dataContext1.TiposPagotbls.FindAsync(model1.TipoPagoId),
-        };
+                Valo = await _dataContext1.Valorestbls.FindAsync(model1.ValorId),
+                Anio = await _dataContext1.Aniostbls.FindAsync(model1.AnioId),
+                Punt = await _dataContext1.PuntosPagotbls.FindAsync(model1.PuntoPagoId),
+                Mess = await _dataContext1.Mesestbls.FindAsync(model1.MesId)
+            };
             return ingresos;
         }
 
-        //public async Task<Contabilidadtbl> ToContabilidadAsync(ContabViewModel model1, bool isNew)
-        //{
-        //    var entrada = new Contabilidadtbl
-        //    {
-        //        Id = isNew ? 0 : model1.Id,
-        //       // Ing = await _dataContext1.Pagostbls.FindAsync(model1.PagoId),
-        //    };
+        public async Task<Contabilidadtbl> ToContabilidadAsync(ContabilidadViewModel model1, bool isNew)
+        {
+            var entrada = new Contabilidadtbl
+            {
+                Tip = await _dataContext1.TiposPagotbls.FindAsync(model1.TipoPagoId),
+            };
 
-        //    return entrada;
-        //}
+            return entrada;
+        }
     }
 }

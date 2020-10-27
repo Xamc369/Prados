@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prados.Web.Data;
 
 namespace Prados.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201027132952_contaboking")]
+    partial class contaboking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,8 +158,6 @@ namespace Prados.Web.Migrations
 
                     b.Property<int?>("EgrId");
 
-                    b.Property<int?>("MessId");
-
                     b.Property<int?>("PuntId");
 
                     b.Property<int?>("TipId");
@@ -169,8 +169,6 @@ namespace Prados.Web.Migrations
                     b.HasIndex("AnioId");
 
                     b.HasIndex("EgrId");
-
-                    b.HasIndex("MessId");
 
                     b.HasIndex("PuntId");
 
@@ -267,13 +265,9 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ContabilidadtblId");
-
                     b.Property<string>("Mes_Descripcion");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ContabilidadtblId");
 
                     b.ToTable("Mesestbls");
                 });
@@ -690,10 +684,6 @@ namespace Prados.Web.Migrations
                         .WithMany()
                         .HasForeignKey("EgrId");
 
-                    b.HasOne("Prados.Web.Data.Entities.Mesestbl", "Mess")
-                        .WithMany()
-                        .HasForeignKey("MessId");
-
                     b.HasOne("Prados.Web.Data.Entities.PuntosPagotbl", "Punt")
                         .WithMany()
                         .HasForeignKey("PuntId");
@@ -734,13 +724,6 @@ namespace Prados.Web.Migrations
                     b.HasOne("Prados.Web.Data.Entities.Userstbl", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Prados.Web.Data.Entities.Mesestbl", b =>
-                {
-                    b.HasOne("Prados.Web.Data.Entities.Contabilidadtbl")
-                        .WithMany("Con_Meses")
-                        .HasForeignKey("ContabilidadtblId");
                 });
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Negociostbl", b =>
