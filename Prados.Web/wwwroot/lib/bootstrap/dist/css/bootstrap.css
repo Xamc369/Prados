@@ -4664,9 +4664,10 @@ fieldset[disabled] .navbar-default .btn-link:hover,
 fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
+/*color fondo barra inicio*/
 .navbar-inverse {
-  background-color: #222;
-  border-color: #080808;
+    background-color: #333640;
+    border-color: #080808;
 }
 .navbar-inverse .navbar-brand {
   color: #9d9d9d;
