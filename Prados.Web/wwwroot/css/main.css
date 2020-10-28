@@ -180,7 +180,7 @@ img.f-right {
 }
 #aside {
 	float:right;
-	width:250px;
+	width:280px;
 }
 .menu {
 	list-style:none;
@@ -372,3 +372,149 @@ img.f-right {
 	.tile-number > small {
 		font-size: 17px;
 	}
+
+
+
+
+
+/*	modo responsive*/
+@media (max-width:450px) {
+	.articles {
+		margin: 0;
+		width: 261px;
+		list-style: none;
+	}
+
+		.articles h2 {
+			margin: 0;
+		}
+
+			.articles h2 a {
+				text-decoration: none;
+			}
+
+		.articles .article-info {
+			padding-bottom: 18px;
+		}
+
+			.articles .article-info .comment {
+				padding-left: 18px;
+				background: url("../design/comment.gif") 0 50% no-repeat;
+			}
+
+			.articles .article-info p {
+				margin: 0;
+			}
+	#aside {
+		float: right;
+		width: 230px;
+	}
+}
+
+
+
+
+
+@media (min-width:768px) {
+	.articles {
+		margin: 0;
+		width: 690px;
+		list-style: none;
+	}
+
+		.articles h2 {
+			margin: 0;
+		}
+
+			.articles h2 a {
+				text-decoration: none;
+			}
+
+		.articles .article-info {
+			padding-bottom: 18px;
+		}
+
+			.articles .article-info .comment {
+				padding-left: 18px;
+				background: url("../design/comment.gif") 0 50% no-repeat;
+			}
+
+			.articles .article-info p {
+				margin: 0;
+			}
+
+	#aside {
+		float: right;
+		width: 268px;
+	}
+}
+
+@media (orientation: landscape) {
+
+	.articles {
+		margin: 0;
+		list-style: none;
+	}
+
+		.articles h2 {
+			margin: 0;
+		}
+
+			.articles h2 a {
+				text-decoration: none;
+			}
+
+		.articles .article-info {
+			padding-bottom: 18px;
+		}
+
+			.articles .article-info .comment {
+				padding-left: 18px;
+				background: url("../design/comment.gif") 0 50% no-repeat;
+			}
+
+			.articles .article-info p {
+				margin: 0;
+			}
+
+	.gallery li {
+		display: block;
+		float: left;
+		margin-right: 10px;
+	}
+
+	.pagination {
+		font-size: 110%;
+	}
+
+		.pagination a {
+			padding: 5px 10px;
+		}
+
+			.pagination a.current {
+				border-radius: 5px;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				text-decoration: none;
+				font-weight: bold;
+			}
+
+	.more {
+		text-align: right;
+	}
+
+		.more a {
+			border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			padding: 6px 12px;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+	#aside {
+		float: right;
+		width: 280px;
+	}
+}
+
