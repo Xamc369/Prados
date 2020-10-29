@@ -7,9 +7,59 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 <br />
 
+@{
+    var TotalCuotas = 0;
+    var TotalCuotasXAnio = 0;
+    var anio = DateTime.Now;
+    int year = anio.Year;
+    int month = anio.Month;
+    var aniobusca = 0;
+    var monthbusca = 0;
+    var tipobusca = "";
+    var TotalCuotasXProp = 0;
+    var TotalCuotasXSede = 0;
+    var TotalCuotasXTag = 0;
+    var Texto = "";
+
+}
+
 <h2>Estados Financieros</h2>
 <br />
 <br />
+@*<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr width="50px">
+            <th width="30px"><h5>Seleccione un año</h5></th>
+            <td width="30px">
+                <select name="IdAnio">
+                    @foreach (var item in Model.Select(x => x.Anio.Ani_Descripcion).Distinct())
+                    {
+                        var anios = @Html.DisplayFor(x => item);
+                        <option value="@anios">@anios</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr width="50%">
+            <th scope="row" width="30%"><h5>Seleccione un mes</h5></th>
+            <td width="30%">
+                <select name="IdMes">
+                    @foreach (var item in Model.Select(x => x.Mess.Mes_Descripcion).Distinct())
+                    {
+                        var meses = @Html.DisplayFor(x => item);
+                        <option value="@meses">@meses</option>
+                    }
+                </select>
+            </td>
+        </tr>
+    </tbody>
+</table>*@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', { packages: ['corechart'] });
@@ -32,14 +82,23 @@
     }
 </script>
 
-@{
-    var TotalCuotas = 0;
+@foreach (var item2 in Model)
+{
+    TotalCuotas += Convert.ToInt32(item2.Valo.Val_Valor);
+    aniobusca = Convert.ToInt32(item2.Anio.Ani_Descripcion);
+
+
+
+    @if (aniobusca == year)
+    {
+        TotalCuotasXAnio += Convert.ToInt32(item2.Valo.Val_Valor);
+    }
 }
 
-@foreach (var item in Model)
-{
-    TotalCuotas += Convert.ToInt32(item.Valo.Val_Valor);
-}
+
+
+
+
 
 <div class="full-box text-center" style="padding: 30px 10px;">
     <article class="full-box tile">
@@ -56,38 +115,79 @@
     </article>
     <article class="full-box tile">
         <div class="full-box tile-title text-center text-titles text-uppercase">
-            TIPO DE PAGO
-        </div>
-        <div class="full-box tile-icon text-center">
-            <i class="glyphicon glyphicon-tags"></i>
-        </div>
-        <div class="full-box tile-number text-titles">
-            <p class="full-box">3</p>
-            <small>Pedidos</small>
-        </div>
-    </article>
-    <article class="full-box tile">
-        <div class="full-box tile-title text-center text-titles text-uppercase">
-            PUNTO DE PAGO
-        </div>
-        <div class="full-box tile-icon text-center">
-            <i class="glyphicon glyphicon-home"></i>
-        </div>
-        <div class="full-box tile-number text-titles">
-            <p class="full-box">4</p>
-            <small>Datos</small>
-        </div>
-    </article>
-    <article class="full-box tile">
-        <div class="full-box tile-title text-center text-titles text-uppercase">
             AÑO
         </div>
         <div class="full-box tile-icon text-center">
             <i class="glyphicon glyphicon-calendar"></i>
         </div>
         <div class="full-box tile-number text-titles">
-            <p class="full-box">4</p>
-            <small>Datos</small>
+            <p class="full-box">@TotalCuotasXAnio</p>
+            <small>@year</small>
+        </div>
+    </article>
+    <br />
+    @foreach (var item in Model)
+    {
+        tipobusca = item.Tip.Tip_Descripcion;
+        monthbusca = Convert.ToInt32(item.Mess.Id);
+
+        @if ((tipobusca == "ALICUOTA") && (monthbusca == month))
+        {
+            TotalCuotasXProp += Convert.ToInt32(item.Valo.Val_Valor);
+            Texto = "Recaudado";
+        }
+        else
+        {
+            TotalCuotasXProp = 0;
+            Texto = "Nada Recaudado";
+        }
+
+        @if (tipobusca == "TAG")
+        {
+            TotalCuotasXTag += Convert.ToInt32(item.Valo.Val_Valor);
+        }
+
+        @if (tipobusca == "SEDE")
+        {
+            TotalCuotasXSede += Convert.ToInt32(item.Valo.Val_Valor);
+        }
+
+    }
+
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            ALICUOTA
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-file"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXProp</p>
+            <small>@Texto</small>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            TAG
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="fa fa-car"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXTag</p>
+            <small>Recaudado</small>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            SEDE
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-home"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXSede</p>
+            <small>Recaudado</small>
         </div>
     </article>
 </div>

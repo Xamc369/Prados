@@ -48,6 +48,5 @@ namespace Prados.Web.Models
         [Display(Name = "Mes")]
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de pago.")]
         public int MesId { get; set; }
-
     }
 }

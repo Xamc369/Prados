@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Prados.Web.Data;
 using Prados.Web.Data.Entities;
@@ -39,6 +41,6 @@ namespace Prados.Web.Controllers
                 .Include(O => O.Mess));
         }
 
-
+      
     }
 }
