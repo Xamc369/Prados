@@ -3,7 +3,8 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+<div ></div>
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000" style="margin-top:5%">
     <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -57,10 +58,17 @@
 
 @*Inicio noticias*@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" media="only screen and (max-width: 768px)" href="css/main.css">
+<link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" media="screen,projection" type="text/css" href="css/main.css" />
 <link rel="stylesheet" media="screen,projection" type="text/css" href="css/skin.css" />
 <script type="text/javascript" src="javascript/cufon-yui.js"></script>
 <script type="text/javascript" src="javascript/font.font.js"></script>
+
+
+
+
+
 
 
 
@@ -72,7 +80,7 @@
 
 
 
-<div class="main">
+<div class="container body-content">
     <div id="section" class="box">
         <div id="content">
             @{var i = 0; }
@@ -84,7 +92,7 @@
                         <li>
                             <h2><a href="#">  @Html.DisplayFor(modelItem => item.Not_Titulo)</a></h2>
                             <div class="article-info box">
-                                <p class="f-left">@Html.DisplayFor(modelItem => item.Not_Fecha) | Autor <a>@Html.DisplayFor(modelItem => item.Not_Autor)</a> | </p>
+                                <p class="f-left ">@Html.DisplayFor(modelItem => item.Not_Fecha) | Autor <a>@Html.DisplayFor(modelItem => item.Not_Autor)</a> | </p>
                             </div>
                             <p><img src="tmp/article-02.jpg" alt="" class="f-right" /> @Html.DisplayFor(modelItem => item.Not_Descripcion) </p>
                         </li>
@@ -106,14 +114,14 @@
                     i++;
                 }
             }
-           
+
         </div>
         <div id="aside">
 
             <h3>Sub Menú</h3>
             <ul class="menu">
                 <li><a href="#">Início</a></li>
-                
+
             </ul>
             <h3>Urbanización prados del condado</h3>
             <p class="box">
@@ -142,7 +150,5 @@
         </div>
     </div>
 </div>
-
-
 
 
