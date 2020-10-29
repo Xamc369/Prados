@@ -12,6 +12,10 @@ namespace Prados.Web.Controllers
 {
     public class NoticiaController : Controller
     {
+       
+       
+
+
         private readonly DataContext _context;
 
         public NoticiaController(DataContext context)
@@ -22,6 +26,8 @@ namespace Prados.Web.Controllers
         // GET: Noticia
         public async Task<IActionResult> Index()
         {
+            
+            
             return View(await _context.Noticiastbls.ToListAsync());
         }
 

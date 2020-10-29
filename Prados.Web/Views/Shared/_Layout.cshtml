@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿
+
+
+
+
+
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -15,89 +23,6 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
-
-
-
-    @*----- Inicio estilos de barra navegación ------*@
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .mynav_navbar {
-            overflow: hidden;
-            background-color: #333640;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-            .mynav_navbar a {
-                float: left;
-                font-size: 16px;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
-
-        .mynav_dropdown {
-            float: left;
-            overflow: hidden;
-        }
-
-            .mynav_dropdown .mynav_dropbtn {
-                font-size: 16px;
-                border: none;
-                outline: none;
-                color: white;
-                padding: 14px 16px;
-                background-color: inherit;
-                font-family: inherit;
-                margin: 0;
-            }
-
-        .mynav_dropbtn {
-            font-size: 16px;
-            border: none;
-            outline: none;
-            color: white;
-            padding: 14px 16px;
-            background-color: inherit;
-            font-family: inherit;
-            margin: 0;
-        }
-
-        .mynav_navbar a:hover, .mynav_dropdown:hover .mynav_dropbtn {
-            background-color: darkgreen;
-        }
-
-        .mynav_dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-            .mynav_dropdown-content a {
-                float: none;
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                text-align: left;
-            }
-
-                .mynav_dropdown-content a:hover {
-                    background-color: #ddd;
-                }
-
-        .mynav_dropdown:hover .mynav_dropdown-content {
-            display: block;
-        }
-    </style>
-
-    @*----- Fin estilos de barra navegación ------*@
-
-
-
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -109,37 +34,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Inicio</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Prados.Web</a>
             </div>
-            <div class="mynav_navbar">
+            <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
+                        <li><a asp-area="" asp-controller="MarcaAutoes" asp-action="Index">MArca</a></li>
                         <li><a asp-area="" asp-controller="Propietario" asp-action="Index">Propietarios</a></li>
+                        <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a></li>
+                        <li><a asp-area="" asp-controller="Anio" asp-action="Index">Anios</a></li>
                         <li><a asp-area="" asp-controller="Contabilidad" asp-action="Index">Contabilidad</a></li>
+                        <li><a asp-area="" asp-controller="Valor" asp-action="Index">Valores</a></li>
+                        <li><a asp-area="" asp-controller="PuntoPago" asp-action="Index">Punto Pago</a></li>
+                        <li><a asp-area="" asp-controller="TiposPago" asp-action="Index">Tipo de Pago</a></li>
                         <li><a asp-area="" asp-controller="Noticia" asp-action="Index">Noticias</a></li>
-                        <div class="mynav_dropdown">
-                            <button class="mynav_dropbtn">
-                                Configuraciones
-                                <i class="fa fa-caret-down"></i>
-                            </button>
-                            <div class="mynav_dropdown-content">
-                                <a asp-area="" asp-controller="TiposPago" asp-action="Index">Tipo de Pago</a>
-                                <a asp-area="" asp-controller="PuntoPago" asp-action="Index">Punto Pago</a>
-                                <a asp-area="" asp-controller="Anio" asp-action="Index">Anios</a>
-                                <a asp-area="" asp-controller="Valor" asp-action="Index">Valores</a>
-                                <a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a>
-                                <a asp-area="" asp-controller="MarcaAutoes" asp-action="Index">Marca</a>
-
-                            </div>
-
-                        </div>
-
-
-
-
-
                     }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

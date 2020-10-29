@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Prados.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,6 +33,7 @@ namespace Prados.Web.Data
         public DbSet<TiposPagotbl> TiposPagotbls { get; set; }
         public DbSet<Contabilidadtbl> Contabilidadtbls { get; set; }
         public DbSet<Noticiastbl> Noticiastbls { get; set; }
+
     }
 
 }

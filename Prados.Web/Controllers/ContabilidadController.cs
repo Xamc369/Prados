@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Prados.Web.Data;
 using Prados.Web.Data.Entities;
@@ -32,12 +34,13 @@ namespace Prados.Web.Controllers
         public IActionResult Index()
         {
             return View(_context.Contabilidadtbls
-                .Include(o => o.Val)
                 .Include(o => o.Tip)
-                .Include(o=> o.Ani)
-                .Include(o=> o.Pun));
+                .Include(o => o.Punt)
+                .Include(o => o.Valo)
+                .Include(o => o.Anio)
+                .Include(O => O.Mess));
         }
 
-
+      
     }
 }

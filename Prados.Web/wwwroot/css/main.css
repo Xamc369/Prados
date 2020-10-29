@@ -180,7 +180,7 @@ img.f-right {
 }
 #aside {
 	float:right;
-	width:250px;
+	width:280px;
 }
 .menu {
 	list-style:none;
@@ -290,3 +290,231 @@ img.f-right {
 .input-submit {
 	padding:3px;
 }
+.full-box {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.text-titles {
+	font-family: 'RobotoCondensedLight'
+}
+
+/*============ Estilos home*/
+.tile {
+	max-width: 300px;
+	height: 180px;
+	background-color: #fff;
+	color: rgba(43, 174, 168, 1);
+	position: relative;
+	display: inline-block;
+	box-shadow: 0 1px 7px rgba(0, 0, 0, .2);
+	overflow: hidden;
+	cursor: pointer;
+	margin: 10px;
+}
+
+	.tile:hover > .tile-icon > i,
+	.tile:hover > .tile-number {
+		color: rgba(43, 174, 168, 1);
+	}
+
+.tile-title,
+.tile-icon,
+.tile-number {
+	position: absolute;
+}
+
+.tile-title {
+	height: 40px;
+	line-height: 40px;
+	font-size: 20px;
+	background-color: rgb(43, 174, 168);
+	color: #fff;
+	top: 0;
+	left: 0;
+}
+
+.tile-icon,
+.tile-number {
+	bottom: 0;
+	height: 140px;
+	width: 150px;
+}
+
+.tile-icon {
+	left: 0;
+}
+
+	.tile-icon > i {
+		line-height: 140px;
+		font-size: 117px;
+	}
+
+	.tile-icon > i,
+	.tile-number {
+		color: rgba(43, 174, 168, .4);
+		transition: all .3s ease-in-out;
+	}
+
+.tile-number {
+	right: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+	.tile-number > p {
+		font-size: 70px;
+	}
+
+	.tile-number > small {
+		font-size: 17px;
+	}
+
+
+
+
+
+/*	modo responsive*/
+@media (max-width:450px) {
+	.articles {
+		margin: 0;
+		width: 261px;
+		list-style: none;
+	}
+
+		.articles h2 {
+			margin: 0;
+		}
+
+			.articles h2 a {
+				text-decoration: none;
+			}
+
+		.articles .article-info {
+			padding-bottom: 18px;
+		}
+
+			.articles .article-info .comment {
+				padding-left: 18px;
+				background: url("../design/comment.gif") 0 50% no-repeat;
+			}
+
+			.articles .article-info p {
+				margin: 0;
+			}
+	#aside {
+		float: right;
+		width: 230px;
+	}
+}
+
+
+
+
+
+@media (min-width:768px) {
+	.articles {
+		margin: 0;
+		width: 690px;
+		list-style: none;
+	}
+
+		.articles h2 {
+			margin: 0;
+		}
+
+			.articles h2 a {
+				text-decoration: none;
+			}
+
+		.articles .article-info {
+			padding-bottom: 18px;
+		}
+
+			.articles .article-info .comment {
+				padding-left: 18px;
+				background: url("../design/comment.gif") 0 50% no-repeat;
+			}
+
+			.articles .article-info p {
+				margin: 0;
+			}
+
+	#aside {
+		float: right;
+		width: 268px;
+	}
+}
+
+@media (orientation: landscape) {
+
+	.articles {
+		margin: 0;
+		list-style: none;
+	}
+
+		.articles h2 {
+			margin: 0;
+		}
+
+			.articles h2 a {
+				text-decoration: none;
+			}
+
+		.articles .article-info {
+			padding-bottom: 18px;
+		}
+
+			.articles .article-info .comment {
+				padding-left: 18px;
+				background: url("../design/comment.gif") 0 50% no-repeat;
+			}
+
+			.articles .article-info p {
+				margin: 0;
+			}
+
+	.gallery li {
+		display: block;
+		float: left;
+		margin-right: 10px;
+	}
+
+	.pagination {
+		font-size: 110%;
+	}
+
+		.pagination a {
+			padding: 5px 10px;
+		}
+
+			.pagination a.current {
+				border-radius: 5px;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				text-decoration: none;
+				font-weight: bold;
+			}
+
+	.more {
+		text-align: right;
+	}
+
+		.more a {
+			border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			padding: 6px 12px;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+	#aside {
+		float: right;
+		width: 280px;
+	}
+}
+

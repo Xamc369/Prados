@@ -313,7 +313,7 @@ namespace Prados.Web.Controllers
             {
 
                 var pago = await _converterHelper.ToPagoAsync(model, true);
-
+                var ingreso = await _converterHelper.ToIngresosAsync(model1, true);
                 //var anio_nuevo = pago.Anio.Id;
                 //var anio = _context.Pagostbls.Find(model.AnioId);
                 //var mes_nuevo = pago.Mes.Id;
@@ -322,7 +322,13 @@ namespace Prados.Web.Controllers
                 //var mes_nuevo2 = mes_nuevo.ToString();            
                 //guardamos el pago
                 _context.Pagostbls.Add(pago);
+                _context.Contabilidadtbls.Add(ingreso);
                 await _context.SaveChangesAsync();
+                //var IdDelRegistroInsertadoEnPagos = pago.Id;
+                //var IdDelRegistroInsertadoEnIngresos = ingreso.Id;
+                //var PagoInsertadoObj = _context.Contabilidadtbls.First(x => x.Id == IdDelRegistroInsertadoEnIngresos);
+                //PagoInsertadoObj.Con_IngId = IdDelRegistroInsertadoEnPagos;
+                //await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
             }
            return View(model);
@@ -358,10 +364,11 @@ namespace Prados.Web.Controllers
             if (ModelState.IsValid)
             {
                 var pago = await _converterHelper.ToPagoAsync(model, false);
-               // var ingreso = await _converterHelper.ToIngresosAsync(model1, true);
+                var ingreso = await _converterHelper.ToIngresosAsync(model1,false);
                 _context.Pagostbls.Update(pago);
-               // _context.Ingresostbls.Update(ingreso);
+                _context.Contabilidadtbls.Update(ingreso);
                 await _context.SaveChangesAsync();
+                var IdTipoDelRegistroActualizadoEnPagos = pago.Tipos.Id;
                 return RedirectToAction($"Details/{model.PropietarioId}");
 
             }

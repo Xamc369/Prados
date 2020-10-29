@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Prados.Web.Data.Entities.Ingresostbl>
+﻿@model IEnumerable<Prados.Web.Data.Entities.Contabilidadtbl>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,11 +7,196 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 <br />
 
-<h2>Owners</h2>
+@{
+    var TotalCuotas = 0;
+    var TotalCuotasXAnio = 0;
+    var anio = DateTime.Now;
+    int year = anio.Year;
+    int month = anio.Month;
+    var aniobusca = 0;
+    var monthbusca = 0;
+    var tipobusca = "";
+    var TotalCuotasXProp = 0;
+    var TotalCuotasXSede = 0;
+    var TotalCuotasXTag = 0;
+    var Texto = "";
 
-<p>
-    <a asp-action="AddPagoSede" class="btn btn-primary">Create New</a>
-</p>
+}
+
+<h2>Estados Financieros</h2>
+<br />
+<br />
+@*<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr width="50px">
+            <th width="30px"><h5>Seleccione un año</h5></th>
+            <td width="30px">
+                <select name="IdAnio">
+                    @foreach (var item in Model.Select(x => x.Anio.Ani_Descripcion).Distinct())
+                    {
+                        var anios = @Html.DisplayFor(x => item);
+                        <option value="@anios">@anios</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr width="50%">
+            <th scope="row" width="30%"><h5>Seleccione un mes</h5></th>
+            <td width="30%">
+                <select name="IdMes">
+                    @foreach (var item in Model.Select(x => x.Mess.Mes_Descripcion).Distinct())
+                    {
+                        var meses = @Html.DisplayFor(x => item);
+                        <option value="@meses">@meses</option>
+                    }
+                </select>
+            </td>
+        </tr>
+    </tbody>
+</table>*@
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawChart2);
+    function drawChart() {
+        // Define the chart to be drawn.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Element');
+        data.addColumn('number', 'Percentage');
+        data.addRows([
+            ['Nitrogen', 0.78],
+            ['Oxygen', 0.21],
+            ['Other', 0.01]
+        ]);
+
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
+        chart.draw(data, null);
+    }
+</script>
+
+@foreach (var item2 in Model)
+{
+    TotalCuotas += Convert.ToInt32(item2.Valo.Val_Valor);
+    aniobusca = Convert.ToInt32(item2.Anio.Ani_Descripcion);
+
+
+
+    @if (aniobusca == year)
+    {
+        TotalCuotasXAnio += Convert.ToInt32(item2.Valo.Val_Valor);
+    }
+}
+
+
+
+
+
+
+<div class="full-box text-center" style="padding: 30px 10px;">
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            INGRESOS
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-usd"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotas</p>
+            <small>Total Recaudado</small>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            AÑO
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXAnio</p>
+            <small>@year</small>
+        </div>
+    </article>
+    <br />
+    @foreach (var item in Model)
+    {
+        tipobusca = item.Tip.Tip_Descripcion;
+        monthbusca = Convert.ToInt32(item.Mess.Id);
+
+        @if ((tipobusca == "ALICUOTA") && (monthbusca == month))
+        {
+            TotalCuotasXProp += Convert.ToInt32(item.Valo.Val_Valor);
+            Texto = "Recaudado";
+        }
+        else
+        {
+            TotalCuotasXProp = 0;
+            Texto = "Nada Recaudado";
+        }
+
+        @if (tipobusca == "TAG")
+        {
+            TotalCuotasXTag += Convert.ToInt32(item.Valo.Val_Valor);
+        }
+
+        @if (tipobusca == "SEDE")
+        {
+            TotalCuotasXSede += Convert.ToInt32(item.Valo.Val_Valor);
+        }
+
+    }
+
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            ALICUOTA
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-file"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXProp</p>
+            <small>@Texto</small>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            TAG
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="fa fa-car"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXTag</p>
+            <small>Recaudado</small>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            SEDE
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-home"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXSede</p>
+            <small>Recaudado</small>
+        </div>
+    </article>
+</div>
+<br />
+<br />
+<body>
+    <div id="myPieChart" style="width:500px ; height:500px;">
+    </div>
+</body>
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -23,32 +208,50 @@
                     <thead>
                         <tr>
                             <th>
+                                Año
+                            </th>
+                            <th>
+                                Mes
+                            </th>
+                            <th>
                                 Tipo de Pago
                             </th>
                             <th>
                                 Valor Pagado
                             </th>
+                            <th>
+                                Punto de Pago
+                            </th>
                             <th></th>
                         </tr>
-                        @{
-                            var TotalCuotas = 0;
-                        }
+                        @*@{
+                                var TotalCuotas = 0;
+                            }*@
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            TotalCuotas += Convert.ToInt32(item.Val.Val_Valor);
+                            TotalCuotas += Convert.ToInt32(item.Valo.Val_Valor);
                             <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Anio.Ani_Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Mess.Mes_Descripcion)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Tip.Tip_Descripcion)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Val.Val_Valor)
+                                    @Html.DisplayFor(modelItem => item.Valo.Val_Valor)
                                 </td>
-                                <td align="center">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Punt.Pun_Descripcion)
                                 </td>
                                 <td>
                                     <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                                <td>
                                 </td>
                             </tr>
 
@@ -103,3 +306,83 @@
         });
     </script>
 }
+
+<style>
+    .full-box {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    /*============ Estilos home*/
+    .tile {
+        max-width: 300px;
+        height: 180px;
+        background-color: #fff;
+        color: rgba(43, 174, 168, 1);
+        position: relative;
+        display: inline-block;
+        box-shadow: 0 1px 7px rgba(0, 0, 0, .2);
+        overflow: hidden;
+        cursor: pointer;
+        margin: 10px;
+    }
+
+        .tile:hover > .tile-icon > i,
+        .tile:hover > .tile-number {
+            color: rgba(43, 174, 168, 1);
+        }
+
+    .tile-title,
+    .tile-icon,
+    .tile-number {
+        position: absolute;
+    }
+
+    .tile-title {
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        background-color: rgb(43, 174, 168);
+        color: #fff;
+        top: 0;
+        left: 0;
+    }
+
+    .tile-icon,
+    .tile-number {
+        bottom: 0;
+        height: 140px;
+        width: 150px;
+    }
+
+    .tile-icon {
+        left: 0;
+    }
+
+        .tile-icon > i {
+            line-height: 140px;
+            font-size: 117px;
+        }
+
+        .tile-icon > i,
+        .tile-number {
+            color: rgba(43, 174, 168, .4);
+            transition: all .3s ease-in-out;
+        }
+
+    .tile-number {
+        right: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+        .tile-number > p {
+            font-size: 70px;
+        }
+
+        .tile-number > small {
+            font-size: 17px;
+        }
+</style>
