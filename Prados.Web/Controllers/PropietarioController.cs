@@ -40,7 +40,8 @@ namespace Prados.Web.Controllers
             return View(_context.Propietariostbls
                 .Include(o => o.User)
                 .Include(o => o.Vehiculos)
-                .Include(o => o.Pagos));
+                .Include(o => o.Pagos)
+                .Include(o => o.Negocio));
         }
 
         // GET: Propietarios/Details/5
@@ -54,6 +55,7 @@ namespace Prados.Web.Controllers
             var propietario = await _context.Propietariostbls
                 .Include(o => o.User)
                  .Include(o => o.Vehiculos)
+                 .Include(o => o.Negocio)
                  .Include(o => o.Pagos)
                  .ThenInclude(p => p.Anio)
                  .Include(o => o.Pagos)
@@ -73,6 +75,8 @@ namespace Prados.Web.Controllers
 
             return View(propietario);
         }
+
+        #region USUARIOS
 
         // GET: Propietarios/Create
         public IActionResult Create()
@@ -218,6 +222,9 @@ namespace Prados.Web.Controllers
             return _context.Propietariostbls.Any(e => e.Id == id);
         }
 
+        #endregion
+
+        #region VEHICULO
 
         public async Task<IActionResult> AddVehiculo(int? id)
         {
@@ -276,6 +283,10 @@ namespace Prados.Web.Controllers
 
             return View(model);
         }
+
+        #endregion
+
+        #region PAGOS
 
         public async Task<IActionResult> AddPago(int? id)
         {
@@ -375,6 +386,71 @@ namespace Prados.Web.Controllers
 
             return View(model);
         }
+
+        #endregion
+
+        #region NEGOCIOS
+
+        public async Task<IActionResult> AddNegocio(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var propietario = await _context.Propietariostbls.FindAsync(id.Value);
+
+            if (propietario == null)
+            {
+                return NotFound();
+            }
+
+            var model = new NegocioViewModel
+            {
+                Neg_FechaCreacion = DateTime.Today,
+                Neg_Estado = 'A',
+                PropietarioId = propietario.Id,
+
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNegocio(NegocioViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+                    path = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot\\images\\Negocios",
+                        file);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(stream);
+                    }
+                    path = $"~/images/Negocios/{file}";
+
+                }
+
+                var negocio = await _converterHelper.ToNegocioAsync(model, path);
+                _context.Negociostbls.Add(negocio);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.PropietarioId}");
+
+            }
+
+            return View(model);
+        }
+
+        #endregion
 
     }
 }

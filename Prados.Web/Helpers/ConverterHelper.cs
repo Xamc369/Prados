@@ -37,6 +37,19 @@ namespace Prados.Web.Helpers
             };
         }
 
+        public async Task<Negociostbl> ToNegocioAsync(NegocioViewModel model, string path)
+        {
+            return new Negociostbl
+            {
+                Neg_Nombre = model.Neg_Nombre,
+                Neg_Descripcion = model.Neg_Descripcion,
+                Neg_Telefono = model.Neg_Telefono,
+                ImageUrl = path,
+                Neg_Direccion = model.Neg_Direccion,
+                Propietarios = await _dataContext1.Propietariostbls.FindAsync(model.PropietarioId),
+            };
+        }
+
         public async Task<Pagostbl> ToPagoAsync(PagoViewModel model, bool isNew)
         {
 

@@ -284,6 +284,8 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ImageUrl");
+
                     b.Property<string>("Neg_Descripcion");
 
                     b.Property<string>("Neg_Direccion");
