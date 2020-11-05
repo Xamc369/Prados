@@ -31,7 +31,12 @@ namespace Prados.Web.Data
             await CheckPropietariosAsync(customer);
             await CheckManagerAsync(manager);
             await CheckModeloAutoAsync();
-
+            await CheckMesesAsync();
+            await CheckAniosAsync();
+            await CheckTipodePagoAsync();
+            await CheckTipodePersonaAsync();
+            await CheckTipodeViviendaAsync();
+            await CheckTipodeIdentificacionAsync();
 
         }
         private async Task CheckModeloAutoAsync()
@@ -47,8 +52,89 @@ namespace Prados.Web.Data
             }
         }
 
+        private async Task CheckMesesAsync()
+        {
+            if (!_dataContext.Mesestbls.Any())
+            {
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "ENERO" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "FEBRERO" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "MARZO" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "ABRIL" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "MAYO" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "JUNIO" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "JULIO" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "AGOSTO" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "SEPTIEMBRE" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "OCTUBRE" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "NOVIEMBRE" });
+                _dataContext.Mesestbls.Add(new Mesestbl { Mes_Descripcion = "DICIEMBRE" });
+                await _dataContext.SaveChangesAsync();
 
+            }
+        }
 
+        private async Task CheckAniosAsync()
+        {
+            if (!_dataContext.Aniostbls.Any())
+            {
+                _dataContext.Aniostbls.Add(new Aniostbl { Ani_Descripcion = "2015" });
+                _dataContext.Aniostbls.Add(new Aniostbl { Ani_Descripcion = "2016" });
+                _dataContext.Aniostbls.Add(new Aniostbl { Ani_Descripcion = "2017" });
+                _dataContext.Aniostbls.Add(new Aniostbl { Ani_Descripcion = "2018" });
+                _dataContext.Aniostbls.Add(new Aniostbl { Ani_Descripcion = "2019" });
+                _dataContext.Aniostbls.Add(new Aniostbl { Ani_Descripcion = "2020" });
+                await _dataContext.SaveChangesAsync();
+
+            }
+        }
+
+        private async Task CheckTipodePagoAsync()
+        {
+            if (!_dataContext.TiposPagotbls.Any())
+            {
+                _dataContext.TiposPagotbls.Add(new TiposPagotbl { Tip_Descripcion = "ALICUOTA" });
+                _dataContext.TiposPagotbls.Add(new TiposPagotbl { Tip_Descripcion = "SEDE" });
+                _dataContext.TiposPagotbls.Add(new TiposPagotbl { Tip_Descripcion = "TAG" });
+                _dataContext.TiposPagotbls.Add(new TiposPagotbl { Tip_Descripcion = "OTROS" });
+                await _dataContext.SaveChangesAsync();
+
+            }
+        }
+
+        private async Task CheckTipodePersonaAsync()
+        {
+            if (!_dataContext.TipoPersonastbls.Any())
+            {
+                _dataContext.TipoPersonastbls.Add(new TipoPersonatbl { TipP_Descripcion = "PROPIETARIO" });
+                _dataContext.TipoPersonastbls.Add(new TipoPersonatbl { TipP_Descripcion = "INQUILINO" });
+                await _dataContext.SaveChangesAsync();
+
+            }
+        }
+
+        private async Task CheckTipodeViviendaAsync()
+        {
+            if (!_dataContext.TiposViviendatbls.Any())
+            {
+                _dataContext.TiposViviendatbls.Add(new TiposViviendatbl { TipV_Descripcion = "CASA" });
+                _dataContext.TiposViviendatbls.Add(new TiposViviendatbl { TipV_Descripcion = "DEPARTAMENTO" });
+                _dataContext.TiposViviendatbls.Add(new TiposViviendatbl { TipV_Descripcion = "LOTE BALDIO" });
+                _dataContext.TiposViviendatbls.Add(new TiposViviendatbl { TipV_Descripcion = "LOTE CON CERRAMIENTO" });
+                await _dataContext.SaveChangesAsync();
+
+            }
+        }
+
+        private async Task CheckTipodeIdentificacionAsync()
+        {
+            if (!_dataContext.TipoIdentificaciontbls.Any())
+            {
+                _dataContext.TipoIdentificaciontbls.Add(new TipoIdentificaciontbl { TipI_Descripcion = "CEDULA" });
+                _dataContext.TipoIdentificaciontbls.Add(new TipoIdentificaciontbl { TipI_Descripcion = "PASAPORTE" });
+                await _dataContext.SaveChangesAsync();
+
+            }
+        }
 
 
         private async Task CheckRoles()

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prados.Web.Data;
 
 namespace Prados.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201101021208_NuevosCampos")]
+    partial class NuevosCampos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -406,9 +408,21 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("TipIdeId");
+
+                    b.Property<int?>("TipPerId");
+
+                    b.Property<int?>("TipVivId");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TipIdeId");
+
+                    b.HasIndex("TipPerId");
+
+                    b.HasIndex("TipVivId");
 
                     b.HasIndex("UserId");
 
@@ -560,13 +574,9 @@ namespace Prados.Web.Migrations
                         .IsRequired()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
 
+                    b.Property<int?>("Pro_TipoViviendaId");
+
                     b.Property<string>("SecurityStamp");
-
-                    b.Property<int?>("TipIdeId");
-
-                    b.Property<int?>("TipPerId");
-
-                    b.Property<int?>("TipVivId");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -583,11 +593,7 @@ namespace Prados.Web.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("TipIdeId");
-
-                    b.HasIndex("TipPerId");
-
-                    b.HasIndex("TipVivId");
+                    b.HasIndex("Pro_TipoViviendaId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -816,6 +822,18 @@ namespace Prados.Web.Migrations
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Propietariostbl", b =>
                 {
+                    b.HasOne("Prados.Web.Data.Entities.TipoIdentificaciontbl", "TipIde")
+                        .WithMany("Propietarios")
+                        .HasForeignKey("TipIdeId");
+
+                    b.HasOne("Prados.Web.Data.Entities.TipoPersonatbl", "TipPer")
+                        .WithMany("Propietarios")
+                        .HasForeignKey("TipPerId");
+
+                    b.HasOne("Prados.Web.Data.Entities.TiposViviendatbl", "TipViv")
+                        .WithMany("Propietarios")
+                        .HasForeignKey("TipVivId");
+
                     b.HasOne("Prados.Web.Data.Entities.Userstbl", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -841,17 +859,9 @@ namespace Prados.Web.Migrations
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Userstbl", b =>
                 {
-                    b.HasOne("Prados.Web.Data.Entities.TipoIdentificaciontbl", "TipIde")
-                        .WithMany("Propietarios")
-                        .HasForeignKey("TipIdeId");
-
-                    b.HasOne("Prados.Web.Data.Entities.TipoPersonatbl", "TipPer")
-                        .WithMany("Propietarios")
-                        .HasForeignKey("TipPerId");
-
-                    b.HasOne("Prados.Web.Data.Entities.TiposViviendatbl", "TipViv")
-                        .WithMany("Propietarios")
-                        .HasForeignKey("TipVivId");
+                    b.HasOne("Prados.Web.Data.Entities.TiposViviendatbl", "Pro_TipoVivienda")
+                        .WithMany()
+                        .HasForeignKey("Pro_TipoViviendaId");
                 });
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Valorestbl", b =>

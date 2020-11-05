@@ -15,10 +15,6 @@ namespace Prados.Web.Data.Entities
         [Display(Name = "No. Lote")]
         public string Pro_Lote { get; set; }
 
-        //helper
-        [Display(Name = "Tipo de Vivienda")]
-        public TiposViviendatbl Pro_TipoVivienda { get; set; }
-
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "Los nombres deben tener un minimo de 3 caracteres y un maximo de 50")]
         [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
@@ -54,5 +50,12 @@ namespace Prados.Web.Data.Entities
         [Display(Name = "Identificacion")]
         public string Pro_Identificacion { get; set; }
         public string NombreCompleto => $"{Pro_Nombres} {Pro_Apellidos}";
+
+        [Display(Name = "Tipo de Persona")]
+        public TipoPersonatbl TipPer { get; set; }
+        [Display(Name = "Tipo de Vivienda")]
+        public TiposViviendatbl TipViv { get; set; }
+        [Display(Name = "Tipo de Identificacion")]
+        public TipoIdentificaciontbl TipIde { get; set; }
     }
 }

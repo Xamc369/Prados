@@ -30,7 +30,7 @@ namespace Prados.Web.Helpers
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Selecione una marca]",
+                Text = "Selecione una marca...",
                 Value = "0"
             });
 
@@ -49,7 +49,7 @@ namespace Prados.Web.Helpers
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Selecione un punto de pago...]",
+                Text = "Selecione un punto de pago...",
                 Value = "0"
             });
 
@@ -68,7 +68,7 @@ namespace Prados.Web.Helpers
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Selecione un valor pagado...]",
+                Text = "Selecione un valor pagado...",
                 Value = "0"
             });
 
@@ -87,7 +87,7 @@ namespace Prados.Web.Helpers
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Selecione un tipo de pago...]",
+                Text = "Selecione un tipo de pago...",
                 Value = "0"
             });
 
@@ -106,7 +106,7 @@ namespace Prados.Web.Helpers
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Selecione un mes...]",
+                Text = "Selecione un mes...",
                 Value = "0"
             });
 
@@ -120,12 +120,69 @@ namespace Prados.Web.Helpers
                 Text = an.Ani_Descripcion,
                 Value = $"{an.Id}"
             })
-              .OrderBy(an => an.Text)
+              .OrderBy(an => an.Value)
               .ToList();
 
             list.Insert(0, new SelectListItem
             {
-                Text = "[Selecione un año...]",
+                Text = "Selecione un año...",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboTipoPersona()
+        {
+            var list = _datacontext.TipoPersonastbls.Select(an => new SelectListItem
+            {
+                Text = an.TipP_Descripcion,
+                Value = $"{an.Id}"
+            })
+              .OrderBy(an => an.Value)
+              .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "Selecione un tipo de persona...",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboTipoVivienda()
+        {
+            var list = _datacontext.TiposViviendatbls.Select(an => new SelectListItem
+            {
+                Text = an.TipV_Descripcion,
+                Value = $"{an.Id}"
+            })
+              .OrderBy(an => an.Value)
+              .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "Selecione un tipo de vivienda...",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboTipoIdentificacion()
+        {
+            var list = _datacontext.TipoIdentificaciontbls.Select(an => new SelectListItem
+            {
+                Text = an.TipI_Descripcion,
+                Value = $"{an.Id}"
+            })
+              .OrderBy(an => an.Value)
+              .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "Selecione un tipo de identificacion...",
                 Value = "0"
             });
 

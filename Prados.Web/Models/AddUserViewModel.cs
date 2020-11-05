@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,9 +22,9 @@ namespace Prados.Web.Models
         public string PRO_LOTE { get; set; }
 
         //helper
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El tipo de vivienda es obligatorio")]
-        [Display(Name = "Tipo de Vivienda")]
-        public string PRO_TIPO { get; set; }
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "El tipo de vivienda es obligatorio")]
+        //[Display(Name = "Tipo de Vivienda")]
+        //public string PRO_TIPO { get; set; }
 
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "Los nombres deben tener un minimo de 3 caracteres y un maximo de 50")]
@@ -72,5 +73,24 @@ namespace Prados.Web.Models
         [StringLength(20, MinimumLength = 6, ErrorMessage = "The {0} field must contain between {2} and {1} characters.")]
         [Compare("Password")]
         public string PasswordConfirm { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Tipo de Vivienda")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de vivienda.")]
+        public int TVId { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Tipo de Identificacion")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de identificacion.")]
+        public int TIId { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [Display(Name = "Tipo de Persona")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de persona.")]
+        public int TPId { get; set; }
+
+        public IEnumerable<SelectListItem> TipoPersonaVM { get; set; }
+        public IEnumerable<SelectListItem> TipoViviendaVM { get; set; }
+        public IEnumerable<SelectListItem> TipoIdentificacionVM { get; set; }
     }
 }

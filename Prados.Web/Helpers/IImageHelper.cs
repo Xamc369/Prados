@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Prados.Web.Helpers
 {
-    public class IImageHelper
+    public interface IImageHelper
     {
+        Task<string> UploadImageAsync(IFormFile imageFIle);
     }
 }

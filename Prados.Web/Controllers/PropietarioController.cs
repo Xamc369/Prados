@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,23 +23,32 @@ namespace Prados.Web.Controllers
         private readonly IUserHelper _userHelper;
         private readonly ICombosHelper _combosHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IImageHelper _imageHelper;
 
         public PropietarioController(DataContext context,
              IUserHelper userHelper,
              ICombosHelper combosHelper,
-             IConverterHelper converterHelper)
+             IConverterHelper converterHelper,
+             IImageHelper imageHelper)
         {
             _context = context;
             _userHelper = userHelper;
             _combosHelper = combosHelper;
             _converterHelper = converterHelper;
+            _imageHelper = imageHelper;
         }
+
 
         // GET: Propietarios
         public IActionResult Index()
         {
             return View(_context.Propietariostbls
                 .Include(o => o.User)
+                .ThenInclude(o => o.TipIde)
+                .Include(o => o.User)
+                .ThenInclude(o => o.TipPer)
+                .Include(o => o.User)
+                .ThenInclude(o => o.TipViv)
                 .Include(o => o.Vehiculos)
                 .Include(o => o.Pagos)
                 .Include(o => o.Negocio));
@@ -81,7 +91,13 @@ namespace Prados.Web.Controllers
         // GET: Propietarios/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new AddUserViewModel
+            {
+                TipoViviendaVM = _combosHelper.GetComboTipoVivienda(),
+                TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion(),
+                TipoPersonaVM = _combosHelper.GetComboTipoPersona()
+            };
+            return View(model);
         }
 
         // POST: Propietarios/Create
@@ -98,9 +114,11 @@ namespace Prados.Web.Controllers
                     Pro_Lote = model.PRO_LOTE,
                     Pro_Nombres = model.PRO_NOMBRES,
                     Pro_Apellidos = model.PRO_APELLIDOS,
+                    TipViv = await _context.TiposViviendatbls.FindAsync(model.TVId),
+                    TipPer = await _context.TipoPersonastbls.FindAsync(model.TPId),
                     Pro_Observaciones = model.PRO_OBSERVACIONES,
                     Pro_Telefono = model.PRO_TELEFONO,
-                    Pro_TipoIdentificacion = model.PRO_TIPOIDENTIFICACION,
+                    TipIde = await _context.TipoIdentificaciontbls.FindAsync(model.TIId),
                     Pro_Identificacion = model.PRO_IDENTIFICACION,
                     Email = model.Username,
                     UserName = model.Username
@@ -115,6 +133,8 @@ namespace Prados.Web.Controllers
                     var propietario = new Propietariostbl
                     {
                         Vehiculos = new List<Vehiculostbl>(),
+                        Negocio = new List<Negociostbl>(),
+                        Pagos = new List<Pagostbl>(),
                         User = userInDB,
                     };
 
@@ -244,7 +264,7 @@ namespace Prados.Web.Controllers
             {
                 Veh_Born = DateTime.Today,
                 PropietarioId = propietario.Id,
-
+                Veh_Estado = "A"
             };
             return View(model);
         }
@@ -258,19 +278,7 @@ namespace Prados.Web.Controllers
 
                 if (model.ImageFile != null)
                 {
-
-                    var guid = Guid.NewGuid().ToString();
-                    var file = $"{guid}.jpg";
-                    path = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot\\images\\Vehiculos",
-                        file);
-
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await model.ImageFile.CopyToAsync(stream);
-                    }
-                    path = $"~/images/Vehiculos/{file}";
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
 
                 }
 
