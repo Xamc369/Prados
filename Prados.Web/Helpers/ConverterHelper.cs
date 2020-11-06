@@ -23,13 +23,14 @@ namespace Prados.Web.Helpers
             _combosHelper = combosHelper;
         }
 
-        public async Task<Vehiculostbl> ToVehiculoAsync(VehiculoViewModel model, string path)
+        public async Task<Vehiculostbl> ToVehiculoAsync(VehiculoViewModel model, string path, bool IsNew)
         {
             return new Vehiculostbl
             {
                Veh_Codigo = model.Veh_Codigo,
                Veh_Placa = model.Veh_Placa,
                Veh_Born = model.Veh_Born,
+                Id = IsNew ? 0 : model.Id,
                 ImageUrl = path,
                Veh_Estado = model.Veh_Estado,
                 Propietario = await _dataContext1.Propietariostbls.FindAsync(model.PropietarioId),
@@ -37,13 +38,14 @@ namespace Prados.Web.Helpers
             };
         }
 
-        public async Task<Negociostbl> ToNegocioAsync(NegocioViewModel model, string path)
+        public async Task<Negociostbl> ToNegocioAsync(NegocioViewModel model, string path, bool IsNew)
         {
             return new Negociostbl
             {
                 Neg_Nombre = model.Neg_Nombre,
                 Neg_Descripcion = model.Neg_Descripcion,
                 Neg_Telefono = model.Neg_Telefono,
+                Id = IsNew ? 0 : model.Id,
                 ImageUrl = path,
                 Neg_Direccion = model.Neg_Direccion,
                 Propietarios = await _dataContext1.Propietariostbls.FindAsync(model.PropietarioId),
@@ -122,5 +124,35 @@ namespace Prados.Web.Helpers
 
             return entrada;
         }
+
+        public VehiculoViewModel ToVehiculoViewModel(Vehiculostbl vehiculo)
+        {
+            return new VehiculoViewModel
+            {
+                Veh_Codigo = vehiculo.Veh_Codigo,
+                Veh_Placa = vehiculo.Veh_Placa,
+                Veh_Born = vehiculo.Veh_Born,
+                ImageUrl = vehiculo.ImageUrl,
+                Veh_Estado = "A",
+                Propietario = vehiculo.Propietario,
+                Veh_Detalles = vehiculo.Veh_Detalles,
+                Id = vehiculo.Id,
+                PropietarioId = vehiculo.Propietario.Id,
+            };
+        }
+
+        public NegocioViewModel ToNegocioViewModel(Negociostbl negocio)
+        {
+            return new NegocioViewModel
+            {
+                Neg_Nombre = negocio.Neg_Nombre,
+                Neg_Descripcion = negocio.Neg_Descripcion,
+                Neg_Telefono = negocio.Neg_Telefono,
+                ImageUrl = negocio.ImageUrl,
+                Neg_Direccion = negocio.Neg_Direccion,
+                PropietarioId = negocio.Propietarios.Id,
+            };
+        }
+
     }
 }

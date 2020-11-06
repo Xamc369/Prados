@@ -282,11 +282,51 @@ namespace Prados.Web.Controllers
 
                 }
 
-                var vehiculo = await _converterHelper.ToVehiculoAsync(model, path);
+                var vehiculo = await _converterHelper.ToVehiculoAsync(model, path, true);
                 _context.Vehiculostbls.Add(vehiculo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
 
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditVehiculo(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vehiculo = await _context.Vehiculostbls
+                .Include(v => v.Propietario)
+                .FirstOrDefaultAsync(v => v.Id == id);
+
+            if (vehiculo == null)
+            {
+                return NotFound();
+            }
+            return View(_converterHelper.ToVehiculoViewModel(vehiculo));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVehiculo(VehiculoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+
+                }
+
+                var vehiculo = await _converterHelper.ToVehiculoAsync(model, path,false);
+                _context.Vehiculostbls.Update(vehiculo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.PropietarioId}");
             }
 
             return View(model);
@@ -448,11 +488,51 @@ namespace Prados.Web.Controllers
 
                 }
 
-                var negocio = await _converterHelper.ToNegocioAsync(model, path);
+                var negocio = await _converterHelper.ToNegocioAsync(model, path, true);
                 _context.Negociostbls.Add(negocio);
                 await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
 
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditNegocio(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var negocio = await _context.Negociostbls
+                .Include(n => n.Propietarios)
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (negocio == null)
+            {
+                return NotFound();
+            }
+            return View(_converterHelper.ToNegocioViewModel(negocio));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditNegocio(NegocioViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+
+                }
+
+                var negocio = await _converterHelper.ToNegocioAsync(model, path, false);
+                _context.Negociostbls.Update(negocio);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.PropietarioId}");
             }
 
             return View(model);
