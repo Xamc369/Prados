@@ -154,6 +154,10 @@ namespace Prados.Web.Controllers
                 }
                 ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
             }
+
+            model.TipoViviendaVM = _combosHelper.GetComboTipoVivienda();
+            model.TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion();
+            model.TipoPersonaVM = _combosHelper.GetComboTipoPersona();
             return View(model);
         }
 
@@ -390,7 +394,13 @@ namespace Prados.Web.Controllers
                 //await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
             }
-           return View(model);
+
+            model.Anios1 = _combosHelper.GetComboAnios();
+            model.Meses1 = _combosHelper.GetComboMeses();
+            model.Valores = _combosHelper.GetComboValores();
+            model.TiposPago = _combosHelper.GetComboValoresDescripcion();
+            model.Puntos = _combosHelper.GetComboPuntos();
+            return View(model);
         }
 
         public async Task<IActionResult> EditPago(int? id)
@@ -432,6 +442,11 @@ namespace Prados.Web.Controllers
 
             }
 
+            model.Anios1 = _combosHelper.GetComboAnios();
+            model.Meses1 = _combosHelper.GetComboMeses();
+            model.Valores = _combosHelper.GetComboValores();
+            model.TiposPago = _combosHelper.GetComboValoresDescripcion();
+            model.Puntos = _combosHelper.GetComboPuntos();
             return View(model);
         }
 
