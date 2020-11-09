@@ -154,5 +154,34 @@ namespace Prados.Web.Helpers
             };
         }
 
+        public async Task<Productostbl> ToProductoAsync(ProductoViewModel model, bool isNew, string path)
+        {
+            return new Productostbl
+            {
+                Id = isNew ? 0 : model.Id,
+                Negocio = await _dataContext1.Negociostbls.FindAsync(model.NegocioId),
+                Pro_Nombre = model.Pro_Nombre,
+                Pro_Precio = model.Pro_Precio,
+                Pro_FechaCreacion = DateTime.Today,
+                Pro_Estado = 'A',
+                ImageUrl = path,
+            };
+        }
+
+        public ProductoViewModel ToProductoViewModel(Productostbl producto)
+        {
+            return new ProductoViewModel
+            {
+                Id = producto.Id,
+                NegocioId = producto.Negocio.Id,
+                Pro_Nombre = producto.Pro_Nombre,
+                Pro_Precio = producto.Pro_Precio,
+                Pro_FechaCreacion = DateTime.Today,
+                Pro_Estado = 'A',
+                ImageUrl = producto.ImageUrl,
+            };
+        }
+
+
     }
 }

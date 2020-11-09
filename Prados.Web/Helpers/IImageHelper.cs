@@ -9,5 +9,7 @@ namespace Prados.Web.Helpers
     public interface IImageHelper
     {
         Task<string> UploadImageAsync(IFormFile imageFIle);
+        Task<string> UploadImageAsyncNegocio(IFormFile imageFIle);
+        Task<string> UploadImageAsyncProducto(IFormFile imageFIle);
     }
 }

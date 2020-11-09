@@ -27,5 +27,8 @@ namespace Prados.Web.Data.Entities
         [Display(Name = "Estado")]
         public char Not_Estado { get; set; }
 
+        [Display(Name = "Image")]
+        public string ImageUrl { get; set; }
+
     }
 }

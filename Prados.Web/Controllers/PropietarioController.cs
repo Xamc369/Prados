@@ -487,19 +487,7 @@ namespace Prados.Web.Controllers
 
                 if (model.ImageFile != null)
                 {
-
-                    var guid = Guid.NewGuid().ToString();
-                    var file = $"{guid}.jpg";
-                    path = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot\\images\\Negocios",
-                        file);
-
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await model.ImageFile.CopyToAsync(stream);
-                    }
-                    path = $"~/images/Negocios/{file}";
+                    path = await _imageHelper.UploadImageAsyncNegocio(model.ImageFile);
 
                 }
 
@@ -540,7 +528,7 @@ namespace Prados.Web.Controllers
 
                 if (model.ImageFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    path = await _imageHelper.UploadImageAsyncNegocio(model.ImageFile);
 
                 }
 
@@ -552,6 +540,117 @@ namespace Prados.Web.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> DetailsNegocio(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var propietario = await _context.Negociostbls
+                .Include(n => n.Producto)
+                .Include(n => n.Propietarios)
+                .ThenInclude(n => n.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (propietario == null)
+            {
+                return NotFound();
+            }
+
+            return View(propietario);
+        }
+
+        public async Task<IActionResult> AddProducto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var negocio = await _context.Negociostbls.FindAsync(id.Value);
+            if (negocio == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductoViewModel
+            {
+                
+                NegocioId = negocio.Id,
+                Pro_FechaCreacion = DateTime.Now,
+                Pro_Estado = 'A'
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProducto(ProductoViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsyncProducto(model.ImageFile);
+
+                }
+
+                var producto = await _converterHelper.ToProductoAsync(model, true, path);
+                _context.Productostbls.Add(producto);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"DetailsNegocio/{model.NegocioId}");
+
+            }
+
+            return View(model);
+
+        }
+
+        public async Task<IActionResult> EditProducto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var producto = await _context.Productostbls
+                .Include(n => n.Negocio)
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (producto == null)
+            {
+                return NotFound();
+            }
+            return View(_converterHelper.ToProductoViewModel(producto));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProducto(ProductoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsyncProducto(model.ImageFile);
+
+                }
+
+                var producto = await _converterHelper.ToProductoAsync(model, false, path);
+                _context.Productostbls.Update(producto);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"DetailsNegocio/{model.NegocioId}");
+            }
+
+            return View(model);
+        }
+
 
         #endregion
 

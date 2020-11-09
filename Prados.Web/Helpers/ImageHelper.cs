@@ -26,5 +26,41 @@ namespace Prados.Web.Helpers
             return $"~/images/Vehiculos/{file}";
 
         }
+
+        public async Task<string> UploadImageAsyncNegocio(IFormFile imageFile)
+        {
+            var guid = Guid.NewGuid().ToString();
+            var file = $"{guid}.jpg";
+            var path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot\\images\\Negocios",
+                file);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return $"~/images/Negocios/{file}";
+
+        }
+
+        public async Task<string> UploadImageAsyncProducto(IFormFile imageFile)
+        {
+            var guid = Guid.NewGuid().ToString();
+            var file = $"{guid}.jpg";
+            var path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot\\images\\Productos",
+                file);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return $"~/images/Productos/{file}";
+
+        }
     }
 }
