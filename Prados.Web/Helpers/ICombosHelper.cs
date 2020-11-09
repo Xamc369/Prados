@@ -14,5 +14,8 @@ namespace Prados.Web.Helpers
         IEnumerable<SelectListItem> GetComboValoresDescripcion();
         IEnumerable<SelectListItem> GetComboMeses();
         IEnumerable<SelectListItem> GetComboAnios();
+        IEnumerable<SelectListItem> GetComboTipoPersona();
+        IEnumerable<SelectListItem> GetComboTipoVivienda();
+        IEnumerable<SelectListItem> GetComboTipoIdentificacion();
     }
 }

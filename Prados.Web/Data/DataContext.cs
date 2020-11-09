@@ -33,6 +33,8 @@ namespace Prados.Web.Data
         public DbSet<TiposPagotbl> TiposPagotbls { get; set; }
         public DbSet<Contabilidadtbl> Contabilidadtbls { get; set; }
         public DbSet<Noticiastbl> Noticiastbls { get; set; }
+        public DbSet<TipoIdentificaciontbl> TipoIdentificaciontbls { get; set; }
+        public DbSet<TipoPersonatbl> TipoPersonastbls { get; set; }
 
     }
 

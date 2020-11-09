@@ -19,16 +19,24 @@
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
 
+            @*TIPO DE PERSONA*@
+            <div class="form-group">
+                <label asp-for="TPId" class="control-label"></label>
+                <select asp-for="TPId" asp-items="Model.TipoPersonaVM" class="form-control"></select>
+                <span asp-validation-for="TPId" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="PRO_LOTE" class="control-label"></label>
                 <input asp-for="PRO_LOTE" class="form-control" />
                 <span asp-validation-for="PRO_LOTE" class="text-danger"></span>
             </div>
 
+            @*TIPO DE VIVIENDA*@
             <div class="form-group">
-                <label asp-for="PRO_TIPO" class="control-label"></label>
-                <input asp-for="PRO_TIPO" class="form-control" />
-                <span asp-validation-for="PRO_TIPO" class="text-danger"></span>
+                <label asp-for="TVId" class="control-label"></label>
+                <select asp-for="TVId" asp-items="Model.TipoViviendaVM" class="form-control"></select>
+                <span asp-validation-for="TVId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -55,10 +63,11 @@
                 <span asp-validation-for="PRO_TELEFONO" class="text-danger"></span>
             </div>
 
+            @*TIPO DE IDENTIFICACION*@
             <div class="form-group">
-                <label asp-for="PRO_TIPOIDENTIFICACION" class="control-label"></label>
-                <input asp-for="PRO_TIPOIDENTIFICACION" class="form-control" />
-                <span asp-validation-for="PRO_TIPOIDENTIFICACION" class="text-danger"></span>
+                <label asp-for="TIId" class="control-label"></label>
+                <select asp-for="TIId" asp-items="Model.TipoIdentificacionVM" class="form-control"></select>
+                <span asp-validation-for="TIId" class="text-danger"></span>
             </div>
 
             <div class="form-group">

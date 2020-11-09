@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,23 +23,32 @@ namespace Prados.Web.Controllers
         private readonly IUserHelper _userHelper;
         private readonly ICombosHelper _combosHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IImageHelper _imageHelper;
 
         public PropietarioController(DataContext context,
              IUserHelper userHelper,
              ICombosHelper combosHelper,
-             IConverterHelper converterHelper)
+             IConverterHelper converterHelper,
+             IImageHelper imageHelper)
         {
             _context = context;
             _userHelper = userHelper;
             _combosHelper = combosHelper;
             _converterHelper = converterHelper;
+            _imageHelper = imageHelper;
         }
+
 
         // GET: Propietarios
         public IActionResult Index()
         {
             return View(_context.Propietariostbls
                 .Include(o => o.User)
+                .ThenInclude(o => o.TipIde)
+                .Include(o => o.User)
+                .ThenInclude(o => o.TipPer)
+                .Include(o => o.User)
+                .ThenInclude(o => o.TipViv)
                 .Include(o => o.Vehiculos)
                 .Include(o => o.Pagos)
                 .Include(o => o.Negocio));
@@ -81,7 +91,13 @@ namespace Prados.Web.Controllers
         // GET: Propietarios/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new AddUserViewModel
+            {
+                TipoViviendaVM = _combosHelper.GetComboTipoVivienda(),
+                TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion(),
+                TipoPersonaVM = _combosHelper.GetComboTipoPersona()
+            };
+            return View(model);
         }
 
         // POST: Propietarios/Create
@@ -98,9 +114,11 @@ namespace Prados.Web.Controllers
                     Pro_Lote = model.PRO_LOTE,
                     Pro_Nombres = model.PRO_NOMBRES,
                     Pro_Apellidos = model.PRO_APELLIDOS,
+                    TipViv = await _context.TiposViviendatbls.FindAsync(model.TVId),
+                    TipPer = await _context.TipoPersonastbls.FindAsync(model.TPId),
                     Pro_Observaciones = model.PRO_OBSERVACIONES,
                     Pro_Telefono = model.PRO_TELEFONO,
-                    Pro_TipoIdentificacion = model.PRO_TIPOIDENTIFICACION,
+                    TipIde = await _context.TipoIdentificaciontbls.FindAsync(model.TIId),
                     Pro_Identificacion = model.PRO_IDENTIFICACION,
                     Email = model.Username,
                     UserName = model.Username
@@ -115,6 +133,8 @@ namespace Prados.Web.Controllers
                     var propietario = new Propietariostbl
                     {
                         Vehiculos = new List<Vehiculostbl>(),
+                        Negocio = new List<Negociostbl>(),
+                        Pagos = new List<Pagostbl>(),
                         User = userInDB,
                     };
 
@@ -134,6 +154,10 @@ namespace Prados.Web.Controllers
                 }
                 ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
             }
+
+            model.TipoViviendaVM = _combosHelper.GetComboTipoVivienda();
+            model.TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion();
+            model.TipoPersonaVM = _combosHelper.GetComboTipoPersona();
             return View(model);
         }
 
@@ -244,7 +268,7 @@ namespace Prados.Web.Controllers
             {
                 Veh_Born = DateTime.Today,
                 PropietarioId = propietario.Id,
-
+                Veh_Estado = "A"
             };
             return View(model);
         }
@@ -258,27 +282,55 @@ namespace Prados.Web.Controllers
 
                 if (model.ImageFile != null)
                 {
-
-                    var guid = Guid.NewGuid().ToString();
-                    var file = $"{guid}.jpg";
-                    path = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot\\images\\Vehiculos",
-                        file);
-
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await model.ImageFile.CopyToAsync(stream);
-                    }
-                    path = $"~/images/Vehiculos/{file}";
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
 
                 }
 
-                var vehiculo = await _converterHelper.ToVehiculoAsync(model, path);
+                var vehiculo = await _converterHelper.ToVehiculoAsync(model, path, true);
                 _context.Vehiculostbls.Add(vehiculo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
 
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditVehiculo(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vehiculo = await _context.Vehiculostbls
+                .Include(v => v.Propietario)
+                .FirstOrDefaultAsync(v => v.Id == id);
+
+            if (vehiculo == null)
+            {
+                return NotFound();
+            }
+            return View(_converterHelper.ToVehiculoViewModel(vehiculo));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVehiculo(VehiculoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+
+                }
+
+                var vehiculo = await _converterHelper.ToVehiculoAsync(model, path,false);
+                _context.Vehiculostbls.Update(vehiculo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.PropietarioId}");
             }
 
             return View(model);
@@ -342,7 +394,13 @@ namespace Prados.Web.Controllers
                 //await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
             }
-           return View(model);
+
+            model.Anios1 = _combosHelper.GetComboAnios();
+            model.Meses1 = _combosHelper.GetComboMeses();
+            model.Valores = _combosHelper.GetComboValores();
+            model.TiposPago = _combosHelper.GetComboValoresDescripcion();
+            model.Puntos = _combosHelper.GetComboPuntos();
+            return View(model);
         }
 
         public async Task<IActionResult> EditPago(int? id)
@@ -384,6 +442,11 @@ namespace Prados.Web.Controllers
 
             }
 
+            model.Anios1 = _combosHelper.GetComboAnios();
+            model.Meses1 = _combosHelper.GetComboMeses();
+            model.Valores = _combosHelper.GetComboValores();
+            model.TiposPago = _combosHelper.GetComboValoresDescripcion();
+            model.Puntos = _combosHelper.GetComboPuntos();
             return View(model);
         }
 
@@ -424,23 +487,11 @@ namespace Prados.Web.Controllers
 
                 if (model.ImageFile != null)
                 {
-
-                    var guid = Guid.NewGuid().ToString();
-                    var file = $"{guid}.jpg";
-                    path = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot\\images\\Negocios",
-                        file);
-
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await model.ImageFile.CopyToAsync(stream);
-                    }
-                    path = $"~/images/Negocios/{file}";
+                    path = await _imageHelper.UploadImageAsyncNegocio(model.ImageFile);
 
                 }
 
-                var negocio = await _converterHelper.ToNegocioAsync(model, path);
+                var negocio = await _converterHelper.ToNegocioAsync(model, path, true);
                 _context.Negociostbls.Add(negocio);
                 await _context.SaveChangesAsync();
                 return RedirectToAction($"Details/{model.PropietarioId}");
@@ -449,6 +500,157 @@ namespace Prados.Web.Controllers
 
             return View(model);
         }
+
+        public async Task<IActionResult> EditNegocio(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var negocio = await _context.Negociostbls
+                .Include(n => n.Propietarios)
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (negocio == null)
+            {
+                return NotFound();
+            }
+            return View(_converterHelper.ToNegocioViewModel(negocio));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditNegocio(NegocioViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsyncNegocio(model.ImageFile);
+
+                }
+
+                var negocio = await _converterHelper.ToNegocioAsync(model, path, false);
+                _context.Negociostbls.Update(negocio);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"Details/{model.PropietarioId}");
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> DetailsNegocio(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var propietario = await _context.Negociostbls
+                .Include(n => n.Producto)
+                .Include(n => n.Propietarios)
+                .ThenInclude(n => n.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (propietario == null)
+            {
+                return NotFound();
+            }
+
+            return View(propietario);
+        }
+
+        public async Task<IActionResult> AddProducto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var negocio = await _context.Negociostbls.FindAsync(id.Value);
+            if (negocio == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductoViewModel
+            {
+                
+                NegocioId = negocio.Id,
+                Pro_FechaCreacion = DateTime.Now,
+                Pro_Estado = 'A'
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProducto(ProductoViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsyncProducto(model.ImageFile);
+
+                }
+
+                var producto = await _converterHelper.ToProductoAsync(model, true, path);
+                _context.Productostbls.Add(producto);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"DetailsNegocio/{model.NegocioId}");
+
+            }
+
+            return View(model);
+
+        }
+
+        public async Task<IActionResult> EditProducto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var producto = await _context.Productostbls
+                .Include(n => n.Negocio)
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (producto == null)
+            {
+                return NotFound();
+            }
+            return View(_converterHelper.ToProductoViewModel(producto));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProducto(ProductoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsyncProducto(model.ImageFile);
+
+                }
+
+                var producto = await _converterHelper.ToProductoAsync(model, false, path);
+                _context.Productostbls.Update(producto);
+                await _context.SaveChangesAsync();
+                return RedirectToAction($"DetailsNegocio/{model.NegocioId}");
+            }
+
+            return View(model);
+        }
+
 
         #endregion
 
