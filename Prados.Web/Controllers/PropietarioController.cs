@@ -221,13 +221,37 @@ namespace Prados.Web.Controllers
             }
 
             var propietario = await _context.Propietariostbls
+                .Include(p => p.User)
+                .Include(p => p.Vehiculos)
+                .Include(p => p.Negocio)
+                .Include(p => p.Pagos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (propietario == null)
             {
                 return NotFound();
             }
+            if (propietario.Vehiculos.Count > 0)
+            {
+                ModelState.AddModelError(string.Empty, "La persona no se puede borrar por que tiene vehiculos registrados");
+                return RedirectToAction(nameof(Index));
+            }
 
-            return View(propietario);
+            if (propietario.Negocio.Count > 0)
+            {
+                ModelState.AddModelError(string.Empty, "La persona no se puede borrar por que tiene negocios registrados");
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (propietario.Pagos.Count > 0)
+            {
+                ModelState.AddModelError(string.Empty, "La persona no se puede borrar por que tiene pagos registrados");
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _userHelper.DeleteUserAsync(propietario.User.Email);
+            _context.Propietariostbls.Remove(propietario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Propietarios/Delete/5
@@ -334,6 +358,26 @@ namespace Prados.Web.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> DeleteVehiculo(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vehiculo = await _context.Vehiculostbls
+                .Include(h => h.Propietario)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+            if (vehiculo == null)
+            {
+                return NotFound();
+            }
+
+            _context.Vehiculostbls.Remove(vehiculo);
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"{nameof(Details)}/{vehiculo.Propietario.Id}");
         }
 
         #endregion
@@ -448,6 +492,46 @@ namespace Prados.Web.Controllers
             model.TiposPago = _combosHelper.GetComboValoresDescripcion();
             model.Puntos = _combosHelper.GetComboPuntos();
             return View(model);
+        }
+
+        public async Task<IActionResult> DeletePagos(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pago = await _context.Pagostbls
+                .Include(h => h.Propietario)
+                .Include(p => p.Anio)
+                .Include(p => p.Mes)
+                .Include(p => p.Val)
+                .Include(p => p.Tipos)
+                .Include(p => p.PuntodePago)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+
+            var ingreso = await _context.Contabilidadtbls
+                .Include(p => p.Anio)
+                .Include(p => p.Mess)
+                .Include(p => p.Valo)
+                .Include(p => p.Tip)
+                .Include(p => p.Punt)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+
+            if (pago == null)
+            {
+                return NotFound();
+            }
+
+            if (ingreso == null)
+            {
+                return NotFound();
+            }
+
+            _context.Contabilidadtbls.Remove(ingreso);
+            _context.Pagostbls.Remove(pago);
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"{nameof(Details)}/{pago.Propietario.Id}");
         }
 
         #endregion
@@ -651,6 +735,52 @@ namespace Prados.Web.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> DeleteProducto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var producto = await _context.Productostbls
+                .Include(h => h.Negocio)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            _context.Productostbls.Remove(producto);
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"{nameof(DetailsNegocio)}/{producto.Negocio.Id}");
+        }
+
+        public async Task<IActionResult> DeleteNegocio(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var negocio = await _context.Negociostbls
+                .Include(h => h.Propietarios)
+                .Include(n => n.Producto)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+            if (negocio == null)
+            {
+                return NotFound();
+            }
+
+            if(negocio.Producto.Count > 0)
+            {
+                ModelState.AddModelError(string.Empty, "El negocio no se puede borrar por que tiene productos registrados");
+                return RedirectToAction($"{nameof(Details)}/{negocio.Propietarios.Id}");
+            }
+
+            _context.Negociostbls.Remove(negocio);
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"{nameof(Details)}/{negocio.Propietarios.Id}");
+        }
 
         #endregion
 
