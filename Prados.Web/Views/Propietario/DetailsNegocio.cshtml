@@ -75,7 +75,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Producto)
+            @foreach (var item in Model.Producto.Where(p => p.Pro_Estado == 'A'))
             {
                 <tr>
                     <td>

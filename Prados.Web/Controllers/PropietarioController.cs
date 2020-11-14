@@ -648,6 +648,7 @@ namespace Prados.Web.Controllers
 
             return View(model);
         }
+        public ICollection<Productostbl> Prods { get; set; }
 
         public async Task<IActionResult> DetailsNegocio(int? id)
         {
@@ -656,8 +657,9 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
+
             var propietario = await _context.Negociostbls
-                .Include(n => n.Producto)
+                .Include(p => p.Producto)
                 .Include(n => n.Propietarios)
                 .ThenInclude(n => n.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -666,7 +668,7 @@ namespace Prados.Web.Controllers
             {
                 return NotFound();
             }
-
+           
             return View(propietario);
         }
 
@@ -774,7 +776,8 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
-            _context.Productostbls.Remove(producto);
+            producto.Pro_Estado = 'I' ;
+            //_context.Productostbls.Remove(producto);
             await _context.SaveChangesAsync();
             _flashMessage.Confirmation("El producto fue borrado");
             return RedirectToAction($"{nameof(DetailsNegocio)}/{producto.Negocio.Id}");
