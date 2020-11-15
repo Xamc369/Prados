@@ -38,13 +38,16 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="MarcaAutoes" asp-action="Index">Marca</a></li>
                         <li><a asp-area="" asp-controller="Propietario" asp-action="Index">Propietarios</a></li>
-                        <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a></li>
-                    
+                        <li><a asp-area="" asp-controller="Contabilidad" asp-action="Index">Contabilidad</a></li>
+                        <li><a asp-area="" asp-controller="Noticia" asp-action="Index">Noticias</a></li>
+                        <li><a asp-area="" asp-controller="Negocio" asp-action="Index">Negocios</a></li>
+
+
+
                         <div class="btn-group" style="margin-top:8px">
                             <button type="button" class="btn btn-default dropdown-toggle"
                                     data-toggle="dropdown">
@@ -52,28 +55,69 @@
                             </button>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a asp-area="" asp-controller="Anio" asp-action="Index">Anios</a></li>
-                                <li><a asp-area="" asp-controller="Contabilidad" asp-action="Index">Contabilidad</a></li>
+                                <li><a asp-area="" asp-controller="Anio" asp-action="Index">Años</a></li>
+
                                 <li><a asp-area="" asp-controller="Valor" asp-action="Index">Valores</a></li>
                                 <li><a asp-area="" asp-controller="PuntoPago" asp-action="Index">Punto Pago</a></li>
                                 <li><a asp-area="" asp-controller="TiposPago" asp-action="Index">Tipo de Pago</a></li>
-                                <li><a asp-area="" asp-controller="Noticia" asp-action="Index">Noticias</a></li>
-                                <li><a asp-area="" asp-controller="Negocio" asp-action="Index">Negocios</a></li>
+                                <li><a asp-area="" asp-controller="MarcaAutoes" asp-action="Index">Marca</a></li>
+                                <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a></li>
+
                             </ul>
                         </div>
+
                     }
+
                 </ul>
+
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacto</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a></li>
-                        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+
+                        <li><a>@User.Identity.Name</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a></li>
                     }
                 </ul>
+                @*Nuevo perfil*@
+                @*<ul class="nav navbar-nav">
+
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Propietario" asp-action="Index">Propietarios</a></li>
+                        <li><a asp-area="" asp-controller="Contabilidad" asp-action="Index">Contabilidad</a></li>
+                        <li><a asp-area="" asp-controller="Noticia" asp-action="Index">Noticias</a></li>
+                        <li><a asp-area="" asp-controller="Negocio" asp-action="Index">Negocios</a></li>
+
+
+
+                        <div class="btn-group" style="margin-top:8px">
+                            <button type="button" class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown">
+                                Configuración <span class="caret"></span>
+                            </button>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a asp-area="" asp-controller="Anio" asp-action="Index">Años</a></li>
+
+                                <li><a asp-area="" asp-controller="Valor" asp-action="Index">Valores</a></li>
+                                <li><a asp-area="" asp-controller="PuntoPago" asp-action="Index">Punto Pago</a></li>
+                                <li><a asp-area="" asp-controller="TiposPago" asp-action="Index">Tipo de Pago</a></li>
+                                <li><a asp-area="" asp-controller="MarcaAutoes" asp-action="Index">Marca</a></li>
+                                <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a></li>
+
+                            </ul>
+                        </div>
+
+                    }
+
+                </ul>*@
+                @*Fin nuevo perfil*@
+
             </div>
         </div>
     </nav>

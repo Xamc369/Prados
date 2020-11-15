@@ -66,16 +66,16 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Not_Estado)
                         </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning center-block" ><i class="glyphicon glyphicon-edit"></i></a>
-                           
+                        <td style="width: 70px; height: 2px;">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning center-block"><i class="glyphicon glyphicon-edit"></i></a>
+
                         </td>
-                        <td>
-                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success center-block"><i class="glyphicon glyphicon-list-alt"></i></a>
-                          
+                        <td style="width: 70px; height: 2px;">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success center-block"><i class="glyphicon glyphicon-list-alt"></i></a>
+
                         </td>
-                        <td>
-                           <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger center-block"><i class="glyphicon glyphicon-trash"></i></a>
+                        <td style="width: 70px; height: 2px;">
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger center-block"><i class="glyphicon glyphicon-trash"></i></a>
 
                         </td>
                     </tr>
