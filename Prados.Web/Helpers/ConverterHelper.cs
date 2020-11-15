@@ -169,6 +169,18 @@ namespace Prados.Web.Helpers
             };
         }
 
+        public NoticiaViewModel ToNoticiaViewModel(Noticiastbl noticia)
+        {
+            return new NoticiaViewModel
+            {
+                Not_Titulo = noticia.Not_Titulo,
+                Not_Autor = noticia.Not_Autor,
+                Not_Descripcion = noticia.Not_Descripcion,
+                ImageUrl = noticia.ImageUrl,
+                Not_FechaCreacion = noticia.Not_FechaCreacion,
+            };
+        }
+
         public async Task<Productostbl> ToProductoAsync(ProductoViewModel model, bool isNew, string path)
         {
             return new Productostbl

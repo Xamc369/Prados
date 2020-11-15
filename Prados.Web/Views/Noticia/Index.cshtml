@@ -6,9 +6,12 @@
 
 <h2 style="text-align:center">Noticiero Prados del Condado</h2>
 
+<br />
+<flash dismissable="true" />
+
 <p>
     <a asp-action="Create" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
-   
+
 </p>
 
 
@@ -48,37 +51,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Where(n => n.Not_Estado == 'A'))
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Not_Titulo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Not_Autor)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Not_Descripcion)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Not_Fecha)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Not_Estado)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning center-block" ><i class="glyphicon glyphicon-edit"></i></a>
-                           
-                        </td>
-                        <td>
-                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success center-block"><i class="glyphicon glyphicon-list-alt"></i></a>
-                          
-                        </td>
-                        <td>
-                           <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger center-block"><i class="glyphicon glyphicon-trash"></i></a>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Not_Titulo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Not_Autor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Not_Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Not_Fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Not_Estado)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning center-block"><i class="glyphicon glyphicon-edit"></i></a>
 
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success center-block"><i class="glyphicon glyphicon-list-alt"></i></a>
+
+                            </td>
+                            <td>
+                                <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialogno"><i class="glyphicon glyphicon-trash"></i></button>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -86,17 +88,7 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
+<partial name="_DeleteDialog" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -113,8 +105,8 @@
                 item_to_delete = e.currentTarget.dataset.id;
             });
 
-            $("#btnYesDelete").click(function () {
-                window.location.href = '/Propietarios/Delete/' + item_to_delete;
+            $("#btnYesDeleteno").click(function () {
+                window.location.href = '/Noticia/Delete/' + item_to_delete;
             });
         });
     </script>

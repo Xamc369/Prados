@@ -20,6 +20,7 @@ namespace Prados.Web.Helpers
         PagoViewModel ToPagoViewModel(Pagostbl pago);
         VehiculoViewModel ToVehiculoViewModel(Vehiculostbl vehiculo);
         NegocioViewModel ToNegocioViewModel(Negociostbl negocio);
+        NoticiaViewModel ToNoticiaViewModel(Noticiastbl noticia);
         ProductoViewModel ToProductoViewModel(Productostbl producto);
     }
 }

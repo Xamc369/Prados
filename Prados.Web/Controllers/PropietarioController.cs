@@ -653,7 +653,6 @@ namespace Prados.Web.Controllers
 
             return View(model);
         }
-        public ICollection<Productostbl> Prods { get; set; }
 
         public async Task<IActionResult> DetailsNegocio(int? id)
         {
