@@ -25,7 +25,7 @@ namespace Prados.Web.Data.Entities
         public string ImageUrl { get; set; }
 
         [Display(Name = "ESTADO")]
-        public string Veh_Estado { get; set; }
+        public Char Veh_Estado { get; set; }
 
         [Display(Name = "Fecha")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]

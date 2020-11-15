@@ -11,5 +11,6 @@ namespace Prados.Web.Helpers
         Task<string> UploadImageAsync(IFormFile imageFIle);
         Task<string> UploadImageAsyncNegocio(IFormFile imageFIle);
         Task<string> UploadImageAsyncProducto(IFormFile imageFIle);
+        Task<string> UploadImageAsyncNoticia(IFormFile imageFIle);
     }
 }

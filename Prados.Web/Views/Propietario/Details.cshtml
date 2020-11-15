@@ -76,7 +76,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Vehiculos)
+                            @foreach (var item in Model.Vehiculos.Where(v => v.Veh_Estado == 'A'))
                             {
                                 <tr>
                                     <td>
@@ -135,7 +135,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Negocio)
+                            @foreach (var item in Model.Negocio.Where(n => n.Neg_Estado == 'A'))
                             {
                                 <tr>
                                     <td>
@@ -202,7 +202,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Pagos)
+                            @foreach (var item in Model.Pagos.Where(pa => pa.PAG_ESTADO == 'A'))
                             {
                                 <tr>
                                     <td>

@@ -7,27 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Prados.Web.Data;
 using Prados.Web.Data.Entities;
+using Prados.Web.Helpers;
+using Prados.Web.Models;
 
 namespace Prados.Web.Controllers
 {
     public class NoticiaController : Controller
     {
-       
-       
-
-
+        private readonly IConverterHelper _converterHelper;
+        private readonly IImageHelper _imageHelper;
         private readonly DataContext _context;
 
-        public NoticiaController(DataContext context)
+        public NoticiaController(DataContext context, IImageHelper imageHelper, IConverterHelper converterHelper)
         {
             _context = context;
+            _imageHelper = imageHelper;
+            _converterHelper = converterHelper;
         }
 
         // GET: Noticia
         public async Task<IActionResult> Index()
-        {
-            
-            
+        {        
             return View(await _context.Noticiastbls.ToListAsync());
         }
 
@@ -50,25 +50,37 @@ namespace Prados.Web.Controllers
         }
 
         // GET: Noticia/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            return View();
+            var model = new NoticiaViewModel
+            {
+                Not_FechaCreacion= DateTime.Today,
+                Not_Estado = 'A',
+            };
+            return View(model);
         }
 
-        // POST: Noticia/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Not_Titulo,Not_Autor,Not_Descripcion,Not_Fecha,Not_Estado")] Noticiastbl noticiastbl)
+        public async Task<IActionResult> Create(NoticiaViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(noticiastbl);
+                var path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsyncNegocio(model.ImageFile);
+
+                }
+
+                var noticia = await _converterHelper.ToNoticiaAsync(model, true, path);
+                _context.Noticiastbls.Add(noticia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
-            return View(noticiastbl);
+
+            return View(model);
         }
 
         // GET: Noticia/Edit/5

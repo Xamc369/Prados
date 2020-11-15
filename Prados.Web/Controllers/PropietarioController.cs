@@ -313,9 +313,11 @@ namespace Prados.Web.Controllers
             var model = new VehiculoViewModel
             {
                 Veh_Born = DateTime.Today,
+                Veh_Estado = 'A',
                 PropietarioId = propietario.Id,
-                Veh_Estado = "A"
+
             };
+
             return View(model);
         }
 
@@ -397,7 +399,8 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
-            _context.Vehiculostbls.Remove(vehiculo);
+            vehiculo.Veh_Estado = 'I';
+            //_context.Vehiculostbls.Remove(vehiculo);
             await _context.SaveChangesAsync();
             _flashMessage.Confirmation("El vehiculo fue borrado");
             return RedirectToAction($"{nameof(Details)}/{vehiculo.Propietario.Id}");
@@ -551,8 +554,10 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
-            _context.Contabilidadtbls.Remove(ingreso);
-            _context.Pagostbls.Remove(pago);
+            pago.PAG_ESTADO = 'I';
+            ingreso.Con_EstadoIng = 'I';
+            //_context.Contabilidadtbls.Remove(ingreso);
+            // _context.Pagostbls.Remove(pago);
             _flashMessage.Confirmation("El pago fue borrado");
             await _context.SaveChangesAsync();
             return RedirectToAction($"{nameof(Details)}/{pago.Propietario.Id}");
@@ -806,7 +811,8 @@ namespace Prados.Web.Controllers
                 return RedirectToAction($"{nameof(Details)}/{negocio.Propietarios.Id}");
             }
 
-            _context.Negociostbls.Remove(negocio);
+            negocio.Neg_Estado = 'I';
+            // _context.Negociostbls.Remove(negocio);
             await _context.SaveChangesAsync();
             _flashMessage.Confirmation("El negocio fue borrado");
             return RedirectToAction($"{nameof(Details)}/{negocio.Propietarios.Id}");

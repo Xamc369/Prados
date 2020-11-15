@@ -62,5 +62,23 @@ namespace Prados.Web.Helpers
             return $"~/images/Productos/{file}";
 
         }
+
+        public async Task<string> UploadImageAsyncNoticia(IFormFile imageFile)
+        {
+            var guid = Guid.NewGuid().ToString();
+            var file = $"{guid}.jpg";
+            var path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot\\images\\Noticias",
+                file);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return $"~/images/Noticias/{file}";
+
+        }
     }
 }
