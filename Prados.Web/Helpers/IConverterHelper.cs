@@ -15,10 +15,12 @@ namespace Prados.Web.Helpers
         Task<Contabilidadtbl> ToIngresosAsync(ContabilidadViewModel model1, bool isNew);
         Task<Contabilidadtbl> ToContabilidadAsync(ContabilidadViewModel model1, bool isNew);
         Task<Productostbl> ToProductoAsync(ProductoViewModel model, bool IsNew, string path);
+        Task<Noticiastbl> ToNoticiaAsync(NoticiaViewModel model, bool IsNew, string path);
 
         PagoViewModel ToPagoViewModel(Pagostbl pago);
         VehiculoViewModel ToVehiculoViewModel(Vehiculostbl vehiculo);
         NegocioViewModel ToNegocioViewModel(Negociostbl negocio);
+        NoticiaViewModel ToNoticiaViewModel(Noticiastbl noticia);
         ProductoViewModel ToProductoViewModel(Productostbl producto);
     }
 }

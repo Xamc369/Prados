@@ -12,6 +12,7 @@ using Prados.Web.Data;
 using Prados.Web.Data.Entities;
 using Prados.Web.Helpers;
 using Prados.Web.Models;
+using Vereyon.Web;
 
 namespace Prados.Web.Controllers
 {
@@ -24,18 +25,21 @@ namespace Prados.Web.Controllers
         private readonly ICombosHelper _combosHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly IImageHelper _imageHelper;
+        private readonly IFlashMessage _flashMessage;
 
         public PropietarioController(DataContext context,
              IUserHelper userHelper,
              ICombosHelper combosHelper,
              IConverterHelper converterHelper,
-             IImageHelper imageHelper)
+             IImageHelper imageHelper,
+             IFlashMessage flashMessage)
         {
             _context = context;
             _userHelper = userHelper;
             _combosHelper = combosHelper;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
+            _flashMessage = flashMessage;
         }
 
 
@@ -169,12 +173,30 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
-            var propietario = await _context.Propietariostbls.FindAsync(id);
+            var propietario = await _context.Propietariostbls
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id.Value);
+
             if (propietario == null)
             {
                 return NotFound();
             }
-            return View(propietario);
+
+
+            var model = new EditUserViewModel
+            {
+                PRO_LOTE = propietario.User.Pro_Lote,
+                PRO_NOMBRES = propietario.User.Pro_Nombres,
+                PRO_APELLIDOS = propietario.User.Pro_Apellidos,
+                PRO_OBSERVACIONES = propietario.User.Pro_Observaciones,
+                PRO_TELEFONO = propietario.User.Pro_Telefono,
+                PRO_IDENTIFICACION = propietario.User.Pro_Identificacion,
+                TipoViviendaVM = _combosHelper.GetComboTipoVivienda(),
+                TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion(),
+                TipoPersonaVM = _combosHelper.GetComboTipoPersona()
+            }; 
+
+                return View(model);
         }
 
         // POST: Propietarios/Edit/5
@@ -182,34 +204,30 @@ namespace Prados.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Propietariostbl propietario)
+        public async Task<IActionResult> Edit(EditUserViewModel model)
         {
-            if (id != propietario.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(propietario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PropietarioExists(propietario.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var owner = await _context.Propietariostbls
+                    .Include(o => o.User)
+                    .FirstOrDefaultAsync(o => o.Id == model.Id);
+
+                owner.User.Pro_Lote = model.PRO_LOTE;
+                owner.User.Pro_Nombres = model.PRO_NOMBRES;
+                owner.User.Pro_Apellidos = model.PRO_APELLIDOS;
+                owner.User.Pro_Observaciones = model.PRO_OBSERVACIONES;
+                owner.User.Pro_Telefono = model.PRO_TELEFONO;
+                owner.User.Pro_Identificacion = model.PRO_IDENTIFICACION;
+                model.TipoViviendaVM = _combosHelper.GetComboTipoVivienda();
+                model.TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion();
+                model.TipoPersonaVM = _combosHelper.GetComboTipoPersona();
+
+                await _userHelper.UpdateUserAsync(owner.User);
                 return RedirectToAction(nameof(Index));
             }
-            return View(propietario);
+
+            return View(model);
+
         }
 
         // GET: Propietarios/Delete/5
@@ -221,13 +239,41 @@ namespace Prados.Web.Controllers
             }
 
             var propietario = await _context.Propietariostbls
+                .Include(p => p.User)
+                .Include(p => p.Vehiculos)
+                .Include(p => p.Negocio)
+                .Include(p => p.Pagos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (propietario == null)
             {
                 return NotFound();
             }
+            if (propietario.Vehiculos.Count > 0)
+            {
+                _flashMessage.Danger("La persona no se puede borrar por que tiene vehiculos registrados");
+                //ModelState.AddModelError(string.Empty, "");
+                return RedirectToAction(nameof(Index));
+            }
 
-            return View(propietario);
+            if (propietario.Negocio.Count > 0)
+            {
+                _flashMessage.Danger("La persona no se puede borrar por que tiene negocios registrados");
+               // ModelState.AddModelError(string.Empty, "La persona no se puede borrar por que tiene negocios registrados");
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (propietario.Pagos.Count > 0)
+            {
+                _flashMessage.Danger("La persona no se puede borrar por que tiene pagos registrados");
+               // ModelState.AddModelError(string.Empty, "La persona no se puede borrar por que tiene pagos registrados");
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _userHelper.DeleteUserAsync(propietario.User.Email);
+            _context.Propietariostbls.Remove(propietario);
+            await _context.SaveChangesAsync();
+            _flashMessage.Confirmation("La persona fue borrada");
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Propietarios/Delete/5
@@ -267,9 +313,11 @@ namespace Prados.Web.Controllers
             var model = new VehiculoViewModel
             {
                 Veh_Born = DateTime.Today,
+                Veh_Estado = 'A',
                 PropietarioId = propietario.Id,
-                Veh_Estado = "A"
+
             };
+
             return View(model);
         }
 
@@ -334,6 +382,28 @@ namespace Prados.Web.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> DeleteVehiculo(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vehiculo = await _context.Vehiculostbls
+                .Include(h => h.Propietario)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+            if (vehiculo == null)
+            {
+                return NotFound();
+            }
+
+            vehiculo.Veh_Estado = 'I';
+            //_context.Vehiculostbls.Remove(vehiculo);
+            await _context.SaveChangesAsync();
+            _flashMessage.Confirmation("El vehiculo fue borrado");
+            return RedirectToAction($"{nameof(Details)}/{vehiculo.Propietario.Id}");
         }
 
         #endregion
@@ -450,6 +520,49 @@ namespace Prados.Web.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> DeletePagos(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pago = await _context.Pagostbls
+                .Include(h => h.Propietario)
+                .Include(p => p.Anio)
+                .Include(p => p.Mes)
+                .Include(p => p.Val)
+                .Include(p => p.Tipos)
+                .Include(p => p.PuntodePago)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+
+            var ingreso = await _context.Contabilidadtbls
+                .Include(p => p.Anio)
+                .Include(p => p.Mess)
+                .Include(p => p.Valo)
+                .Include(p => p.Tip)
+                .Include(p => p.Punt)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+
+            if (pago == null)
+            {
+                return NotFound();
+            }
+
+            if (ingreso == null)
+            {
+                return NotFound();
+            }
+
+            pago.PAG_ESTADO = 'I';
+            ingreso.Con_EstadoIng = 'I';
+            //_context.Contabilidadtbls.Remove(ingreso);
+            // _context.Pagostbls.Remove(pago);
+            _flashMessage.Confirmation("El pago fue borrado");
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"{nameof(Details)}/{pago.Propietario.Id}");
+        }
+
         #endregion
 
         #region NEGOCIOS
@@ -548,8 +661,9 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
+
             var propietario = await _context.Negociostbls
-                .Include(n => n.Producto)
+                .Include(p => p.Producto)
                 .Include(n => n.Propietarios)
                 .ThenInclude(n => n.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -558,7 +672,7 @@ namespace Prados.Web.Controllers
             {
                 return NotFound();
             }
-
+           
             return View(propietario);
         }
 
@@ -651,6 +765,57 @@ namespace Prados.Web.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> DeleteProducto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var producto = await _context.Productostbls
+                .Include(h => h.Negocio)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            producto.Pro_Estado = 'I' ;
+            //_context.Productostbls.Remove(producto);
+            await _context.SaveChangesAsync();
+            _flashMessage.Confirmation("El producto fue borrado");
+            return RedirectToAction($"{nameof(DetailsNegocio)}/{producto.Negocio.Id}");
+        }
+
+        public async Task<IActionResult> DeleteNegocio(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var negocio = await _context.Negociostbls
+                .Include(h => h.Propietarios)
+                .Include(n => n.Producto)
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+            if (negocio == null)
+            {
+                return NotFound();
+            }
+
+            if(negocio.Producto.Count > 0)
+            {
+                _flashMessage.Danger("El negocio no se puede borrar por que tiene productos registrados");
+                //ModelState.AddModelError(string.Empty, "El negocio no se puede borrar por que tiene productos registrados");
+                return RedirectToAction($"{nameof(Details)}/{negocio.Propietarios.Id}");
+            }
+
+            negocio.Neg_Estado = 'I';
+            // _context.Negociostbls.Remove(negocio);
+            await _context.SaveChangesAsync();
+            _flashMessage.Confirmation("El negocio fue borrado");
+            return RedirectToAction($"{nameof(Details)}/{negocio.Propietarios.Id}");
+        }
 
         #endregion
 

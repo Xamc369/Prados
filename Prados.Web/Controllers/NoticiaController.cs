@@ -7,27 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Prados.Web.Data;
 using Prados.Web.Data.Entities;
+using Prados.Web.Helpers;
+using Prados.Web.Models;
+using Vereyon.Web;
 
 namespace Prados.Web.Controllers
 {
     public class NoticiaController : Controller
     {
-       
-       
-
-
+        private readonly IConverterHelper _converterHelper;
+        private readonly IImageHelper _imageHelper;
+        private readonly IFlashMessage _flashMessage;
         private readonly DataContext _context;
 
-        public NoticiaController(DataContext context)
+        public NoticiaController(DataContext context, IImageHelper imageHelper, IConverterHelper converterHelper, IFlashMessage flashMessage)
         {
             _context = context;
+            _imageHelper = imageHelper;
+            _converterHelper = converterHelper;
+            _flashMessage = flashMessage;
         }
 
         // GET: Noticia
         public async Task<IActionResult> Index()
-        {
-            
-            
+        {        
             return View(await _context.Noticiastbls.ToListAsync());
         }
 
@@ -50,28 +53,39 @@ namespace Prados.Web.Controllers
         }
 
         // GET: Noticia/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            return View();
+            var model = new NoticiaViewModel
+            {
+                Not_FechaCreacion= DateTime.Today,
+                Not_Estado = 'A',
+            };
+            return View(model);
         }
 
-        // POST: Noticia/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Not_Titulo,Not_Autor,Not_Descripcion,Not_Fecha,Not_Estado")] Noticiastbl noticiastbl)
+        public async Task<IActionResult> Create(NoticiaViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(noticiastbl);
+                var path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsyncNegocio(model.ImageFile);
+
+                }
+
+                var noticia = await _converterHelper.ToNoticiaAsync(model, true, path);
+                _context.Noticiastbls.Add(noticia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
-            return View(noticiastbl);
+
+            return View(model);
         }
 
-        // GET: Noticia/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,50 +93,39 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
-            var noticiastbl = await _context.Noticiastbls.FindAsync(id);
-            if (noticiastbl == null)
+            var noticia = await _context.Noticiastbls
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (noticia == null)
             {
                 return NotFound();
             }
-            return View(noticiastbl);
+            return View(_converterHelper.ToNoticiaViewModel(noticia));
         }
 
-        // POST: Noticia/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Not_Titulo,Not_Autor,Not_Descripcion,Not_Fecha,Not_Estado")] Noticiastbl noticiastbl)
+        public async Task<IActionResult> Edit(NoticiaViewModel model)
         {
-            if (id != noticiastbl.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                var path = model.ImageUrl;
+
+                if (model.ImageFile != null)
                 {
-                    _context.Update(noticiastbl);
-                    await _context.SaveChangesAsync();
+                    path = await _imageHelper.UploadImageAsyncNoticia(model.ImageFile);
+
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!NoticiastblExists(noticiastbl.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                var noticia = await _converterHelper.ToNoticiaAsync(model, false, path);
+                _context.Noticiastbls.Update(noticia);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(noticiastbl);
+
+            return View(model);
         }
 
-        // GET: Noticia/Delete/5
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,24 +133,18 @@ namespace Prados.Web.Controllers
                 return NotFound();
             }
 
-            var noticiastbl = await _context.Noticiastbls
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (noticiastbl == null)
+            var noticia = await _context.Noticiastbls
+                .FirstOrDefaultAsync(h => h.Id == id.Value);
+
+            if (noticia == null)
             {
                 return NotFound();
             }
 
-            return View(noticiastbl);
-        }
-
-        // POST: Noticia/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var noticiastbl = await _context.Noticiastbls.FindAsync(id);
-            _context.Noticiastbls.Remove(noticiastbl);
+            noticia.Not_Estado = 'I';
+            // _context.Negociostbls.Remove(negocio);
             await _context.SaveChangesAsync();
+            _flashMessage.Confirmation("La noticia fue borrada");
             return RedirectToAction(nameof(Index));
         }
 

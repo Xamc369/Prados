@@ -19,10 +19,12 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
+    <PackageReference Include="Vereyon.Web.FlashMessage" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\images\Negocios\" />
+    <Folder Include="wwwroot\images\Noticias\" />
     <Folder Include="wwwroot\images\Productos\" />
     <Folder Include="wwwroot\images\Vehiculos\" />
   </ItemGroup>

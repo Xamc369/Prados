@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/all.css">
 <br />
+<flash dismissable="true" />
 
 <h2>Details</h2>
 
@@ -75,7 +76,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Vehiculos)
+                            @foreach (var item in Model.Vehiculos.Where(v => v.Veh_Estado == 'A'))
                             {
                                 <tr>
                                     <td>
@@ -93,9 +94,9 @@ else
                                     <td>
                                         <a asp-action="EditVehiculo" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
                                         @*<a asp-action="DetailsPago" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]*@
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialogv"><i class="glyphicon glyphicon-trash"></i></button>
                                     </td>
-                                  </tr>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -134,7 +135,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Negocio)
+                            @foreach (var item in Model.Negocio.Where(n => n.Neg_Estado == 'A'))
                             {
                                 <tr>
                                     <td>
@@ -149,7 +150,7 @@ else
                                     <td>
                                         <a asp-action="EditNegocio" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
                                         <a asp-action="DetailsNegocio" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialogn"><i class="glyphicon glyphicon-trash"></i></button>
                                     </td>
                                 </tr>
                             }
@@ -201,7 +202,7 @@ else
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Pagos)
+                            @foreach (var item in Model.Pagos.Where(pa => pa.PAG_ESTADO == 'A'))
                             {
                                 <tr>
                                     <td>
@@ -224,7 +225,7 @@ else
                                     <td>
                                         <a asp-action="EditPago" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
                                         @*<a asp-action="DetailsPago" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]*@
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialogp"><i class="glyphicon glyphicon-trash"></i></button>
                                     </td>
                                 </tr>
                             }
@@ -235,28 +236,8 @@ else
         </div>
     </div>
 }
+<partial name="_DeleteDialog" />
 
-
-<!--Delete Item-->
-<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Item</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to delete the record?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -265,7 +246,21 @@ else
     <script type="text/javascript">
         $(document).ready(function () {
             $('#tblpagos').DataTable();
-            $('#tblvehiculos').DataTable();
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDeletep").click(function () {
+                window.location.href = '/Propietario/DeletePagos/' + item_to_delete;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $('#tblnegocios').DataTable();
             // Delete item
             var item_to_delete;
@@ -274,8 +269,24 @@ else
                 item_to_delete = e.currentTarget.dataset.id;
             });
 
-            $("#btnYesDelete").click(function () {
-                window.location.href = '/Propietarios/Delete/' + item_to_delete;
+            $("#btnYesDeleten").click(function () {
+                window.location.href = '/Propietario/DeleteNegocio/' + item_to_delete;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblvehiculos').DataTable();
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDeletev").click(function () {
+                window.location.href = '/Propietario/DeleteVehiculo/' + item_to_delete;
             });
         });
     </script>

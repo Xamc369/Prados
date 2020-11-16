@@ -11,6 +11,9 @@ namespace Prados.Web.Data.Entities
         [Display(Name = "ID")]
         public int Id { get; set; }
 
+        public char Con_EstadoIng { get; set; }
+        public char Con_EstadoEgr { get; set; }
+
         //********************************EGRESOS*********************************
         public ICollection<Egresostbl> Con_Egresos { get; set; }
         [Display(Name = "Egresos")]

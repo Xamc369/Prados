@@ -22,6 +22,7 @@ namespace Prados.Web.Controllers
         // GET: Producto
         public async Task<IActionResult> Index()
         {
+           // return View(await _context.Productostbls.Where(p => p.Pro_Estado == 'A').ToListAsync());
             return View(await _context.Productostbls.ToListAsync());
         }
 

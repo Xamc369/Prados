@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Prados.Web.Data;
 using Prados.Web.Data.Entities;
 using Prados.Web.Helpers;
+using Vereyon.Web;
 
 namespace Prados.Web
 {
@@ -57,6 +58,7 @@ namespace Prados.Web
             services.AddScoped<ICombosHelper, CombosHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IImageHelper, ImageHelper>();
+            services.AddFlashMessage();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

@@ -32,7 +32,7 @@ namespace Prados.Web.Helpers
                Veh_Born = model.Veh_Born,
                 Id = IsNew ? 0 : model.Id,
                 ImageUrl = path,
-               Veh_Estado = model.Veh_Estado,
+                Veh_Estado = 'A',
                 Propietario = await _dataContext1.Propietariostbls.FindAsync(model.PropietarioId),
                Veh_Detalles = model.Veh_Detalles
             };
@@ -47,8 +47,23 @@ namespace Prados.Web.Helpers
                 Neg_Telefono = model.Neg_Telefono,
                 Id = IsNew ? 0 : model.Id,
                 ImageUrl = path,
+                Neg_Estado = 'A',
                 Neg_Direccion = model.Neg_Direccion,
                 Propietarios = await _dataContext1.Propietariostbls.FindAsync(model.PropietarioId),
+            };
+        }
+
+        public async Task<Noticiastbl> ToNoticiaAsync(NoticiaViewModel model, bool IsNew, string path)
+        {
+            return new Noticiastbl
+            {
+                Not_Titulo = model.Not_Titulo,
+                Not_Autor = model.Not_Autor,
+                Not_Descripcion = model.Not_Descripcion,
+                Not_Fecha = model.Not_Fecha,
+                Id = IsNew ? 0 : model.Id,
+                ImageUrl = path,
+                Not_Estado = 'A',
             };
         }
 
@@ -133,7 +148,7 @@ namespace Prados.Web.Helpers
                 Veh_Placa = vehiculo.Veh_Placa,
                 Veh_Born = vehiculo.Veh_Born,
                 ImageUrl = vehiculo.ImageUrl,
-                Veh_Estado = "A",
+                //Veh_Estado = "A",
                 Propietario = vehiculo.Propietario,
                 Veh_Detalles = vehiculo.Veh_Detalles,
                 Id = vehiculo.Id,
@@ -151,6 +166,18 @@ namespace Prados.Web.Helpers
                 ImageUrl = negocio.ImageUrl,
                 Neg_Direccion = negocio.Neg_Direccion,
                 PropietarioId = negocio.Propietarios.Id,
+            };
+        }
+
+        public NoticiaViewModel ToNoticiaViewModel(Noticiastbl noticia)
+        {
+            return new NoticiaViewModel
+            {
+                Not_Titulo = noticia.Not_Titulo,
+                Not_Autor = noticia.Not_Autor,
+                Not_Descripcion = noticia.Not_Descripcion,
+                ImageUrl = noticia.ImageUrl,
+                Not_FechaCreacion = noticia.Not_FechaCreacion,
             };
         }
 
@@ -181,7 +208,6 @@ namespace Prados.Web.Helpers
                 ImageUrl = producto.ImageUrl,
             };
         }
-
 
     }
 }

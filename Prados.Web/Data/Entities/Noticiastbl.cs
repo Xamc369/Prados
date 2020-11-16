@@ -24,6 +24,11 @@ namespace Prados.Web.Data.Entities
         [DataType(DataType.Date)]
         public DateTime Not_Fecha { get; set; }
 
+
+        [Display(Name = "FECHA CREACION")]
+        [DataType(DataType.Date)]
+        public DateTime Not_FechaCreacion { get; set; }
+
         [Display(Name = "Estado")]
         public char Not_Estado { get; set; }
 
