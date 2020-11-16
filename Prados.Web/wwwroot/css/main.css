@@ -374,7 +374,10 @@ img.f-right {
 	}
 
 
-
+.imagenNoticia {
+	width: 300px;
+	height: 300px;
+}
 
 
 /*	modo responsive*/

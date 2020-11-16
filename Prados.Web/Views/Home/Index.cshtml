@@ -96,28 +96,32 @@
                             <div class="article-info box">
                                 <p class="f-left ">@Html.DisplayFor(modelItem => item.Not_Fecha) | Autor <a>@Html.DisplayFor(modelItem => item.Not_Autor)</a> | </p>
                             </div>
-                            <p><img src="tmp/article-02.jpg" alt="" class="f-right" /> @Html.DisplayFor(modelItem => item.Not_Descripcion) </p>
+                            <p><img src="@Url.Content(item.ImageUrl)" alt="" class="f-left imagenNoticia" />@Html.DisplayFor(modelItem => item.Not_Descripcion)</p>
+                           
+
                         </li>
-                    </ul>
-                    i++;
+                </ul>
+                i++;
 
 
 
-                }
-                else
-                {
-                    <ul class="articles box">
-                        <li>
-                            <h2><a href="#"> @Html.DisplayFor(modelItem => item.Not_Titulo)</a></h2>
-                            <div class="article-info box">
-                                <p class="f-left">@Html.DisplayFor(modelItem => item.Not_Fecha) | Posted by <a href="#"> <a>@Html.DisplayFor(modelItem => item.Not_Autor)e</a> | </p>
-                            </div>
-                            <p><img src="tmp/article-03.jpg" alt="" class="f-left" />@Html.DisplayFor(modelItem => item.Not_Descripcion)</p>
+            }
+            else
+            {
+                    
+                <ul class="articles box"  style="margin-top:15px">
+                    <li>
+                        <h2><a href="#"> @Html.DisplayFor(modelItem => item.Not_Titulo)</a></h2>
+                        <div class="article-info box">
+                            <p class="f-left">@Html.DisplayFor(modelItem => item.Not_Fecha) | Posted by <a href="#"> <a>@Html.DisplayFor(modelItem => item.Not_Autor)</a> | </p>
+                        </div>
+                        <p><img src="@Url.Content(item.ImageUrl)" alt="" class="f-right imagenNoticia"/>@Html.DisplayFor(modelItem => item.Not_Descripcion)</p>
+
                         </li>
 
-                    </ul>
-                    i++;
-                }
+                </ul>
+                i++;
+            }
             }
 
         </div>
