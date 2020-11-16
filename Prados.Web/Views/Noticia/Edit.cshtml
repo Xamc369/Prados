@@ -33,11 +33,17 @@
                 <input asp-for="Not_Fecha" class="form-control" />
                 <span asp-validation-for="Not_Fecha" class="text-danger"></span>
             </div>
-           
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
+    </div>
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width:400px;height:400px;max-width: 100%; height: auto;" />
+        }
     </div>
 </div>
 
