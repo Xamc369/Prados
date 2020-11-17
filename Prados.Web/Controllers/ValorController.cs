@@ -58,9 +58,23 @@ namespace Prados.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                try { 
                 _context.Add(valorestbl);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "El valor ya se encuentra registrado");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
+
             }
             return View(valorestbl);
         }

@@ -36,6 +36,28 @@ namespace Prados.Web.Data
         public DbSet<TipoIdentificaciontbl> TipoIdentificaciontbls { get; set; }
         public DbSet<TipoPersonatbl> TipoPersonastbls { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Vehiculostbl>()
+                .HasIndex(v => v.Veh_Codigo)
+                .IsUnique();
+            builder.Entity<Aniostbl>()
+                .HasIndex(a => a.Ani_Descripcion)
+                .IsUnique();
+            builder.Entity<Valorestbl>()
+                .HasIndex(va => va.Val_Valor)
+                .IsUnique();
+            builder.Entity<PuntosPagotbl>()
+                .HasIndex(p => p.Pun_Descripcion)
+                .IsUnique();
+            builder.Entity<TiposPagotbl>()
+                .HasIndex(t => t.Tip_Descripcion)
+                .IsUnique();
+        }
+
+
     }
 
 }

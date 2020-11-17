@@ -86,7 +86,7 @@
     <div id="section" class="box">
         <div id="content">
             @{var i = 0; }
-            @foreach (var item in Model)
+            @foreach (var item in Model.Where(n => n.Not_Estado == 'A'))
             {
                 @if (i % 2 == 0)
                 {
