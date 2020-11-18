@@ -86,7 +86,7 @@
     <div id="section" class="box">
         <div id="content">
             @{var i = 0; }
-            @foreach (var item in Model)
+            @foreach (var item in Model.OrderByDescending(model => model.Id))
             {
                 @if (i % 2 == 0)
                 {
