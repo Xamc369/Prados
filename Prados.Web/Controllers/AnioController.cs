@@ -58,9 +58,25 @@ namespace Prados.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(aniostbl);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                try
+                {
+                    _context.Add(aniostbl);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "El año ya existe");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
+
             }
             return View(aniostbl);
         }

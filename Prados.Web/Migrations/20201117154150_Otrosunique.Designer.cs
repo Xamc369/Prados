@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prados.Web.Data;
 
 namespace Prados.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201117154150_Otrosunique")]
+    partial class Otrosunique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,16 +137,15 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Ani_Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(4);
+                    b.Property<string>("Ani_Descripcion");
 
                     b.Property<int?>("ContabilidadtblId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Ani_Descripcion")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Ani_Descripcion] IS NOT NULL");
 
                     b.HasIndex("ContabilidadtblId");
 
@@ -442,16 +443,15 @@ namespace Prados.Web.Migrations
 
                     b.Property<int?>("ContabilidadtblId");
 
-                    b.Property<string>("Pun_Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("Pun_Descripcion");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ContabilidadtblId");
 
                     b.HasIndex("Pun_Descripcion")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Pun_Descripcion] IS NOT NULL");
 
                     b.ToTable("PuntosPagotbls");
                 });
@@ -503,9 +503,7 @@ namespace Prados.Web.Migrations
 
                     b.Property<int?>("IngresostblId");
 
-                    b.Property<string>("Tip_Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<string>("Tip_Descripcion");
 
                     b.HasKey("Id");
 
@@ -514,7 +512,8 @@ namespace Prados.Web.Migrations
                     b.HasIndex("IngresostblId");
 
                     b.HasIndex("Tip_Descripcion")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Tip_Descripcion] IS NOT NULL");
 
                     b.ToTable("TiposPagotbl");
                 });
@@ -638,9 +637,7 @@ namespace Prados.Web.Migrations
 
                     b.Property<DateTime>("Val_FechaCreacion");
 
-                    b.Property<string>("Val_Valor")
-                        .IsRequired()
-                        .HasMaxLength(5);
+                    b.Property<string>("Val_Valor");
 
                     b.HasKey("Id");
 
@@ -649,7 +646,8 @@ namespace Prados.Web.Migrations
                     b.HasIndex("IngresostblId");
 
                     b.HasIndex("Val_Valor")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Val_Valor] IS NOT NULL");
 
                     b.ToTable("Valorestbls");
                 });

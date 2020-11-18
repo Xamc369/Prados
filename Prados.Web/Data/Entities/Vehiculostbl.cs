@@ -13,15 +13,15 @@ namespace Prados.Web.Data.Entities
         [RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El número de TAG es obligatorio")]
         [StringLength(5, ErrorMessage = "El número es demasiado largo")]
-        [Display(Name = "No. TAG")]
+        [Display(Name = "No. Tag")]
         public string Veh_Codigo { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El número de lote es obligatorio")]
-        [StringLength(4, ErrorMessage = "El número es demasiado largo")]
-        [Display(Name = "No. PLACA")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El número de placa es obligatorio")]
+        [StringLength(7, MinimumLength = 7, ErrorMessage = "La placa consta de siete caracteres")]
+        [Display(Name = "No. Placa")]
         public string Veh_Placa { get; set; }
 
-        [Display(Name = "Image")]
+        [Display(Name = "Imagen")]
         public string ImageUrl { get; set; }
 
         [Display(Name = "ESTADO")]
@@ -32,6 +32,7 @@ namespace Prados.Web.Data.Entities
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime Veh_Born { get; set; }
 
+        [Display(Name = "Detalles")]
         public string Veh_Detalles { get; set; }
 
         //TODO: replace the correct URL for the image

@@ -17,26 +17,21 @@ namespace Prados.Web.Models
 
         [RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El número de lote es obligatorio")]
-        [StringLength(4, ErrorMessage = "El número es demasiado largo")]
+        [StringLength(3, ErrorMessage = "El lote debe tener solo 3 numeros")]
         [Display(Name = "No. Lote")]
         public string PRO_LOTE { get; set; }
 
-        //helper
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "El tipo de vivienda es obligatorio")]
-        //[Display(Name = "Tipo de Vivienda")]
-        //public string PRO_TIPO { get; set; }
-
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "Los nombres deben tener un minimo de 3 caracteres y un maximo de 50")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$", ErrorMessage = "Solo se permiten mayúsculas")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Los nombres son obligatorios")]
         [Display(Name = "Nombres")]
         public string PRO_NOMBRES { get; set; }
 
         [StringLength(50, MinimumLength = 3,
-        ErrorMessage = "los apellidos deben tener un minimo de 3 caracteres y un maximo de 50")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "los apellidos son obligatorios")]
-        [RegularExpression(@"^[a-z]+[a-za-z]*$")]
+        ErrorMessage = "Los apellidos deben tener un minimo de 3 caracteres y un maximo de 50")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Los apellidos son obligatorios")]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$", ErrorMessage = "Solo se permiten mayúsculas")]
         [Display(Name = "Apellidos")]
         public string PRO_APELLIDOS { get; set; }
 
@@ -46,8 +41,8 @@ namespace Prados.Web.Models
         [RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
         [Display(Name = "Telefono/Celular")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El número de telefono es obligatorio")]
-        [StringLength(10, MinimumLength = 3,
-        ErrorMessage = "El numero de telefono deben tener un minimo de 3 caracteres y un maximo de 50")]
+        [StringLength(10, MinimumLength = 10,
+        ErrorMessage = "El numero de telefono deben tener un minimo de 10 caracteres")]
         public string PRO_TELEFONO { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El tipo de identificacion es obligatorio")]
@@ -57,20 +52,20 @@ namespace Prados.Web.Models
         [RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El número de identificacion es obligatorio")]
         [StringLength(10, MinimumLength = 3,
-        ErrorMessage = "La identificacion deben tener un minimo de 3 caracteres y un maximo de 50")]
+        ErrorMessage = "La identificacion deben tener un minimo de 3 caracteres y un maximo de 10")]
         [Display(Name = "Identificacion")]
         public string PRO_IDENTIFICACION { get; set; }
 
         [Display(Name = "Password")]
-        [Required(ErrorMessage = "The field {0} is mandatory.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DataType(DataType.Password)]
-        [StringLength(20, MinimumLength = 6, ErrorMessage = "The {0} field must contain between {2} and {1} characters.")]
+        [StringLength(20, MinimumLength = 6, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracter.")]
         public string Password { get; set; }
 
-        [Display(Name = "Password Confirm")]
-        [Required(ErrorMessage = "The field {0} is mandatory.")]
+        [Display(Name = "Password")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DataType(DataType.Password)]
-        [StringLength(20, MinimumLength = 6, ErrorMessage = "The {0} field must contain between {2} and {1} characters.")]
+        [StringLength(20, MinimumLength = 6, ErrorMessage = "El campo {0} debe contener entre {2} y {1} caracter.")]
         [Compare("Password")]
         public string PasswordConfirm { get; set; }
 

@@ -185,16 +185,18 @@ namespace Prados.Web.Controllers
 
             var model = new EditUserViewModel
             {
-                PRO_LOTE = propietario.User.Pro_Lote,
-                PRO_NOMBRES = propietario.User.Pro_Nombres,
-                PRO_APELLIDOS = propietario.User.Pro_Apellidos,
-                PRO_OBSERVACIONES = propietario.User.Pro_Observaciones,
-                PRO_TELEFONO = propietario.User.Pro_Telefono,
-                PRO_IDENTIFICACION = propietario.User.Pro_Identificacion,
+                Pro_Lote = propietario.User.Pro_Lote,
+                Pro_Nombres = propietario.User.Pro_Nombres,
+                Pro_Apellidos = propietario.User.Pro_Apellidos,
+                Pro_Observaciones = propietario.User.Pro_Observaciones,
+                Pro_Telefono = propietario.User.Pro_Telefono,
+                Pro_Identificacion = propietario.User.Pro_Identificacion,
                 TipoViviendaVM = _combosHelper.GetComboTipoVivienda(),
                 TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion(),
                 TipoPersonaVM = _combosHelper.GetComboTipoPersona()
             }; 
+
+
 
                 return View(model);
         }
@@ -212,12 +214,12 @@ namespace Prados.Web.Controllers
                     .Include(o => o.User)
                     .FirstOrDefaultAsync(o => o.Id == model.Id);
 
-                owner.User.Pro_Lote = model.PRO_LOTE;
-                owner.User.Pro_Nombres = model.PRO_NOMBRES;
-                owner.User.Pro_Apellidos = model.PRO_APELLIDOS;
-                owner.User.Pro_Observaciones = model.PRO_OBSERVACIONES;
-                owner.User.Pro_Telefono = model.PRO_TELEFONO;
-                owner.User.Pro_Identificacion = model.PRO_IDENTIFICACION;
+                owner.User.Pro_Lote = model.Pro_Lote;
+                owner.User.Pro_Nombres = model.Pro_Nombres;
+                owner.User.Pro_Apellidos = model.Pro_Apellidos;
+                owner.User.Pro_Observaciones = model.Pro_Observaciones;
+                owner.User.Pro_Telefono = model.Pro_Telefono;
+                owner.User.Pro_Identificacion = model.Pro_Identificacion;
                 model.TipoViviendaVM = _combosHelper.GetComboTipoVivienda();
                 model.TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion();
                 model.TipoPersonaVM = _combosHelper.GetComboTipoPersona();
@@ -226,6 +228,9 @@ namespace Prados.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            model.TipoViviendaVM = _combosHelper.GetComboTipoVivienda();
+            model.TipoIdentificacionVM = _combosHelper.GetComboTipoIdentificacion();
+            model.TipoPersonaVM = _combosHelper.GetComboTipoPersona();
             return View(model);
 
         }
@@ -334,10 +339,25 @@ namespace Prados.Web.Controllers
 
                 }
 
-                var vehiculo = await _converterHelper.ToVehiculoAsync(model, path, true);
-                _context.Vehiculostbls.Add(vehiculo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction($"Details/{model.PropietarioId}");
+                
+                try
+                {
+                    var vehiculo = await _converterHelper.ToVehiculoAsync(model, path, true);
+                    _context.Vehiculostbls.Add(vehiculo);
+                    await _context.SaveChangesAsync();
+                   return RedirectToAction($"Details/{model.PropietarioId}");
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe ese numero de tag");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
 
             }
 

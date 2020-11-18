@@ -58,9 +58,23 @@ namespace Prados.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                try { 
                 _context.Add(tiposPagotbl);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "El tipo de pago ya existe");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
+
             }
             return View(tiposPagotbl);
         }
