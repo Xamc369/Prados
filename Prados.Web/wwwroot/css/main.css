@@ -130,7 +130,7 @@ img.f-right {
 	text-align:justify;
 }
 .articles {
-	margin:0;
+	margin:auto;
 	list-style:none;
 }
 .articles h2 {
@@ -386,6 +386,10 @@ img.f-right {
 		margin: 0;
 		width: 261px;
 		list-style: none;
+	}
+
+	.item {
+		margin-top:30px;
 	}
 
 		.articles h2 {
