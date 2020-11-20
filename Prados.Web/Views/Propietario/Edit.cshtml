@@ -1,0 +1,98 @@
+﻿@model Prados.Web.Models.EditUserViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/all.css">
+
+<h2 class="text-titles"><i class="glyphicon glyphicon-user"></i>   Editar Persona</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @*TIPO DE PERSONA*@
+            <div class="form-group">
+                <label asp-for="TPId" class="control-label"></label>
+                <select asp-for="TPId" asp-items="Model.TipoPersonaVM" class="form-control"></select>
+                <span asp-validation-for="TPId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Pro_Lote" class="control-label"></label>
+                <input asp-for="Pro_Lote" class="form-control" />
+                <span asp-validation-for="Pro_Lote" class="text-danger"></span>
+            </div>
+
+            @*TIPO DE VIVIENDA*@
+            <div class="form-group">
+                <label asp-for="TVId" class="control-label"></label>
+                <select asp-for="TVId" asp-items="Model.TipoViviendaVM" class="form-control"></select>
+                <span asp-validation-for="TVId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Pro_Nombres" class="control-label"></label>
+                <input asp-for="Pro_Nombres" class="form-control" />
+                <span asp-validation-for="Pro_Nombres" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Pro_Apellidos" class="control-label"></label>
+                <input asp-for="Pro_Apellidos" class="form-control" />
+                <span asp-validation-for="Pro_Apellidos" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Pro_Observaciones" class="control-label"></label>
+                <input asp-for="Pro_Observaciones" class="form-control" />
+                <span asp-validation-for="Pro_Observaciones" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Pro_Telefono" class="control-label"></label>
+                <input asp-for="Pro_Telefono" class="form-control" />
+                <span asp-validation-for="Pro_Telefono" class="text-danger"></span>
+            </div>
+
+            @*TIPO DE IDENTIFICACION*@
+            <div class="form-group">
+                <label asp-for="TIId" class="control-label"></label>
+                <select asp-for="TIId" asp-items="Model.TipoIdentificacionVM" class="form-control"></select>
+                <span asp-validation-for="TIId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Pro_Identificacion" class="control-label"></label>
+                <input asp-for="Pro_Identificacion" class="form-control" />
+                <span asp-validation-for="Pro_Identificacion" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PasswordConfirm" class="control-label"></label>
+                <input asp-for="PasswordConfirm" class="form-control" />
+                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+            </div>*@
+
+            <div class="form-group">
+                <input type="submit" value="Modificar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-info"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

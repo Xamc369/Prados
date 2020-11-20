@@ -1,0 +1,126 @@
+﻿@model Prados.Web.Data.Entities.Negociostbl
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Negocio</h2>
+<flash dismissable="true" />
+<div>
+    <h4>Detalles</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <dl class="dl-horizontal">
+                <dt>
+                    Owner
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Propietarios.User.NombreCompleto)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Neg_Nombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Neg_Nombre)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Neg_Direccion)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Neg_Direccion)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Neg_Telefono)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Neg_Telefono)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width:300px;height:300px;max-height: 100%; width: auto;" />
+            }
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="EditNegocio" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+    <a asp-action="AddProducto" asp-route-id="@Model.Id" class="btn btn-primary">Add Producto</a>
+    <a asp-action="Details" asp-route-id="@Model.Propietarios.Id" class="btn btn-success">Back to Owner</a>
+</div>
+<h4>Productos</h4>
+<hr />
+@if (Model.Producto.Count == 0)
+{
+    <h5>No ha ingresado productos aun.</h5>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Producto.FirstOrDefault().Pro_Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Producto.FirstOrDefault().Pro_Precio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Producto.FirstOrDefault().ImageUrl)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Producto.Where(p => p.Pro_Estado == 'A'))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pro_Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pro_Precio)
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;max-width: 100%; height: auto;" />
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="EditProducto" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<partial name="_DeleteDialog"/>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+    	$(document).ready(function () {
+        	// Delete item
+        	var item_to_delete;
+
+        	$('.deleteItem').click((e) => {
+            	item_to_delete = e.currentTarget.dataset.id;
+        	});
+
+        	$("#btnYesDelete").click(function () {
+            	window.location.href = '/Propietario/DeleteProducto/' + item_to_delete;
+        	});
+    	});
+    </script>
+}
+
+
+

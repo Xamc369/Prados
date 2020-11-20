@@ -1,0 +1,293 @@
+﻿@model Prados.Web.Data.Entities.Propietariostbl
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/all.css">
+<br />
+<flash dismissable="true" />
+
+<h2 class="text-titles"><i class="glyphicon glyphicon-list-alt"></i>  Informacion</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Pro_Nombres)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Pro_Nombres)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Pro_Apellidos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Pro_Apellidos)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Pro_Lote)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Pro_Lote)
+        </dd>
+    </dl>
+</div>
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |*@
+    <a asp-action="AddVehiculo" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fa fa-car" aria-hidden="true"></i></a> |
+    <a asp-action="AddPago" asp-route-id="@Model.Id" class="btn btn-success"><i class="fa fa-money-bill-alt"></i></a> |
+    <a asp-action="AddNegocio" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a> |
+    <a asp-action="Index" class="btn btn-info"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+</div>
+@if (Model.Vehiculos.Count == 0)
+{
+    <h4>No registra vehiculos</h4>
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Vehiculos</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" id="tblvehiculos">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Vehiculos.FirstOrDefault().Veh_Codigo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Vehiculos.FirstOrDefault().Veh_Placa)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Vehiculos.FirstOrDefault().ImageUrl)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Vehiculos.Where(v => v.Veh_Estado == 'A'))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Veh_Codigo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Veh_Placa)
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;max-width: 100%; height: auto;" />
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="EditVehiculo" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
+                                        @*<a asp-action="DetailsPago" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]*@
+                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialogv"><i class="glyphicon glyphicon-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Negocio.Count == 0)
+{
+    <h4>No registra negocios</h4>
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Negocios</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" id="tblnegocios">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Negocio.FirstOrDefault().Neg_Nombre)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Negocio.FirstOrDefault().ImageUrl)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Negocio.Where(n => n.Neg_Estado == 'A'))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Neg_Nombre)
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <img src="@Url.Content(item.ImageUrl)" alt="Image" style="width:200px;height:200px;max-width: 100%; height: auto;" />
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="EditNegocio" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
+                                        <a asp-action="DetailsNegocio" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]
+                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialogn"><i class="glyphicon glyphicon-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.Pagos.Count == 0)
+{
+    <h4>No tiene Pagos todavia</h4>
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Pagos</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" id="tblpagos">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().PAG_FECHAPAGADO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().Anio)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().Mes)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().Val)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().Tipos)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pagos.FirstOrDefault().PuntodePago)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Pagos.Where(pa => pa.PAG_ESTADO == 'A'))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PAG_FECHAPAGADO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Anio.Ani_Descripcion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Mes.Mes_Descripcion)
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Val.Val_Valor)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tipos.Tip_Descripcion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PuntodePago.Pun_Descripcion)
+                                    </td>
+                                    <td>
+                                        <a asp-action="EditPago" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a> ]
+                                        @*<a asp-action="DetailsPago" asp-route-id="@item.Id" class="btn btn-success"><i class="glyphicon glyphicon-list-alt"></i></a> ]*@
+                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialogp"><i class="glyphicon glyphicon-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<partial name="_DeleteDialog" />
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblpagos').DataTable();
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDeletep").click(function () {
+                window.location.href = '/Propietario/DeletePagos/' + item_to_delete;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblnegocios').DataTable();
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDeleten").click(function () {
+                window.location.href = '/Propietario/DeleteNegocio/' + item_to_delete;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblvehiculos').DataTable();
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDeletev").click(function () {
+                window.location.href = '/Propietario/DeleteVehiculo/' + item_to_delete;
+            });
+        });
+    </script>
+}
+

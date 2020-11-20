@@ -1,0 +1,44 @@
+﻿@model Prados.Web.Models.ProductoViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Producto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddProducto"  enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NegocioId" />
+
+            <div class="form-group">
+                <label asp-for="Pro_Nombre" class="control-label"></label>
+                <input asp-for="Pro_Nombre" class="form-control" />
+                <span asp-validation-for="Pro_Nombre" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Pro_Precio" class="control-label"></label>
+                <input asp-for="Pro_Precio" class="form-control" />
+                <span asp-validation-for="Pro_Precio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control" type="file" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="DetailsNegocio" asp-route-id="@Model.NegocioId" class="btn btn-success">Regresa Negocio</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,53 @@
+﻿@model Prados.Web.Data.Entities.Noticiastbl
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Noticiastbl</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Not_Titulo" class="control-label"></label>
+                <input asp-for="Not_Titulo" class="form-control" />
+                <span asp-validation-for="Not_Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not_Autor" class="control-label"></label>
+                <input asp-for="Not_Autor" class="form-control" />
+                <span asp-validation-for="Not_Autor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not_Descripcion" class="control-label"></label>
+                <input asp-for="Not_Descripcion" class="form-control" />
+                <span asp-validation-for="Not_Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not_Fecha" class="control-label"></label>
+                <input asp-for="Not_Fecha" class="form-control" />
+                <span asp-validation-for="Not_Fecha" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width:400px;height:400px;max-width: 100%; height: auto;" />
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

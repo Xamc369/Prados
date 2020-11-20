@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Prados.Web.Data.Entities.Propietariostbl>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<br />
+<h2 class="text-titles" style="text-align:center"><i class="glyphicon glyphicon-user"></i>   Propietarios</h2>
+<p>
+
+    <a asp-action="Create" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
+</p>
+<flash dismissable="true" />
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+<div class="col-1">
+    <div class="panel panel-default templatemo-content-widget white-bg no-padding templatemo-overflow-hidden">
+        <i class="fa fa-times"></i>
+        <div class="panel-heading">
+            <h3 class="panel-title">Lista de Propietarios</h3>
+        </div>
+        <div class="table-responsive" style="margin-top:5px">
+
+            <table class="table table-striped table-bordered" id="tblpropietarios">
+                <thead >
+                    <tr>
+                        @*<th style="text-align:center">
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>*@
+                        <th style="text-align:center">
+                            @Html.DisplayNameFor(model => model.User.Pro_Lote)
+                        </th>
+                        <th style="text-align:center">
+                            @Html.DisplayNameFor(model => model.User.Pro_Nombres)
+                        </th>
+                        <th style="text-align:center">
+                            @Html.DisplayNameFor(model => model.User.Pro_Apellidos)
+                        </th>
+                        <th style="text-align:center">
+                            @Html.DisplayNameFor(model => model.User.Pro_Identificacion)
+                        </th>
+                        <th style="text-align:center">
+                            @Html.DisplayNameFor(model => model.User.Pro_Telefono)
+                        </th>
+                        <th style="text-align:center"> Editar</th>
+                        <th style="text-align:center"> Detalles</th>
+                        <th style="text-align:center"> Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.Pro_Lote)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.Pro_Nombres)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.Pro_Apellidos)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.Pro_Identificacion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.Pro_Telefono)
+                            </td>
+                           
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning center-block"><i class="glyphicon glyphicon-edit"></i></a>
+
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success center-block"><i class="glyphicon glyphicon-list-alt"></i></a>
+
+                            </td>
+                            <td>
+                                @*<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger center-block"><i class="glyphicon glyphicon-trash"></i></a>*@
+                                <button data-id="@item.Id" class="btn btn-danger deleteItem center-block" data-toggle="modal" data-target="#deleteDialogo"><i class="glyphicon glyphicon-trash"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<partial name="_DeleteDialog" />
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblpropietarios').DataTable();
+
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDeleteo").click(function () {
+                window.location.href = '/Propietario/Delete/' + item_to_delete;
+            });
+        });
+    </script>
+}

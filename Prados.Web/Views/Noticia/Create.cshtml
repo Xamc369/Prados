@@ -1,0 +1,51 @@
+﻿@model Prados.Web.Models.NoticiaViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Noticiastbl</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Not_Titulo" class="control-label"></label>
+                <input asp-for="Not_Titulo" class="form-control" />
+                <span asp-validation-for="Not_Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not_Autor" class="control-label"></label>
+                <input asp-for="Not_Autor" class="form-control" />
+                <span asp-validation-for="Not_Autor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not_Descripcion" class="control-label"></label>
+                <textarea asp-for="Not_Descripcion" class="form-control"></textarea>
+                <span asp-validation-for="Not_Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not_Fecha" class="control-label"></label>
+                <input asp-for="Not_Fecha" class="form-control" />
+                <span asp-validation-for="Not_Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control" type="file" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
