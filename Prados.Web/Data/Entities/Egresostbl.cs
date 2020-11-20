@@ -19,6 +19,8 @@ namespace Prados.Web.Data.Entities
         public string Egr_Descripcion { get; set; }
 
         [Display(Name = "VALOR")]
-        public string Egr_Valor { get; set; }
+        public float Egr_Valor { get; set; }
+        public DateTime Egr_FechadeRegistro { get; set; }
+        public Char Egr_Estado { get; set; }
     }
 }

@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Prados.Web.Data;
 using Prados.Web.Data.Entities;
+using Prados.Web.Helpers;
+using Prados.Web.Models;
+using Vereyon.Web;
 
 namespace Prados.Web.Controllers
 {
     public class ValorController : Controller
     {
         private readonly DataContext _context;
+        private readonly IConverterHelper _converterHelper;
+        private readonly IFlashMessage _flashMessage;
 
-        public ValorController(DataContext context)
+        public ValorController(DataContext context, IConverterHelper converterHelper, IFlashMessage flashMessage)
         {
             _context = context;
+            _converterHelper = converterHelper;
+            _flashMessage = flashMessage;
         }
 
         // GET: Valor
@@ -46,7 +53,12 @@ namespace Prados.Web.Controllers
         // GET: Valor/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new ValorViewModel
+            {
+                Val_FechaCreacion = DateTime.Today,
+                Val_Estado = 'A',
+            };
+            return View(model);
         }
 
         // POST: Valor/Create
@@ -54,14 +66,16 @@ namespace Prados.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Val_Valor,Val_FechaCreacion,Val_Estado")] Valorestbl valorestbl)
+        public async Task<IActionResult> Create(ValorViewModel model)
         {
             if (ModelState.IsValid)
             {
-                try { 
-                _context.Add(valorestbl);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    var valor = await _converterHelper.ToValorAsync(model, true);
+                    _context.Add(valor);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
@@ -76,7 +90,7 @@ namespace Prados.Web.Controllers
                 }
 
             }
-            return View(valorestbl);
+            return View(model);
         }
 
         // GET: Valor/Edit/5

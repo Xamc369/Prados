@@ -67,6 +67,32 @@ namespace Prados.Web.Helpers
             };
         }
 
+        public async Task<Valorestbl> ToValorAsync(ValorViewModel model, bool IsNew)
+        {
+            return new Valorestbl
+            {
+                Val_Valor = model.Val_Valor,
+                Val_FechaCreacion = DateTime.Today,
+                Id = IsNew ? 0 : model.Id,
+                Val_Estado = 'A',
+
+            };
+        }
+
+        public async Task<Egresostbl> ToEgresoAsync(EgresoViewModel model, bool IsNew)
+        {
+            return new Egresostbl
+            {
+                Egr_FechadePago = model.Egr_FechadePago,
+                Egr_Descripcion = model.Egr_Descripcion,
+                Egr_Valor = model.Egr_Valor,
+                Egr_FechadeRegistro = DateTime.Today,
+                Id = IsNew ? 0 : model.Id,
+                Egr_Estado = 'A',
+
+            };
+        }
+
         public async Task<Pagostbl> ToPagoAsync(PagoViewModel model, bool isNew)
         {
 
