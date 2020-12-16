@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Prados.Web.Models;
 
 namespace Prados.Web.Data
 {
@@ -56,6 +57,8 @@ namespace Prados.Web.Data
                 .HasIndex(t => t.Tip_Descripcion)
                 .IsUnique();
         }
+
+
 
 
     }

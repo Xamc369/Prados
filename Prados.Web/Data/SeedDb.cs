@@ -25,8 +25,8 @@ namespace Prados.Web.Data
         {
             await _dataContext.Database.EnsureCreatedAsync();
             await CheckRoles();
-            var manager = await CheckUserAsync("10", "JOHAN", "ALTAMIRANO", "tec_inf_johan@hotmail.com", "GENIAL", "0998759275", 'c', "1723629240", "Admin");
-            var customer = await CheckUserAsync("11", "XIMENA", "MORENO", "gohanalexanderdj@hotmail.com", "GENIAL", "0998759275", 'C', "1723629240", "Customer");
+            var manager = await CheckUserAsync("10", "JOHAN", "ALTAMIRANO", "tec_inf_johan@hotmail.com", "GENIAL", "0998759275", "c", "1723629240", "Admin");
+            var customer = await CheckUserAsync("11", "XIMENA", "MORENO", "gohanalexanderdj@hotmail.com", "GENIAL", "0998759275", "C", "1723629240", "Customer");
 
             await CheckPropietariosAsync(customer);
             await CheckManagerAsync(manager);
@@ -147,7 +147,7 @@ namespace Prados.Web.Data
         }
 
         private async Task<Userstbl> CheckUserAsync(string PRO_LOTE, string PRO_NOMBRES,
-            string PRO_APELLIDOS, string email, string PRO_OBSERVACIONES, string PRO_TELEFONO, char PRO_TIPOIDENTIFICACION,
+            string PRO_APELLIDOS, string email, string PRO_OBSERVACIONES, string PRO_TELEFONO, string PRO_TIPOIDENTIFICACION,
             string PRO_IDENTIFICACION, string role)
         {
             var user = await _userHelper.GetUserByEmailAsync(email);

@@ -34,6 +34,7 @@ namespace Prados.Web.Controllers
         public IActionResult Index()
         {
             return View(_context.Contabilidadtbls
+                .Include(o => o.Con_Egresos)
                 .Include(o => o.Tip)
                 .Include(o => o.Punt)
                 .Include(o => o.Valo)

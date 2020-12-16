@@ -42,11 +42,11 @@ namespace Prados.Web.Models
         ErrorMessage = "El numero de telefono deben tener un minimo de 10 caracteres")]
         public string Pro_Telefono { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El tipo de identificacion es obligatorio")]
-        [Display(Name = "Tipo de Identificacion")]
-        [StringLength(10, MinimumLength = 3,
-        ErrorMessage = "El numero de identificación deben tener un minimo de 3 caracteres y un maximo de 10")]
-        public char Pro_TipoIdentificacion { get; set; }
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "El tipo de identificacion es obligatorio")]
+        //[Display(Name = "Tipo de Identificacion")]
+        //[StringLength(10, MinimumLength = 3,
+        //ErrorMessage = "El numero de identificación deben tener un minimo de 3 caracteres y un maximo de 10")]
+        //public string Pro_TipoIdentificacion { get; set; }
 
         [RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El número de identificacion es obligatorio")]

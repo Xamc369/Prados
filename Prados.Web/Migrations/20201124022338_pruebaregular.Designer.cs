@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prados.Web.Data;
 
 namespace Prados.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201124022338_pruebaregular")]
+    partial class pruebaregular
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,12 +161,6 @@ namespace Prados.Web.Migrations
 
                     b.Property<int?>("AnioId");
 
-                    b.Property<string>("Con_EgrDescripcion");
-
-                    b.Property<string>("Con_EgrFecha");
-
-                    b.Property<float>("Con_EgrValor");
-
                     b.Property<string>("Con_EstadoEgr")
                         .IsRequired()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
@@ -172,6 +168,8 @@ namespace Prados.Web.Migrations
                     b.Property<string>("Con_EstadoIng")
                         .IsRequired()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
+
+                    b.Property<int?>("EgrId");
 
                     b.Property<int?>("MessId");
 
@@ -184,6 +182,8 @@ namespace Prados.Web.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AnioId");
+
+                    b.HasIndex("EgrId");
 
                     b.HasIndex("MessId");
 
@@ -202,7 +202,7 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ContabilidadId");
+                    b.Property<int?>("ContabilidadtblId");
 
                     b.Property<string>("Egr_Descripcion");
 
@@ -218,7 +218,7 @@ namespace Prados.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContabilidadId");
+                    b.HasIndex("ContabilidadtblId");
 
                     b.ToTable("Egresostbls");
                 });
@@ -595,7 +595,8 @@ namespace Prados.Web.Migrations
 
                     b.Property<string>("Pro_TipoIdentificacion")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasMaxLength(10);
 
                     b.Property<string>("SecurityStamp");
 
@@ -763,6 +764,10 @@ namespace Prados.Web.Migrations
                         .WithMany()
                         .HasForeignKey("AnioId");
 
+                    b.HasOne("Prados.Web.Data.Entities.Egresostbl", "Egr")
+                        .WithMany()
+                        .HasForeignKey("EgrId");
+
                     b.HasOne("Prados.Web.Data.Entities.Mesestbl", "Mess")
                         .WithMany()
                         .HasForeignKey("MessId");
@@ -782,9 +787,9 @@ namespace Prados.Web.Migrations
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Egresostbl", b =>
                 {
-                    b.HasOne("Prados.Web.Data.Entities.Contabilidadtbl", "Contabilidad")
+                    b.HasOne("Prados.Web.Data.Entities.Contabilidadtbl")
                         .WithMany("Con_Egresos")
-                        .HasForeignKey("ContabilidadId");
+                        .HasForeignKey("ContabilidadtblId");
                 });
 
             modelBuilder.Entity("Prados.Web.Data.Entities.Ingresostbl", b =>

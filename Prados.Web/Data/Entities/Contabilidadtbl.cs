@@ -16,8 +16,12 @@ namespace Prados.Web.Data.Entities
 
         //********************************EGRESOS*********************************
         public ICollection<Egresostbl> Con_Egresos { get; set; }
-        [Display(Name = "Egresos")]
-        public Egresostbl Egr { get; set; }
+        //[Display(Name = "Egresos")]
+        //public Egresostbl Egr { get; set; }
+
+        public string Con_EgrFecha { get; set; }
+        public float Con_EgrValor { get; set; }
+        public string Con_EgrDescripcion { get; set; }
 
         //***********************************INGRESOS****************************
         public ICollection<TiposPagotbl> Con_Tipos { get; set; }

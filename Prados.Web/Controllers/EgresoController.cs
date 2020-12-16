@@ -51,7 +51,7 @@ namespace Prados.Web.Controllers
         }
 
         // GET: Noticia/Create
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> Create()
         {
             var model = new EgresoViewModel
             {
@@ -62,7 +62,7 @@ namespace Prados.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EgresoViewModel model)
+        public async Task<IActionResult> Create(EgresoViewModel model, ContabilidadViewModel model1)
         {
             if (ModelState.IsValid)
             {

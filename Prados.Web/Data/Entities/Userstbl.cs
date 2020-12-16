@@ -41,9 +41,9 @@ namespace Prados.Web.Data.Entities
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El tipo de identificacion es obligatorio")]
         [Display(Name = "Tipo de Identificacion")]
-        [StringLength(10, MinimumLength = 3,
+        [StringLength(50, MinimumLength = 3,
         ErrorMessage = "El numero de identificación deben tener un minimo de 3 caracteres y un maximo de 10")]
-        public char Pro_TipoIdentificacion { get; set; }
+        public string Pro_TipoIdentificacion { get; set; }
 
         [RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El número de identificacion es obligatorio")]

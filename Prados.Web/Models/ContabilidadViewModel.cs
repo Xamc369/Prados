@@ -34,6 +34,8 @@ namespace Prados.Web.Models
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de pago.")]
         public int TipoPagoId { get; set; }
 
+        public int EgresoId { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [Display(Name = "Año")]
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un tipo de pago.")]

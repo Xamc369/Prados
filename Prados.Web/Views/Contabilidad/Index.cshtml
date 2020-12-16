@@ -5,20 +5,21 @@
 }
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/all.css">
 <br />
 
 @{
-    var TotalCuotas = 0;
-    var TotalCuotasXAnio = 0;
+    var TotalCuotas = 0.00;
+    var TotalCuotasXAnio = 0.00;
     var anio = DateTime.Now;
     int year = anio.Year;
     int month = anio.Month;
     var aniobusca = 0;
     var monthbusca = 0;
     var tipobusca = "";
-    var TotalCuotasXProp = 0;
-    var TotalCuotasXSede = 0;
-    var TotalCuotasXTag = 0;
+    var TotalCuotasXProp = 0.00;
+    var TotalCuotasXSede = 0.00;
+    var TotalCuotasXTag = 0.00;
     var Texto = "";
 
 }
@@ -84,7 +85,7 @@
 
 @foreach (var item2 in Model)
 {
-    TotalCuotas += Convert.ToInt32(item2.Valo.Val_Valor);
+    TotalCuotas += Convert.ToDouble(item2.Valo.Val_Valor);
     aniobusca = Convert.ToInt32(item2.Anio.Ani_Descripcion);
 
 
@@ -131,25 +132,20 @@
         tipobusca = item.Tip.Tip_Descripcion;
         monthbusca = Convert.ToInt32(item.Mess.Id);
 
-        @if ((tipobusca == "ALICUOTA") && (monthbusca == month))
+        @if ((tipobusca == "ALICUOTA"))
         {
-            TotalCuotasXProp += Convert.ToInt32(item.Valo.Val_Valor);
+            TotalCuotasXProp += Convert.ToDouble(item.Valo.Val_Valor);
             Texto = "Recaudado";
-        }
-        else
-        {
-            TotalCuotasXProp = 0;
-            Texto = "Nada Recaudado";
         }
 
         @if (tipobusca == "TAG")
         {
-            TotalCuotasXTag += Convert.ToInt32(item.Valo.Val_Valor);
+            TotalCuotasXTag += Convert.ToDouble(item.Valo.Val_Valor);
         }
 
         @if (tipobusca == "SEDE")
         {
-            TotalCuotasXSede += Convert.ToInt32(item.Valo.Val_Valor);
+            TotalCuotasXSede += Convert.ToDouble(item.Valo.Val_Valor);
         }
 
     }
@@ -229,9 +225,9 @@
                             }*@
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.FirstOrDefault().Con_Egresos)
                         {
-                            TotalCuotas += Convert.ToInt32(item.Valo.Val_Valor);
+                            @*TotalCuotas += Convert.ToDouble(item.Valo.Val_Valor);
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Anio.Ani_Descripcion)
@@ -244,16 +240,16 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Valo.Val_Valor)
-                                </td>
+                                </td>*@
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Punt.Pun_Descripcion)
+                                    @Html.DisplayFor(modelItem => item.Egr_Valor)
                                 </td>
-                                <td>
+                                @*<td>
                                     <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
-                                </td>
+                                </td>*@
                                 <td>
                                 </td>
-                            </tr>
+                            @*</tr>*@
 
                         }
                     </tbody>
@@ -263,6 +259,7 @@
     </div>
 </div>
 <strong>Total Ingresos :@TotalCuotas</strong>
+
 
 <!--Delete Item-->
 <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

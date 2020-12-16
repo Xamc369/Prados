@@ -13,7 +13,8 @@ namespace Prados.Web.Data.Entities
         public int Id { get; set; }
 
         [Display(Name = "VALOR ALICUOTA")]
-        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
+        //[RegularExpression("(^[0-9]+$)", ErrorMessage = "Solo se permiten números")]
+        [RegularExpression("^[0-9]{1,2}([,]{1}[0-9]{1,2})?$", ErrorMessage ="Para decimales utilice coma (,)")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "El registro es obligatorio")]
         [StringLength(5, ErrorMessage = "El valor debe ser maximo de tres enteros y dos decimales")]
         public string Val_Valor { get; set; }
