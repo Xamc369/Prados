@@ -27,5 +27,7 @@ namespace Prados.Web.Helpers
         Task<bool> DeleteUserAsync(string email);
 
         Task<IdentityResult> UpdateUserAsync(Userstbl user);
+
+        Task<SignInResult> ValidatePasswordAsync(Userstbl user, string password);
     }
 }

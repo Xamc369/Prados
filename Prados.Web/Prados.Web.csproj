@@ -29,4 +29,8 @@
     <Folder Include="wwwroot\images\Vehiculos\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Prados.Common\Prados.Common.csproj" />
+  </ItemGroup>
+
 </Project>
