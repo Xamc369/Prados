@@ -25,11 +25,19 @@ namespace Prados.Web.Controllers
             _configuration = configuration;
         }
 
+
+        public IActionResult NotAuthorized()
+        {
+            // return View();
+            return RedirectToAction("About", "Home");
+        }
+
+
         public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("About", "Home");
             }
 
             return View();
@@ -60,12 +68,7 @@ namespace Prados.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _userHelper.LogoutAsync();
-            return RedirectToAction("Index", "Home");
-        }
-
-        public IActionResult NotAuthorized()
-        {
-            return View();
+            return RedirectToAction("About", "Home");
         }
 
         [HttpPost]

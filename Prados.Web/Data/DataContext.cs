@@ -12,9 +12,14 @@ namespace Prados.Web.Data
 {
     public class DataContext : IdentityDbContext<Userstbl>
     {
+        public DataContext()
+        {
+        }
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
+
         public DbSet<Aniostbl> Aniostbls { get; set; }
         public DbSet<Managerstbl> Managerstbls { get; set; }
         public DbSet<MarcasAutostbl> MarcasAutostbls { get; set; }
@@ -27,18 +32,19 @@ namespace Prados.Web.Data
         public DbSet<TiposViviendatbl> TiposViviendatbls { get; set; }
         public DbSet<Valorestbl> Valorestbls { get; set; }
         public DbSet<Vehiculostbl> Vehiculostbls { get; set; }
-        public DbSet<Ingresostbl> Ingresostbls { get; set; }
         public DbSet<Egresostbl> Egresostbls { get; set; }
         public DbSet<Saldostbl> Saldostbls { get; set; }
         public DbSet<Prados.Web.Data.Entities.TiposPagotbl> TiposPagotbl { get; set; }
         public DbSet<TiposPagotbl> TiposPagotbls { get; set; }
-        public DbSet<Contabilidadtbl> Contabilidadtbls { get; set; }
         public DbSet<Noticiastbl> Noticiastbls { get; set; }
         public DbSet<TipoIdentificaciontbl> TipoIdentificaciontbls { get; set; }
         public DbSet<TipoPersonatbl> TipoPersonastbls { get; set; }
+        public DbSet<EstadosFinancierostbl> EstadosFinancierostbls { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<EstadosFinancierostbl>().HasKey(x => new { x.IdIngresos, x.IdEgresos});
+
             base.OnModelCreating(builder);
 
             builder.Entity<Vehiculostbl>()
@@ -57,6 +63,12 @@ namespace Prados.Web.Data
                 .HasIndex(t => t.Tip_Descripcion)
                 .IsUnique();
         }
+
+
+
+        
+
+       
 
 
 

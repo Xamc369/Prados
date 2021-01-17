@@ -26,5 +26,8 @@ namespace Prados.Web.Data.Entities
         public TiposPagotbl Tipos { get; set; }
         [Display(Name = "Punto de Pago")]
         public PuntosPagotbl PuntodePago { get; set; }
+
+        public List<EstadosFinancierostbl> EstaFinantbls { get; set; }
+
     }
 }

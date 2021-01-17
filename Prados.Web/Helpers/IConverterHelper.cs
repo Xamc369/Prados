@@ -12,8 +12,6 @@ namespace Prados.Web.Helpers
         Task<Vehiculostbl> ToVehiculoAsync(VehiculoViewModel model, string path, bool IsNew);
         Task<Negociostbl> ToNegocioAsync(NegocioViewModel model, string path, bool IsNew);
         Task<Pagostbl> ToPagoAsync(PagoViewModel model, bool isNew);
-        Task<Contabilidadtbl> ToIngresosAsync(ContabilidadViewModel model1, bool isNew);
-        Task<Contabilidadtbl> ToContabilidadAsync(ContabilidadViewModel model1, bool isNew);
         Task<Productostbl> ToProductoAsync(ProductoViewModel model, bool IsNew, string path);
         Task<Noticiastbl> ToNoticiaAsync(NoticiaViewModel model, bool IsNew, string path);
         Task<Valorestbl> ToValorAsync(ValorViewModel model, bool IsNew);

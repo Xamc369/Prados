@@ -29,5 +29,11 @@ namespace Prados.Web.Helpers
         Task<IdentityResult> UpdateUserAsync(Userstbl user);
 
         Task<SignInResult> ValidatePasswordAsync(Userstbl user, string password);
+        Task<string> GenerateEmailConfirmationTokenAsync(Userstbl user);
+
+        Task<IdentityResult> ConfirmEmailAsync(Userstbl user, string token);
+
+        Task<Userstbl> GetUserByIdAsync(string userId);
+
     }
 }

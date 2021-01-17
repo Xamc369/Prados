@@ -62,7 +62,7 @@ namespace Prados.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EgresoViewModel model, ContabilidadViewModel model1)
+        public async Task<IActionResult> Create(EgresoViewModel model)
         {
             if (ModelState.IsValid)
             {

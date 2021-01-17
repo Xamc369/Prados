@@ -455,19 +455,16 @@ namespace Prados.Web.Controllers
                 TiposPago =_combosHelper.GetComboValoresDescripcion(),
                 Puntos = _combosHelper.GetComboPuntos()
             };
-
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPago(PagoViewModel model, ContabilidadViewModel model1)
+        public async Task<IActionResult> AddPago(PagoViewModel model, List<int> listapagos)
         {
             if (ModelState.IsValid)
             {
-
                 var pago = await _converterHelper.ToPagoAsync(model, true);
-                var ingreso = await _converterHelper.ToIngresosAsync(model1, true);
-                //var anio_nuevo = pago.Anio.Id;
+                      //var anio_nuevo = pago.Anio.Id;
                 //var anio = _context.Pagostbls.Find(model.AnioId);
                 //var mes_nuevo = pago.Mes.Id;
                 //var mes = _context.Pagostbls.Find(model.MesId);
@@ -475,7 +472,6 @@ namespace Prados.Web.Controllers
                 //var mes_nuevo2 = mes_nuevo.ToString();            
                 //guardamos el pago
                 _context.Pagostbls.Add(pago);
-                _context.Contabilidadtbls.Add(ingreso);
                 await _context.SaveChangesAsync();
                 //var IdDelRegistroInsertadoEnPagos = pago.Id;
                 //var IdDelRegistroInsertadoEnIngresos = ingreso.Id;
@@ -518,14 +514,12 @@ namespace Prados.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPago(PagoViewModel model, ContabilidadViewModel model1)
+        public async Task<IActionResult> EditPago(PagoViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var pago = await _converterHelper.ToPagoAsync(model, false);
-                var ingreso = await _converterHelper.ToIngresosAsync(model1,false);
                 _context.Pagostbls.Update(pago);
-                _context.Contabilidadtbls.Update(ingreso);
                 await _context.SaveChangesAsync();
                 var IdTipoDelRegistroActualizadoEnPagos = pago.Tipos.Id;
                 return RedirectToAction($"Details/{model.PropietarioId}");
@@ -556,26 +550,13 @@ namespace Prados.Web.Controllers
                 .Include(p => p.PuntodePago)
                 .FirstOrDefaultAsync(h => h.Id == id.Value);
 
-            var ingreso = await _context.Contabilidadtbls
-                .Include(p => p.Anio)
-                .Include(p => p.Mess)
-                .Include(p => p.Valo)
-                .Include(p => p.Tip)
-                .Include(p => p.Punt)
-                .FirstOrDefaultAsync(h => h.Id == id.Value);
-
             if (pago == null)
             {
                 return NotFound();
             }
 
-            if (ingreso == null)
-            {
-                return NotFound();
-            }
 
             pago.PAG_ESTADO = 'I';
-            ingreso.Con_EstadoIng = 'I';
             //_context.Contabilidadtbls.Remove(ingreso);
             // _context.Pagostbls.Remove(pago);
             _flashMessage.Confirmation("El pago fue borrado");

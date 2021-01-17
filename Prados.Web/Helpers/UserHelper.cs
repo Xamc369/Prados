@@ -99,6 +99,22 @@ namespace Prados.Web.Helpers
                 false);
         }
 
+        public async Task<IdentityResult> ConfirmEmailAsync(Userstbl user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(Userstbl user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<Userstbl> GetUserByIdAsync(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+
+
 
     }
 }
