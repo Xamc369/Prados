@@ -89,7 +89,8 @@ namespace Prados.Web.Helpers
                 Egr_FechadeRegistro = DateTime.Today,
                 Id = IsNew ? 0 : model.Id,
                 Egr_Estado = 'A',
-
+                Anio = await _dataContext1.Aniostbls.FindAsync(model.AnioId),
+                Mes = await _dataContext1.Mesestbls.FindAsync(model.MesId),
             };
         }
 

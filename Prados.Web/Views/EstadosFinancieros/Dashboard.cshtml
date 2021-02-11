@@ -1,0 +1,278 @@
+﻿@model Prados.Web.Models.EstadosFinancierosViewModel
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">*@
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/all.css">
+<br />
+<flash dismissable="true" />
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="">
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/images/favicon.ico" type="image/x-icon">
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/css/style.css">
+
+
+
+
+</head>
+
+<h4>Seleccione un año y un mes</h4>
+
+
+<p>
+    @using (Html.BeginForm("Dashboard", "EstadosFinancieros", FormMethod.Get))
+    {
+<text> Año </text> @Html.DropDownList("aniotbl", new SelectList(ViewBag.Aniostbls))
+                <text> Mes </text> @Html.DropDownList("mestbl", new SelectList(ViewBag.Mesestbls))
+                                <input type="submit" value="Buscar" />}
+</p>
+
+@{ var TotalCuotasXAnio = 0.00;
+    var tipobusca = "";
+    var TotalCuotasXProp = 0.00;
+    var TotalCuotasXSede = 0.00;
+    var TotalCuotasXOtros = 0.00;
+    var TotalCuotasXTag = 0.00;
+    var TotalEgresosXMes = 0.00;
+    var Saldo = 0.00; }
+
+@foreach (var item in Model.egresos)
+{
+    TotalEgresosXMes += Convert.ToDouble(item.Egr_Valor);
+}
+
+@if (Model.ingresos.Count == 0)
+{
+<h4>No registra ingresos</h4> }
+else
+{
+
+@foreach (var item in Model.ingresos)
+{
+    TotalCuotasXAnio += Convert.ToDouble(item.Val.Val_Valor);
+    tipobusca = item.Tipos.Tip_Descripcion;
+@if ((tipobusca == "ALICUOTA"))
+{
+    TotalCuotasXProp += Convert.ToDouble(item.Val.Val_Valor);
+}
+                    @if (tipobusca == "TAG")
+                    {
+                        TotalCuotasXTag += Convert.ToDouble(item.Val.Val_Valor);
+                    }
+                                        @if (tipobusca == "SEDE")
+                                        {
+                                            TotalCuotasXSede += Convert.ToDouble(item.Val.Val_Valor);
+                                        }
+                                                            @if (tipobusca == "OTROS")
+                                                            {
+                                                                Saldo = TotalCuotasXAnio - TotalEgresosXMes; TotalCuotasXOtros += Convert.ToDouble(item.Val.Val_Valor);
+                                                            }}}
+
+<body>
+    <div>
+        <div class="pcoded-content">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#!">Estados Financieros</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9 mb-3">
+            <!--HACE QUE SEAN CARTAS CHIQUITAS-->
+            <div class="row center">
+                <!--HACE QUE TODAS LAS CARTAS SEAN IGUALES-->
+                <div class="col-sm-6">
+                    <!--HACE QUE LA SEGUNDA VAYA ABAJO-->
+                    <div class="card support-bar overflow-hidden">
+                        <div class="card-body pb-0">
+                            <span class="text-c-blue">Ingresos Mensuales</span>
+                            <p class="mb-3 mt-3">Total de ingresos generados</p>
+                        </div>
+                        <div class="card-footer bg-c-blue text-white center">
+                            <div class="col-8 text-right">
+                                <h1 class="m-0 text-white center">$@TotalCuotasXAnio</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <!--HACE QUE LA SEGUNDA VAYA ABAJO-->
+                    <div class="card support-bar overflow-hidden">
+                        <div class="card-body pb-0">
+
+                            <span class="text-c-yellow">Egresos Mensuales</span>
+                            <p class="mb-3 mt-3">Total de egresos generados</p>
+
+                        </div>
+                        <div class="card-footer bg-c-yellow text-white center">
+
+                            <div class="col-8 text-right">
+                                <h1 class="m-0 text-white center">$@TotalEgresosXMes</h1>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                @if (Saldo > 0)
+                {
+                    <div class="col-sm-6">
+                        <!--HACE QUE LA SEGUNDA VAYA ABAJO-->
+                        <div class="card support-bar overflow-hidden">
+                            <div class="card-body pb-0">
+                                <span class="text-c-green">Saldo Mensual</span>
+                                <p class="mb-3 mt-3">Efectivo disponible del mes</p>
+                            </div>
+                            <div class="card-footer bg-c-green text-white center">
+
+                                <div class="col-8 text-right">
+                                    <h1 class="m-0 text-white center">$@Saldo</h1>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-6">
+                        <!--HACE QUE LA SEGUNDA VAYA ABAJO-->
+                        <div class="card support-bar overflow-hidden">
+                            <div class="card-body pb-0">
+
+                                <span class="text-c-red">Saldo Mensual</span>
+                                <p class="mb-3 mt-3">Efectivo disponible del mes</p>
+                            </div>
+                            <div class="card-footer bg-c-red text-white center">
+
+                                <div class="col-8 text-right">
+                                    <h1 class="m-0 text-white center">$@Saldo</h1>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                <div class="col-lg-7 col-md-12">
+                    <!-- page statustic card start -->
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <h3 class="text-c-yellow">$@TotalCuotasXProp</h3>
+                                            <h4 class="text-muted m-b-0">Alicuotas</h4>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <i class="fa fa-home f-28"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-c-yellow">
+                                    <div class="row align-items-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <h3 class="text-c-green">$@TotalCuotasXTag</h3>
+                                            <h4 class="text-muted m-b-0">Tag</h4>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <i class="fa fa-car f-28"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-c-green">
+                                    <div class="row align-items-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <h3 class="text-c-red">$@TotalCuotasXSede</h3>
+                                            <h4 class="text-muted m-b-0">Sede</h4>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <i class="fa fa-building f-28"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-c-red">
+                                    <div class="row align-items-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <h3 class="text-c-purple">$@TotalCuotasXOtros</h3>
+                                            <h4 class="text-muted m-b-0">Otros</h4>
+                                        </div>
+                                        <div class="col-4 text-right">
+                                            <i class="fa fa-cash-register f-28"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-c-purple">
+                                    <div class="row align-items-center">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        hola
+                    </div>
+
+                    <!-- page statustic card end -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Js -->
+    <script src="~/js/vendor-all.min.js"></script>
+    <script src="~/js/plugins/bootstrap.min.js"></script>
+    <script src="~/js/ripple.js"></script>
+    <script src="~/js/pcoded.min.js"></script>
+
+
+
+
+    <!-- custom-chart js -->
+    <script src="~/js/pages/dashboard-main.js"></script>
+
+</body>
+
+
+
+
+
+
+
+

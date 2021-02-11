@@ -1,67 +1,319 @@
 ﻿@model Prados.Web.Models.EstadosFinancierosViewModel
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            <!-- Required meta tags -->
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-            <!-- Bootstrap CSS -->
-            @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">*@
-
-            <h2>SITUACION FINANCIERA</h2>
-            <br />
-            <br />
+<!-- Bootstrap CSS -->
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">*@
 
 
-            <h4>Seleccione un año y un mes</h4>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/all.css">
+<br />
+<flash dismissable="true" />
 
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown button
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+
+
+<h2>SITUACION FINANCIERA</h2>
+<br />
+<br />
+
+
+<h4>Seleccione un año y un mes</h4>
+
+
+<p>
+    @using (Html.BeginForm("Index", "EstadosFinancieros", FormMethod.Get))
+    {
+        <text> Año </text> @Html.DropDownList("aniotbl", new SelectList(ViewBag.Aniostbls))
+        <text> Mes </text> @Html.DropDownList("mestbl", new SelectList(ViewBag.Mesestbls))
+        <input type="submit" value="Buscar" />
+    }
+</p>
+
+
+@*@Html.DropDownList("Aniostbls")
+    @Html.DropDownList("Mesestbls")
+    <button type="button" class="btn btn-info">Buscar</button>*@
+
+
+
+@{
+    var TotalCuotasXAnio = 0.00;
+    var tipobusca = "";
+    var TotalCuotasXProp = 0.00;
+    var TotalCuotasXSede = 0.00;
+    var TotalCuotasXTag = 0.00;
+
+}
+
+
+
+
+
+@if (Model.ingresos.Count == 0)
+{
+    <h4>No registra ingresos</h4>
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Estado de Resultados</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" id="tblingresos">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ingresos.FirstOrDefault().Anio.Ani_Descripcion)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ingresos.FirstOrDefault().Mes.Mes_Descripcion)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ingresos.FirstOrDefault().Val.Val_Valor)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ingresos)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Anio.Ani_Descripcion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Mes.Mes_Descripcion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Val.Val_Valor)
+                                    </td>
+                                </tr>
+                                TotalCuotasXAnio += Convert.ToDouble(item.Val.Val_Valor);
+
+                                tipobusca = item.Tipos.Tip_Descripcion;
+
+                                @if ((tipobusca == "ALICUOTA"))
+                                {
+                                    TotalCuotasXProp += Convert.ToDouble(item.Val.Val_Valor);
+                                }
+
+                                @if (tipobusca == "TAG")
+                                {
+                                    TotalCuotasXTag += Convert.ToDouble(item.Val.Val_Valor);
+                                }
+
+                                @if (tipobusca == "SEDE")
+                                {
+                                    TotalCuotasXSede += Convert.ToDouble(item.Val.Val_Valor);
+                                }
+                            }
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <h1>EGRESOS</h1>
+        </div>
+    </div>
+}
 
-            @foreach (var item in Model.egresos)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Egr_FechadePago)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Egr_Descripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Egr_Valor)
-                    </td>
-                </tr>}
+<div>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            TOTAL MENSUAL
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXAnio</p>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            ALICUOTA
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-file"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXProp</p>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            TAG
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="fa fa-car"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXTag</p>
+        </div>
+    </article>
+    <article class="full-box tile">
+        <div class="full-box tile-title text-center text-titles text-uppercase">
+            SEDE
+        </div>
+        <div class="full-box tile-icon text-center">
+            <i class="glyphicon glyphicon-home"></i>
+        </div>
+        <div class="full-box tile-number text-titles">
+            <p class="full-box">@TotalCuotasXSede</p>
+        </div>
+    </article>
+</div>
 
-            <h1>INGRESOS</h1>
+<script>
+    function suma_calificacion() {
 
-            @foreach (var item in Model.ingresos)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Anio.Ani_Descripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Mes.Mes_Descripcion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Val.Val_Valor)
-                    </td>
-                </tr>}
+        var sum = 0;
+        $('.calificacion').each(function () {
+            sum += Number($(this).val());
+        });
+        return sum;
+    }
+</script>
 
 
-            <!-- Optional JavaScript -->
-            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblingresos').DataTable();
+
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Contabilidad/Delete/' + item_to_delete;
+            });
+        });
+    </script>
+}
+
+<style>
+    .full-box {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    /*============ Estilos home*/
+    .tile {
+        max-width: 300px;
+        height: 180px;
+        background-color: #fff;
+        color: rgba(43, 174, 168, 1);
+        position: relative;
+        display: inline-block;
+        box-shadow: 0 1px 7px rgba(0, 0, 0, .2);
+        overflow: hidden;
+        cursor: pointer;
+        margin: 10px;
+    }
+
+        .tile:hover > .tile-icon > i,
+        .tile:hover > .tile-number {
+            color: rgba(43, 174, 168, 1);
+        }
+
+    .tile-title,
+    .tile-icon,
+    .tile-number {
+        position: absolute;
+    }
+
+    .tile-title {
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        background-color: rgb(43, 174, 168);
+        color: #fff;
+        top: 0;
+        left: 0;
+    }
+
+    .tile-icon,
+    .tile-number {
+        bottom: 0;
+        height: 140px;
+        width: 150px;
+    }
+
+    .tile-icon {
+        left: 0;
+    }
+
+        .tile-icon > i {
+            line-height: 140px;
+            font-size: 117px;
+        }
+
+        .tile-icon > i,
+        .tile-number {
+            color: rgba(43, 174, 168, .4);
+            transition: all .3s ease-in-out;
+        }
+
+    .tile-number {
+        right: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+        .tile-number > p {
+            font-size: 70px;
+        }
+
+        .tile-number > small {
+            font-size: 17px;
+        }
+</style>
+
+
+
+
+
+<h1>EGRESOS</h1>
+
+@foreach (var item in Model.egresos)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Egr_FechadePago)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Egr_Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Egr_Valor)
+        </td>
+    </tr>}
+
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
 

@@ -4,100 +4,135 @@
     ViewData["Title"] = "Create";
 }
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-<link rel="stylesheet" href="~/fonts/font-awesome-4.7.0/css/all.css">
 
-<h2 class="text-titles"><i class="glyphicon glyphicon-user"></i>   Registro de Personas</h2>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group label la">
-                <label asp-for="Username" class="control-label"></label>
+
+
+<h2 class="text-titles" style="text-align:center">
+    <i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+        </svg>
+    </i><strong> Registrar una Nueva Persona</strong>
+</h2>
+    <hr />
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- Usuario, tipo y n° lote -->
+        <div class="form-row">
+
+            <div class="form-group col-md-6">
+                <label for="inputCity" style="font-size:18px">Correo</label>
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
-
             @*TIPO DE PERSONA*@
-            <div class="form-group">
-                <label asp-for="TPId" class="control-label"></label>
+            <div class="form-group col-md-4">
+                <label asp-for="TPId" class="control-label" style="font-size:18px"></label>
                 <select asp-for="TPId" asp-items="Model.TipoPersonaVM" class="form-control"></select>
                 <span asp-validation-for="TPId" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="PRO_LOTE" class="control-label"></label>
+            <div class="form-group col-md-2">
+                <label asp-for="PRO_LOTE" class="control-label" style="font-size:18px"></label>
                 <input asp-for="PRO_LOTE" class="form-control" />
                 <span asp-validation-for="PRO_LOTE" class="text-danger"></span>
             </div>
+        </div>
+        <!--Tipo vivienda, nombre y apellidos -->
+        <div class="form-group col-md-4">
+            <label asp-for="TVId" class="control-label" style="font-size:18px"></label>
+            <select asp-for="TVId" asp-items="Model.TipoViviendaVM" class="form-control"></select>
+            <span asp-validation-for="TVId" class="text-danger"></span>
+        </div>
 
-            @*TIPO DE VIVIENDA*@
-            <div class="form-group">
-                <label asp-for="TVId" class="control-label"></label>
-                <select asp-for="TVId" asp-items="Model.TipoViviendaVM" class="form-control"></select>
-                <span asp-validation-for="TVId" class="text-danger"></span>
-            </div>
+        <div class="form-group col-md-4">
+            <label asp-for="PRO_NOMBRES" class="control-label" style="font-size:18px"></label>
+            <input asp-for="PRO_NOMBRES" class="form-control" />
+            <span asp-validation-for="PRO_NOMBRES" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="PRO_APELLIDOS" class="control-label" style="font-size:18px"></label>
+            <input asp-for="PRO_APELLIDOS" class="form-control" />
+            <span asp-validation-for="PRO_APELLIDOS" class="text-danger"></span>
+        </div>
+        <!--Observaciones -->
 
-            <div class="form-group">
-                <label asp-for="PRO_NOMBRES" class="control-label"></label>
-                <input asp-for="PRO_NOMBRES" class="form-control" />
-                <span asp-validation-for="PRO_NOMBRES" class="text-danger"></span>
-            </div>
+        <div class="form-group col-md-12">
+            <label asp-for="PRO_OBSERVACIONES" class="control-label" style="font-size:18px"></label>
+            <textarea asp-for="PRO_OBSERVACIONES" class="form-control"></textarea>
+            <span asp-validation-for="PRO_OBSERVACIONES" class="text-danger"></span>
 
-            <div class="form-group">
-                <label asp-for="PRO_APELLIDOS" class="control-label"></label>
-                <input asp-for="PRO_APELLIDOS" class="form-control" />
-                <span asp-validation-for="PRO_APELLIDOS" class="text-danger"></span>
-            </div>
+        </div>
+        <!--Telefono, tipo de identificación y identiciación-->
 
-            <div class="form-group">
-                <label asp-for="PRO_OBSERVACIONES" class="control-label"></label>
-                <input asp-for="PRO_OBSERVACIONES" class="form-control" />
-                <span asp-validation-for="PRO_OBSERVACIONES" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="PRO_TELEFONO" class="control-label"></label>
-                <input asp-for="PRO_TELEFONO" class="form-control" />
-                <span asp-validation-for="PRO_TELEFONO" class="text-danger"></span>
-            </div>
+        <div class="form-group col-md-4">
+            <label asp-for="PRO_TELEFONO" class="control-label" style="font-size:18px"></label>
+            <input asp-for="PRO_TELEFONO" class="form-control" />
+            <span asp-validation-for="PRO_TELEFONO" class="text-danger"></span>
+        </div>
+        @*TIPO DE IDENTIFICACION*@
+        <div class="form-group col-md-4">
+            <label asp-for="TIId" class="control-label" style="font-size:18px"></label>
+            <select asp-for="TIId" asp-items="Model.TipoIdentificacionVM" class="form-control"></select>
+            <span asp-validation-for="TIId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="PRO_IDENTIFICACION" class="control-label" style="font-size:18px"></label>
+            <input asp-for="PRO_IDENTIFICACION" class="form-control" />
+            <span asp-validation-for="PRO_IDENTIFICACION" class="text-danger"></span>
+        </div>
+        <!-- Password 1 y 2-->
+        <div class="form-group col-md-6">
+            <label asp-for="Password" class="control-label" style="font-size:18px"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="PasswordConfirm" class="control-label" style="font-size:18px"></label>
+            <input asp-for="PasswordConfirm" class="form-control" />
+            <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+        </div>
 
-            @*TIPO DE IDENTIFICACION*@
-            <div class="form-group">
-                <label asp-for="TIId" class="control-label"></label>
-                <select asp-for="TIId" asp-items="Model.TipoIdentificacionVM" class="form-control"></select>
-                <span asp-validation-for="TIId" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-info">
+                <i aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                </i>
+            </a>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="PRO_IDENTIFICACION" class="control-label"></label>
-                <input asp-for="PRO_IDENTIFICACION" class="form-control" />
-                <span asp-validation-for="PRO_IDENTIFICACION" class="text-danger"></span>
-            </div>
+    </form>
 
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="PasswordConfirm" class="control-label"></label>
-                <input asp-for="PasswordConfirm" class="form-control" />
-                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-info"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
-            </div>
-        </form>
-    </div>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

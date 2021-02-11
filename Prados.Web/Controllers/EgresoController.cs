@@ -17,11 +17,13 @@ namespace Prados.Web.Controllers
         private readonly IImageHelper _imageHelper;
         private readonly IFlashMessage _flashMessage;
         private readonly DataContext _context;
+        private readonly ICombosHelper _combosHelper;
 
-        public EgresoController(DataContext context, IImageHelper imageHelper, IConverterHelper converterHelper, IFlashMessage flashMessage)
+        public EgresoController(DataContext context, IImageHelper imageHelper, IConverterHelper converterHelper, IFlashMessage flashMessage, ICombosHelper combosHelper)
         {
             _context = context;
             _imageHelper = imageHelper;
+            _combosHelper = combosHelper;
             _converterHelper = converterHelper;
             _flashMessage = flashMessage;
         }
@@ -29,7 +31,10 @@ namespace Prados.Web.Controllers
         // GET: Noticia
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Egresostbls.ToListAsync());
+            return View(await _context.Egresostbls
+                .Include(e => e.Anio)
+                .Include(e => e.Mes)
+                .ToListAsync());
         }
 
         // GET: Noticia/Details/5
@@ -57,6 +62,8 @@ namespace Prados.Web.Controllers
             {
                 Egr_FechadeRegistro = DateTime.Today,
                 Egr_Estado = 'A',
+                Anios1 = _combosHelper.GetComboAnios(),
+                Meses1 = _combosHelper.GetComboMeses(),
             };
             return View(model);
         }
@@ -73,6 +80,8 @@ namespace Prados.Web.Controllers
 
             }
 
+            model.Anios1 = _combosHelper.GetComboAnios();
+            model.Meses1 = _combosHelper.GetComboMeses();
             return View(model);
         }
 

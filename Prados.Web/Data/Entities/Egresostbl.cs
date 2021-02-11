@@ -23,6 +23,11 @@ namespace Prados.Web.Data.Entities
         public DateTime Egr_FechadeRegistro { get; set; }
         public Char Egr_Estado { get; set; }
 
+        [Display(Name = "Año")]
+        public Aniostbl Anio { get; set; }
+        [Display(Name = "Mes")]
+        public Mesestbl Mes { get; set; }
+
         public List<EstadosFinancierostbl> EstaFinantbls { get; set; }
 
     }

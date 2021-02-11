@@ -15,5 +15,6 @@ namespace Prados.Web.Data.Entities
         public string Mes_Descripcion { get; set; }
 
         public ICollection<Pagostbl> Pagos { get; set; }
+        public ICollection<Egresostbl> Egresos { get; set; }
     }
 }

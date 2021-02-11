@@ -153,6 +153,8 @@ namespace Prados.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AnioId");
+
                     b.Property<string>("Egr_Descripcion");
 
                     b.Property<string>("Egr_Estado")
@@ -165,7 +167,13 @@ namespace Prados.Web.Migrations
 
                     b.Property<float>("Egr_Valor");
 
+                    b.Property<int?>("MesId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AnioId");
+
+                    b.HasIndex("MesId");
 
                     b.ToTable("Egresostbls");
                 });
@@ -657,6 +665,17 @@ namespace Prados.Web.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Prados.Web.Data.Entities.Egresostbl", b =>
+                {
+                    b.HasOne("Prados.Web.Data.Entities.Aniostbl", "Anio")
+                        .WithMany("Egresos")
+                        .HasForeignKey("AnioId");
+
+                    b.HasOne("Prados.Web.Data.Entities.Mesestbl", "Mes")
+                        .WithMany("Egresos")
+                        .HasForeignKey("MesId");
                 });
 
             modelBuilder.Entity("Prados.Web.Data.Entities.EstadosFinancierostbl", b =>
