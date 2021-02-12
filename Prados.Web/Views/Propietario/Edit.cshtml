@@ -5,7 +5,7 @@
 }
 
 
-
+<link rel="stylesheet" href="~/css/adminlte.min.css">
 
 <h2 class="text-titles" style="text-align:center">
     <i>
@@ -15,14 +15,16 @@
         </svg>
     </i><strong> Editar Persona</strong>
 </h2>
-
 <hr />
+<div class="card card-info">
+    <div class="card-header1">
+        <h6 style="font-size: 18px; color:white">Crear nuevo</h6>
+    </div>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<form asp-action="Edit">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div>
         <!-- Tipo de persona, N° lote y Tipo Vivienda-->
-        <div class="form-row">
+        <div class="form-row" style="margin-top:10px">
 
             @*TIPO DE PERSONA*@
             <div class="form-group col-md-4">
@@ -44,18 +46,19 @@
             </div>
         </div>
         <!-- Nombres y Apellidos-->
-        <div class="form-group col-md-6">
-            <label asp-for="Pro_Nombres" class="control-label" style="font-size:18px"></label>
-            <input asp-for="Pro_Nombres" class="form-control" />
-            <span asp-validation-for="Pro_Nombres" class="text-danger"></span>
-        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="Pro_Nombres" class="control-label" style="font-size:18px"></label>
+                <input asp-for="Pro_Nombres" class="form-control" />
+                <span asp-validation-for="Pro_Nombres" class="text-danger"></span>
+            </div>
 
-        <div class="form-group col-md-6">
-            <label asp-for="Pro_Apellidos" class="control-label" style="font-size:18px"></label>
-            <input asp-for="Pro_Apellidos" class="form-control" />
-            <span asp-validation-for="Pro_Apellidos" class="text-danger"></span>
+            <div class="form-group col-md-6">
+                <label asp-for="Pro_Apellidos" class="control-label" style="font-size:18px"></label>
+                <input asp-for="Pro_Apellidos" class="form-control" />
+                <span asp-validation-for="Pro_Apellidos" class="text-danger"></span>
+            </div>
         </div>
-
         <!--Observaciones -->
 
         <div class="form-group col-md-12">
@@ -64,37 +67,38 @@
             <span asp-validation-for="Pro_Observaciones" class="text-danger"></span>
         </div>
         <!--Telefono, tipo de identificación y identiciación-->
-        <div class="form-group col-md-4">
-            <label asp-for="Pro_Telefono" class="control-label" style="font-size:18px"></label>
-            <input asp-for="Pro_Telefono" class="form-control" />
-            <span asp-validation-for="Pro_Telefono" class="text-danger"></span>
-        </div>
-        @*TIPO DE IDENTIFICACION*@
-        <div class="form-group col-md-4">
-            <label asp-for="TIId" class="control-label" style="font-size:18px"></label>
-            <select asp-for="TIId" asp-items="Model.TipoIdentificacionVM" class="form-control"></select>
-            <span asp-validation-for="TIId" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-4">
-            <label asp-for="Pro_Identificacion" class="control-label" style="font-size:18px"></label>
-            <input asp-for="Pro_Identificacion" class="form-control" />
-            <span asp-validation-for="Pro_Identificacion" class="text-danger"></span>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label asp-for="Pro_Telefono" class="control-label" style="font-size:18px"></label>
+                <input asp-for="Pro_Telefono" class="form-control" />
+                <span asp-validation-for="Pro_Telefono" class="text-danger"></span>
+            </div>
+            @*TIPO DE IDENTIFICACION*@
+            <div class="form-group col-md-4">
+                <label asp-for="TIId" class="control-label" style="font-size:18px"></label>
+                <select asp-for="TIId" asp-items="Model.TipoIdentificacionVM" class="form-control"></select>
+                <span asp-validation-for="TIId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="Pro_Identificacion" class="control-label" style="font-size:18px"></label>
+                <input asp-for="Pro_Identificacion" class="form-control" />
+                <span asp-validation-for="Pro_Identificacion" class="text-danger"></span>
+            </div>
         </div>
 
-    </div>
-    <div class="form-group" >
-        <input type="submit" value="Modificar" class="btn btn-primary" style="margin-top:20px" />
-        <a asp-action="Index" class="btn btn-info"  style="margin-top:20px">
-            <i aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
-                </svg>
-            </i>
-        </a>
-    </div>
 
-</form>
-
+        <div class="form-group">
+            <input type="submit" value="Modificar" class="btn btn-primary" style="margin-top:20px" />
+            <a asp-action="Index" class="btn btn-info" style="margin-top:20px">
+                <i aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                </i>
+            </a>
+        </div>
+    </form>
+</div>
 
 
 
