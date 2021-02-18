@@ -18,7 +18,7 @@
 <br />
 <flash dismissable="true" />
 
-<h3 class="text-titles" style="text-align:center"><i class="glyphicon glyphicon-list-alt"></i><strong> Informacion</strong></h3>
+<h3 class="text-titles" style="text-align:center"><i class="glyphicon glyphicon-list-alt"></i><strong> Información</strong></h3>
 
 <div>
     <hr />
@@ -67,7 +67,7 @@
     <div class="card " style="max-width: 30rem;">
 
         <div class="card-header1">
-            <h6 style="font-size: 18px;color:white">Acción</h6>
+            <h6 style="font-size: 18px;color:white">Insertar nuevo</h6>
         </div>
         <div>
             @*<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |*@
@@ -111,17 +111,23 @@
     }
     else
     {
+        <!-- Tabla vehiculos-->
         <br />
         <br />
         <br />
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
+                    
+
+
+
+
                     <div class="panel-heading">
                         <h3 class="panel-title">Vehiculos</h3>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-hover table-responsive table-striped" id="tblvehiculos">
+                        <table class="myTable table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>
@@ -133,7 +139,7 @@
                                     <th>
                                         @Html.DisplayNameFor(model => model.Vehiculos.FirstOrDefault().ImageUrl)
                                     </th>
-                                    <th></th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -183,7 +189,7 @@
                         <h3 class="panel-title">Negocios</h3>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-hover table-responsive table-striped" id="tblnegocios">
+                        <table class="table table-hover table-responsive table-striped" >
                             <thead>
                                 <tr>
                                     <th>
@@ -238,7 +244,7 @@
                         <h3 class="panel-title">Pagos</h3>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-hover table-responsive table-striped" id="tblpagos">
+                        <table class="myTable table table-striped table-bordered" id="tblpagos">
                             <thead>
                                 <tr>
                                     <th>
